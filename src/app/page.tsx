@@ -1462,7 +1462,7 @@ const ProfileHeader = () => {
 
 // Blog Detail View Component
 const BlogDetailView = () => {
-  const { blogs, clearSelection, likeBlog } = useBlogs();
+  const { blogs, clearSelection, likeBlog, selectBlog } = useBlogs();
   const { users, toggleBookmark } = useUsers();
   const blog = blogs.selected;
 
@@ -1612,9 +1612,7 @@ const BlogDetailView = () => {
                 .map((b) => (
                   <div
                     key={b.id}
-                    onClick={() =>
-                      blogs.dispatchBlogs?.({ type: "SELECT_BLOG", payload: b })
-                    }
+                    onClick={() => selectBlog(b)}
                     className="group flex items-center gap-4 p-4 rounded-2xl bg-white hover:bg-slate-50 border border-slate-200/50 hover:border-slate-300 cursor-pointer transition-all hover:shadow-lg hover:shadow-slate-200/50"
                   >
                     <img
