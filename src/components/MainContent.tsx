@@ -42,7 +42,7 @@ export const MainContent = () => {
     <>
       <Sidebar />
 
-      <main className="flex-1 ml-24 mr-96 min-w-0 px-4">
+      <main className="flex-1 ml-20 mr-80 px-4 overflow-x-hidden">
         <ProfileHeader />
 
         {/* Tabs */}

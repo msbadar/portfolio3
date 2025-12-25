@@ -21,9 +21,9 @@ export const PostSkeleton = () => (
 );
 
 export const BlogSkeleton = () => (
-  <div className="flex bg-white rounded-3xl overflow-hidden border border-slate-200/50">
-    <Skeleton className="w-60 h-44" />
-    <div className="flex-1 p-6 space-y-3">
+  <div className="flex flex-col sm:flex-row bg-white rounded-3xl overflow-hidden border border-slate-200/50">
+    <Skeleton className="w-full sm:w-48 h-48 sm:h-40 rounded-none" />
+    <div className="flex-1 p-5 space-y-3">
       <Skeleton className="h-5 w-24" />
       <Skeleton className="h-6 w-full" />
       <Skeleton className="h-4 w-3/4" />

@@ -58,7 +58,7 @@ export const BlogDetailView = () => {
   if (!blog) return null;
 
   return (
-    <main className="flex-1 ml-24 mr-96 min-w-0 px-4">
+    <main className="flex-1 ml-20 mr-80 px-4 overflow-x-hidden">
       <header className="sticky top-0 z-10 px-6 py-4 bg-white/70 backdrop-blur-xl border-b border-slate-200/50">
         <div className="flex items-center gap-4">
           <button
