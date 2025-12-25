@@ -60,7 +60,8 @@ export async function POST(request: NextRequest): Promise<NextResponse<AuthRespo
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create user
+    // Create user with a default placeholder avatar
+    // Using a generic avatar URL that doesn't expose user data
     const [newUser] = await db
       .insert(users)
       .values({
@@ -68,7 +69,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<AuthRespo
         password: hashedPassword,
         name,
         username,
-        avatar: `https://i.pravatar.cc/150?u=${username}`,
+        avatar: null, // Users can set their avatar later
         verified: false,
         bio: "",
         followers: 0,
