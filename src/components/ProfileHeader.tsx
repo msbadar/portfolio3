@@ -35,7 +35,7 @@ export const ProfileHeader = () => {
 
   return (
     <div className="relative">
-      <div className="h-32 bg-gradient-to-r from-[var(--accent)] via-[var(--accent-dim)] to-teal-600" />
+      <div className="h-32 bg-gradient-to-r from-[var(--accent)] via-[var(--accent-dim)] to-[#0d9488]" />
       <div className="px-6 pb-6">
         <div className="flex items-end gap-4 -mt-12 mb-6 flex-wrap sm:flex-nowrap">
           <Image
