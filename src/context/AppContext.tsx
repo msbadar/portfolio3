@@ -8,17 +8,28 @@ import React, {
   useEffect,
 } from "react";
 import { postsReducer, blogsReducer, uiReducer, usersReducer } from "./reducers";
+import {
+  BlogsAction,
+  BlogsState,
+  PostsAction,
+  PostsState,
+  ToastType,
+  UIAction,
+  UIState,
+  UsersAction,
+  UsersState,
+} from "@/types/app";
 
 interface AppContextType {
-  posts: any;
-  dispatchPosts: React.Dispatch<any>;
-  blogs: any;
-  dispatchBlogs: React.Dispatch<any>;
-  ui: any;
-  dispatchUI: React.Dispatch<any>;
-  users: any;
-  dispatchUsers: React.Dispatch<any>;
-  showToast: (message: string, type?: string) => void;
+  posts: PostsState;
+  dispatchPosts: React.Dispatch<PostsAction>;
+  blogs: BlogsState;
+  dispatchBlogs: React.Dispatch<BlogsAction>;
+  ui: UIState;
+  dispatchUI: React.Dispatch<UIAction>;
+  users: UsersState;
+  dispatchUsers: React.Dispatch<UsersAction>;
+  showToast: (message: string, type?: ToastType) => void;
 }
 
 const AppContext = createContext<AppContextType | null>(null);
@@ -29,39 +40,50 @@ export const useApp = () => {
   return context;
 };
 
+const initialPostsState: PostsState = {
+  data: [],
+  loading: false,
+  error: null,
+};
+
+const initialBlogsState: BlogsState = {
+  data: [],
+  loading: false,
+  error: null,
+  selected: null,
+};
+
+const initialUIState: UIState = {
+  activeTab: "home",
+  profileTab: "threads",
+  showCompose: false,
+  searchQuery: "",
+  toasts: [],
+};
+
+const initialUsersState: UsersState = {
+  currentUser: null,
+  suggestions: [],
+  following: {},
+  bookmarks: {},
+};
+
 export const AppProvider = ({ children }: { children: React.ReactNode }) => {
-  const [posts, dispatchPosts] = useReducer(postsReducer, {
-    data: [],
-    loading: false,
-    error: null,
-  });
+  const [posts, dispatchPosts] = useReducer(postsReducer, initialPostsState);
 
-  const [blogs, dispatchBlogs] = useReducer(blogsReducer, {
-    data: [],
-    loading: false,
-    error: null,
-    selected: null,
-  });
+  const [blogs, dispatchBlogs] = useReducer(blogsReducer, initialBlogsState);
 
-  const [ui, dispatchUI] = useReducer(uiReducer, {
-    activeTab: "home",
-    profileTab: "threads",
-    showCompose: false,
-    searchQuery: "",
-    toasts: [],
-  });
+  const [ui, dispatchUI] = useReducer(uiReducer, initialUIState);
 
-  const [users, dispatchUsers] = useReducer(usersReducer, {
-    currentUser: null,
-    suggestions: [],
-    following: {},
-    bookmarks: {},
-  });
+  const [users, dispatchUsers] = useReducer(usersReducer, initialUsersState);
 
   // Toast helper
-  const showToast = useCallback((message: string, type = "info") => {
-    dispatchUI({ type: "ADD_TOAST", payload: { message, type } });
-  }, []);
+  const showToast = useCallback(
+    (message: string, type: ToastType = "info") => {
+      dispatchUI({ type: "ADD_TOAST", payload: { message, type } });
+    },
+    [dispatchUI]
+  );
 
   // Auto-remove toasts
   useEffect(() => {

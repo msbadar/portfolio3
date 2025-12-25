@@ -9,7 +9,7 @@ export const useUsers = () => {
     try {
       const user = await api.users.getCurrentUser();
       dispatchUsers({ type: "SET_CURRENT_USER", payload: user });
-    } catch (error) {
+    } catch {
       showToast("Failed to load user", "error");
     }
   }, [dispatchUsers, showToast]);
@@ -18,7 +18,7 @@ export const useUsers = () => {
     try {
       const suggestions = await api.users.getSuggestions();
       dispatchUsers({ type: "SET_SUGGESTIONS", payload: suggestions });
-    } catch (error) {
+    } catch {
       showToast("Failed to load suggestions", "error");
     }
   }, [dispatchUsers, showToast]);
@@ -28,7 +28,7 @@ export const useUsers = () => {
       dispatchUsers({ type: "TOGGLE_FOLLOW", payload: userId });
       try {
         await api.users.follow(userId, !users.following[userId]);
-      } catch (error) {
+      } catch {
         dispatchUsers({ type: "TOGGLE_FOLLOW", payload: userId }); // Revert
         showToast("Failed to follow user", "error");
       }

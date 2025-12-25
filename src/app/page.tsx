@@ -510,7 +510,7 @@ const usePosts = () => {
 
       try {
         await api.posts.like(postId, newLiked);
-      } catch (error) {
+      } catch {
         // Revert on failure
         dispatchPosts({
           type: "OPTIMISTIC_LIKE",
@@ -570,7 +570,7 @@ const useBlogs = () => {
       try {
         const blog = blogs.data.find((b) => b.id === blogId);
         await api.blogs.like(blogId, !blog?.liked);
-      } catch (error) {
+      } catch {
         dispatchBlogs({ type: "TOGGLE_LIKE", payload: blogId }); // Revert
         showToast("Failed to like blog", "error");
       }
@@ -589,7 +589,7 @@ const useUsers = () => {
     try {
       const user = await api.users.getCurrentUser();
       dispatchUsers({ type: "SET_CURRENT_USER", payload: user });
-    } catch (error) {
+    } catch {
       showToast("Failed to load user", "error");
     }
   }, [dispatchUsers, showToast]);
@@ -598,7 +598,7 @@ const useUsers = () => {
     try {
       const suggestions = await api.users.getSuggestions();
       dispatchUsers({ type: "SET_SUGGESTIONS", payload: suggestions });
-    } catch (error) {
+    } catch {
       showToast("Failed to load suggestions", "error");
     }
   }, [dispatchUsers, showToast]);
@@ -608,7 +608,7 @@ const useUsers = () => {
       dispatchUsers({ type: "TOGGLE_FOLLOW", payload: userId });
       try {
         await api.users.follow(userId, !users.following[userId]);
-      } catch (error) {
+      } catch {
         dispatchUsers({ type: "TOGGLE_FOLLOW", payload: userId }); // Revert
         showToast("Failed to follow user", "error");
       }
