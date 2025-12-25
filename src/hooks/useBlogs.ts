@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import { useApp } from "@/context/AppContext";
 import api from "@/services/api";
+import type { Blog } from "@/types";
 
 export const useBlogs = () => {
   const { blogs, dispatchBlogs, showToast } = useApp();
@@ -10,14 +11,15 @@ export const useBlogs = () => {
     try {
       const data = await api.blogs.getAll();
       dispatchBlogs({ type: "FETCH_SUCCESS", payload: data });
-    } catch (error: any) {
-      dispatchBlogs({ type: "FETCH_ERROR", payload: error.message });
-      showToast(error.message, "error");
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Failed to fetch blogs";
+      dispatchBlogs({ type: "FETCH_ERROR", payload: message });
+      showToast(message, "error");
     }
   }, [dispatchBlogs, showToast]);
 
   const selectBlog = useCallback(
-    (blog: any) => {
+    (blog: Blog) => {
       dispatchBlogs({ type: "SELECT_BLOG", payload: blog });
     },
     [dispatchBlogs]
@@ -31,9 +33,9 @@ export const useBlogs = () => {
     async (blogId: number) => {
       dispatchBlogs({ type: "TOGGLE_LIKE", payload: blogId });
       try {
-        const blog = blogs.data.find((b: any) => b.id === blogId);
+        const blog = blogs.data.find((b) => b.id === blogId);
         await api.blogs.like(blogId, !blog?.liked);
-      } catch (error) {
+      } catch {
         dispatchBlogs({ type: "TOGGLE_LIKE", payload: blogId }); // Revert
         showToast("Failed to like blog", "error");
       }

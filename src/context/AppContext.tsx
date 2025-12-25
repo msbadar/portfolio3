@@ -8,17 +8,27 @@ import React, {
   useEffect,
 } from "react";
 import { postsReducer, blogsReducer, uiReducer, usersReducer } from "./reducers";
+import type {
+  PostsState,
+  PostsAction,
+  BlogsState,
+  BlogsAction,
+  UIState,
+  UIAction,
+  UsersState,
+  UsersAction,
+} from "@/types";
 
 interface AppContextType {
-  posts: any;
-  dispatchPosts: React.Dispatch<any>;
-  blogs: any;
-  dispatchBlogs: React.Dispatch<any>;
-  ui: any;
-  dispatchUI: React.Dispatch<any>;
-  users: any;
-  dispatchUsers: React.Dispatch<any>;
-  showToast: (message: string, type?: string) => void;
+  posts: PostsState;
+  dispatchPosts: React.Dispatch<PostsAction>;
+  blogs: BlogsState;
+  dispatchBlogs: React.Dispatch<BlogsAction>;
+  ui: UIState;
+  dispatchUI: React.Dispatch<UIAction>;
+  users: UsersState;
+  dispatchUsers: React.Dispatch<UsersAction>;
+  showToast: (message: string, type?: "success" | "error" | "info") => void;
 }
 
 const AppContext = createContext<AppContextType | null>(null);
@@ -59,7 +69,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
   });
 
   // Toast helper
-  const showToast = useCallback((message: string, type = "info") => {
+  const showToast = useCallback((message: string, type: "success" | "error" | "info" = "info") => {
     dispatchUI({ type: "ADD_TOAST", payload: { message, type } });
   }, []);
 

@@ -1,5 +1,17 @@
+import type {
+  PostsState,
+  PostsAction,
+  BlogsState,
+  BlogsAction,
+  UIState,
+  UIAction,
+  UsersState,
+  UsersAction,
+  Toast,
+} from "@/types";
+
 // Posts Reducer
-export const postsReducer = (state: any, action: any) => {
+export const postsReducer = (state: PostsState, action: PostsAction): PostsState => {
   switch (action.type) {
     case "FETCH_START":
       return { ...state, loading: true, error: null };
@@ -12,12 +24,12 @@ export const postsReducer = (state: any, action: any) => {
     case "DELETE_POST":
       return {
         ...state,
-        data: state.data.filter((p: any) => p.id !== action.payload),
+        data: state.data.filter((p) => p.id !== action.payload),
       };
     case "TOGGLE_LIKE":
       return {
         ...state,
-        data: state.data.map((p: any) =>
+        data: state.data.map((p) =>
           p.id === action.payload
             ? {
                 ...p,
@@ -30,7 +42,7 @@ export const postsReducer = (state: any, action: any) => {
     case "OPTIMISTIC_LIKE":
       return {
         ...state,
-        data: state.data.map((p: any) =>
+        data: state.data.map((p) =>
           p.id === action.payload.id
             ? { ...p, liked: action.payload.liked, likes: action.payload.likes }
             : p
@@ -42,7 +54,7 @@ export const postsReducer = (state: any, action: any) => {
 };
 
 // Blogs Reducer
-export const blogsReducer = (state: any, action: any) => {
+export const blogsReducer = (state: BlogsState, action: BlogsAction): BlogsState => {
   switch (action.type) {
     case "FETCH_START":
       return { ...state, loading: true, error: null };
@@ -54,8 +66,8 @@ export const blogsReducer = (state: any, action: any) => {
       return { ...state, selected: action.payload };
     case "CLEAR_SELECTION":
       return { ...state, selected: null };
-    case "TOGGLE_LIKE":
-      const updatedData = state.data.map((b: any) =>
+    case "TOGGLE_LIKE": {
+      const updatedData = state.data.map((b) =>
         b.id === action.payload
           ? {
               ...b,
@@ -75,13 +87,14 @@ export const blogsReducer = (state: any, action: any) => {
             }
           : state.selected;
       return { ...state, data: updatedData, selected: updatedSelected };
+    }
     default:
       return state;
   }
 };
 
 // UI Reducer
-export const uiReducer = (state: any, action: any) => {
+export const uiReducer = (state: UIState, action: UIAction): UIState => {
   switch (action.type) {
     case "SET_ACTIVE_TAB":
       return { ...state, activeTab: action.payload };
@@ -94,12 +107,12 @@ export const uiReducer = (state: any, action: any) => {
     case "ADD_TOAST":
       return {
         ...state,
-        toasts: [...state.toasts, { id: Date.now(), ...action.payload }],
+        toasts: [...state.toasts, { id: Date.now(), ...action.payload } as Toast],
       };
     case "REMOVE_TOAST":
       return {
         ...state,
-        toasts: state.toasts.filter((t: any) => t.id !== action.payload),
+        toasts: state.toasts.filter((t) => t.id !== action.payload),
       };
     default:
       return state;
@@ -107,7 +120,7 @@ export const uiReducer = (state: any, action: any) => {
 };
 
 // Users Reducer
-export const usersReducer = (state: any, action: any) => {
+export const usersReducer = (state: UsersState, action: UsersAction): UsersState => {
   switch (action.type) {
     case "SET_CURRENT_USER":
       return { ...state, currentUser: action.payload };

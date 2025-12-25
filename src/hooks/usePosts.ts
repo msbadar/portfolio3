@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import { useApp } from "@/context/AppContext";
 import api from "@/services/api";
+import type { User } from "@/types";
 
 export const usePosts = () => {
   const { posts, dispatchPosts, showToast } = useApp();
@@ -10,21 +11,23 @@ export const usePosts = () => {
     try {
       const data = await api.posts.getAll();
       dispatchPosts({ type: "FETCH_SUCCESS", payload: data });
-    } catch (error: any) {
-      dispatchPosts({ type: "FETCH_ERROR", payload: error.message });
-      showToast(error.message, "error");
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Failed to fetch posts";
+      dispatchPosts({ type: "FETCH_ERROR", payload: message });
+      showToast(message, "error");
     }
   }, [dispatchPosts, showToast]);
 
   const createPost = useCallback(
-    async (content: string, user: any) => {
+    async (content: string, user: User | null) => {
       try {
         const newPost = await api.posts.create({ content, user });
         dispatchPosts({ type: "ADD_POST", payload: newPost });
         showToast("Post created successfully!", "success");
         return true;
-      } catch (error: any) {
-        showToast(error.message, "error");
+      } catch (error) {
+        const message = error instanceof Error ? error.message : "Failed to create post";
+        showToast(message, "error");
         return false;
       }
     },
@@ -33,7 +36,7 @@ export const usePosts = () => {
 
   const likePost = useCallback(
     async (postId: number) => {
-      const post = posts.data.find((p: any) => p.id === postId);
+      const post = posts.data.find((p) => p.id === postId);
       if (!post) return;
 
       // Optimistic update
@@ -46,7 +49,7 @@ export const usePosts = () => {
 
       try {
         await api.posts.like(postId, newLiked);
-      } catch (error) {
+      } catch {
         // Revert on failure
         dispatchPosts({
           type: "OPTIMISTIC_LIKE",
@@ -64,8 +67,9 @@ export const usePosts = () => {
         await api.posts.delete(postId);
         dispatchPosts({ type: "DELETE_POST", payload: postId });
         showToast("Post deleted", "success");
-      } catch (error: any) {
-        showToast(error.message, "error");
+      } catch (error) {
+        const message = error instanceof Error ? error.message : "Failed to delete post";
+        showToast(message, "error");
       }
     },
     [dispatchPosts, showToast]

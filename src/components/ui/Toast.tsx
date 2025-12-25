@@ -1,5 +1,6 @@
 import React from "react";
 import { Icons } from "./Icons";
+import type { Toast as ToastType } from "@/types";
 
 interface ToastProps {
   message: string;
@@ -34,10 +35,15 @@ export const Toast = ({ message, type, onClose }: ToastProps) => {
   );
 };
 
-export const ToastContainer = ({ toasts, onRemove }: any) => {
+interface ToastContainerProps {
+  toasts: ToastType[];
+  onRemove: (id: number) => void;
+}
+
+export const ToastContainer = ({ toasts, onRemove }: ToastContainerProps) => {
   return (
     <div className="fixed bottom-6 right-6 z-[9999] flex flex-col gap-2">
-      {toasts.map((toast: any) => (
+      {toasts.map((toast) => (
         <Toast
           key={toast.id}
           message={toast.message}
