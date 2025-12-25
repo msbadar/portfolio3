@@ -37,7 +37,7 @@ export const Toast = ({ message, type, onClose }: ToastProps) => {
 
 interface ToastContainerProps {
   toasts: ToastMessage[];
-  onRemove: (id: number) => void;
+  onRemove: (id: string) => void;
 }
 
 export const ToastContainer = ({ toasts, onRemove }: ToastContainerProps) => {
