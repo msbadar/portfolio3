@@ -15,10 +15,10 @@ export const ProfileHeader = () => {
     return (
       <div className="relative">
         <Skeleton className="h-32 rounded-none" />
-        <div className="px-8 pb-6">
-          <div className="flex items-end gap-6 -mt-12 mb-6">
-            <Skeleton className="w-28 h-28 rounded-3xl" />
-            <div className="flex-1 pb-2 space-y-2">
+        <div className="px-6 pb-6">
+          <div className="flex items-end gap-4 -mt-12 mb-6">
+            <Skeleton className="w-24 h-24 rounded-3xl flex-shrink-0" />
+            <div className="flex-1 pb-2 space-y-2 min-w-0">
               <Skeleton className="h-7 w-40" />
               <Skeleton className="h-5 w-28" />
             </div>
@@ -35,38 +35,38 @@ export const ProfileHeader = () => {
 
   return (
     <div className="relative">
-      <div className="h-32 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500" />
-      <div className="px-8 pb-6">
-        <div className="flex items-end gap-6 -mt-12 mb-6">
+      <div className="h-32 bg-gradient-to-r from-[var(--accent)] via-[var(--accent-dim)] to-teal-600" />
+      <div className="px-6 pb-6">
+        <div className="flex items-end gap-4 -mt-12 mb-6 flex-wrap sm:flex-nowrap">
           <Image
             src={user.avatar}
             alt={user.name}
-            width={112}
-            height={112}
-            className="w-28 h-28 rounded-3xl object-cover ring-4 ring-white shadow-2xl flex-shrink-0"
+            width={96}
+            height={96}
+            className="w-24 h-24 rounded-3xl object-cover ring-4 ring-[var(--background)] shadow-2xl flex-shrink-0"
           />
           <div className="flex-1 pb-2 min-w-0">
             <div className="flex items-center gap-2 mb-1">
-              <h1 className="text-2xl font-bold">{user.name}</h1>
+              <h1 className="text-xl font-bold text-[var(--foreground)] truncate">{user.name}</h1>
               <span className="flex-shrink-0">{user.verified && Icons.verified()}</span>
             </div>
-            <span className="text-slate-500">@{user.username}</span>
+            <span className="text-[var(--muted)]">@{user.username}</span>
           </div>
           <Link
             href="/profile/edit"
-            className="px-6 py-2.5 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-xl font-semibold shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/40 transition-all flex-shrink-0"
+            className="px-5 py-2 bg-[var(--accent)] text-[var(--background)] rounded-xl font-semibold shadow-lg shadow-[var(--accent)]/30 hover:shadow-[var(--accent)]/40 transition-all flex-shrink-0 text-sm"
           >
             Edit Profile
           </Link>
         </div>
-        <p className="text-slate-600 mb-4 max-w-2xl leading-relaxed">{user.bio}</p>
-        <div className="flex items-center gap-6 text-sm flex-wrap">
-          <span className="text-slate-500">
-            <strong className="text-slate-900 font-semibold">{user.followers}</strong>{" "}
+        <p className="text-[var(--muted)] mb-4 max-w-2xl leading-relaxed text-sm">{user.bio}</p>
+        <div className="flex items-center gap-4 text-sm flex-wrap">
+          <span className="text-[var(--muted)]">
+            <strong className="text-[var(--foreground)] font-semibold">{user.followers}</strong>{" "}
             followers
           </span>
-          <span className="text-slate-500">
-            <strong className="text-slate-900 font-semibold">{user.following}</strong>{" "}
+          <span className="text-[var(--muted)]">
+            <strong className="text-[var(--foreground)] font-semibold">{user.following}</strong>{" "}
             following
           </span>
           {user.link && (
@@ -74,7 +74,7 @@ export const ProfileHeader = () => {
               href={`https://${user.link}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-indigo-600 hover:text-indigo-700 font-medium transition-colors"
+              className="flex items-center gap-1.5 text-[var(--accent)] hover:text-[var(--accent-dim)] font-medium transition-colors"
             >
               {Icons.link()} {user.link}
             </a>

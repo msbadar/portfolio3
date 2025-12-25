@@ -5,20 +5,20 @@ import { Icons } from "@/components/ui/Icons";
 
 export const LoginForm = () => {
   return (
-    <div className="w-full max-w-md p-8 bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-200/50">
+    <div className="w-full max-w-md p-8 bg-[var(--surface)] rounded-3xl shadow-xl shadow-black/30 border border-[var(--border)]">
       <div className="flex flex-col items-center mb-8">
         {Icons.logo()}
-        <h1 className="text-2xl font-bold mt-4 bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+        <h1 className="text-2xl font-bold mt-4 text-[var(--accent)]">
           Welcome to Threadz
         </h1>
-        <p className="text-slate-500 mt-2 text-center">
+        <p className="text-[var(--muted)] mt-2 text-center">
           Sign in to connect with others and share your thoughts
         </p>
       </div>
 
       <button
         onClick={() => signIn("google", { callbackUrl: "/" })}
-        className="w-full flex items-center justify-center gap-3 px-6 py-3.5 bg-white border border-slate-200 rounded-xl font-medium text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm"
+        className="w-full flex items-center justify-center gap-3 px-6 py-3.5 bg-[var(--background)] border border-[var(--border)] rounded-xl font-medium text-[var(--foreground)] hover:bg-[var(--surface-hover)] hover:border-[var(--accent)]/30 transition-all shadow-sm"
       >
         <svg width="20" height="20" viewBox="0 0 24 24">
           <path
@@ -41,14 +41,14 @@ export const LoginForm = () => {
         Continue with Google
       </button>
 
-      <div className="mt-8 text-center text-xs text-slate-400">
+      <div className="mt-8 text-center text-xs text-[var(--muted)]">
         <p>
           By signing in, you agree to our{" "}
-          <a href="/terms" className="text-indigo-600 hover:underline">
+          <a href="/terms" className="text-[var(--accent)] hover:underline">
             Terms of Service
           </a>{" "}
           and{" "}
-          <a href="/privacy" className="text-indigo-600 hover:underline">
+          <a href="/privacy" className="text-[var(--accent)] hover:underline">
             Privacy Policy
           </a>
         </p>

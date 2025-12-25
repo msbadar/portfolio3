@@ -5,7 +5,7 @@ interface SkeletonProps {
 }
 
 export const Skeleton = ({ className = "" }: SkeletonProps) => (
-  <div className={`animate-pulse bg-slate-200 rounded-xl ${className}`} />
+  <div className={`animate-pulse bg-[var(--border)] rounded-xl ${className}`} />
 );
 
 export const PostSkeleton = () => (
@@ -21,7 +21,7 @@ export const PostSkeleton = () => (
 );
 
 export const BlogSkeleton = () => (
-  <div className="flex flex-col sm:flex-row bg-white rounded-3xl overflow-hidden border border-slate-200/50">
+  <div className="flex flex-col sm:flex-row bg-[var(--surface)] rounded-3xl overflow-hidden border border-[var(--border)]">
     <Skeleton className="w-full sm:w-48 h-48 sm:h-40 rounded-none" />
     <div className="flex-1 p-5 space-y-3">
       <Skeleton className="h-5 w-24" />

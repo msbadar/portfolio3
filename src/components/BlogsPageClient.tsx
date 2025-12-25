@@ -18,12 +18,12 @@ const BlogsContent = () => {
   return (
     <>
       <Sidebar />
-      <main className="flex-1 ml-20 mr-80 px-4 overflow-x-hidden">
-        <header className="sticky top-0 z-10 px-6 py-4 bg-white/70 backdrop-blur-xl border-b border-slate-200/50">
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-slate-900 to-slate-600 bg-clip-text text-transparent">
+      <main className="flex-1 ml-20 mr-80 min-w-0">
+        <header className="sticky top-0 z-10 px-6 py-4 bg-[var(--surface)]/95 backdrop-blur-xl border-b border-[var(--border)]">
+          <h1 className="text-2xl font-bold text-[var(--accent)]">
             Blogs
           </h1>
-          <p className="text-slate-500 mt-1">Discover insightful articles from our community</p>
+          <p className="text-[var(--muted)] mt-1">Discover insightful articles from our community</p>
         </header>
         <div className="p-6 grid gap-6">
           {blogs.loading ? (
@@ -33,7 +33,7 @@ const BlogsContent = () => {
               <p className="text-rose-500 mb-4">{blogs.error}</p>
               <button
                 onClick={fetchBlogs}
-                className="px-4 py-2 bg-slate-100 rounded-xl text-sm font-medium hover:bg-slate-200 transition-all"
+                className="px-4 py-2 bg-[var(--surface)] rounded-xl text-sm font-medium hover:bg-[var(--surface-hover)] transition-all"
               >
                 Try Again
               </button>
@@ -58,7 +58,7 @@ const BlogsContent = () => {
 export const BlogsPageClient = () => {
   return (
     <AppProvider>
-      <div className="flex justify-between min-h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50/30 font-sans text-slate-900">
+      <div className="flex min-h-screen bg-[var(--background)] font-sans text-[var(--foreground)]">
         <BlogsContent />
       </div>
     </AppProvider>

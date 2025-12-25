@@ -15,7 +15,7 @@ interface BlogCardProps {
 export const BlogCard = ({ blog, onClick, index }: BlogCardProps) => (
   <article
     onClick={() => onClick(blog)}
-    className="group relative bg-white rounded-3xl overflow-hidden border border-slate-200/50 hover:border-slate-300 shadow-sm hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-500 cursor-pointer"
+    className="group relative bg-[var(--surface)] rounded-3xl overflow-hidden border border-[var(--border)] hover:border-[var(--accent)]/30 shadow-sm hover:shadow-xl hover:shadow-[var(--accent)]/5 transition-all duration-500 cursor-pointer"
     style={{ animation: `slideUp 0.5s ease ${index * 0.1}s both` }}
   >
     <div className="flex flex-col sm:flex-row">
@@ -26,28 +26,28 @@ export const BlogCard = ({ blog, onClick, index }: BlogCardProps) => (
           fill
           className="object-cover group-hover:scale-110 transition-transform duration-700"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent to-white/20" />
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[var(--surface)]/20" />
       </div>
       <div className="flex-1 p-5 flex flex-col justify-between min-w-0">
         <div>
           <div className="flex items-center gap-2 mb-2 flex-wrap">
-            <span className="px-2.5 py-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 text-white text-xs font-semibold rounded-full">
+            <span className="px-2.5 py-0.5 bg-[var(--accent)] text-[var(--background)] text-xs font-semibold rounded-full">
               {blog.category}
             </span>
-            <span className="text-xs text-slate-400 flex items-center gap-1">
+            <span className="text-xs text-[var(--muted)] flex items-center gap-1">
               {Icons.clock()} {blog.readTime}
             </span>
           </div>
-          <h3 className="text-lg font-bold mb-2 group-hover:text-indigo-600 transition-colors line-clamp-2">
+          <h3 className="text-lg font-bold mb-2 text-[var(--foreground)] group-hover:text-[var(--accent)] transition-colors line-clamp-2">
             {blog.title}
           </h3>
-          <p className="text-slate-500 text-sm mb-3 line-clamp-2">
+          <p className="text-[var(--muted)] text-sm mb-3 line-clamp-2">
             {blog.excerpt}
           </p>
         </div>
         <div className="flex items-center justify-between">
-          <span className="text-sm text-slate-600">{blog.date}</span>
-          <div className="flex items-center gap-3 text-sm text-slate-400">
+          <span className="text-sm text-[var(--muted)]">{blog.date}</span>
+          <div className="flex items-center gap-3 text-sm text-[var(--muted)]">
             <span className="flex items-center gap-1">
               {Icons.heart(false)} {formatCount(blog.likes)}
             </span>

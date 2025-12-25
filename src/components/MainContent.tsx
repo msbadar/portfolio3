@@ -42,11 +42,11 @@ export const MainContent = () => {
     <>
       <Sidebar />
 
-      <main className="flex-1 ml-20 mr-80 px-4 overflow-x-hidden">
+      <main className="flex-1 ml-20 mr-80 min-w-0">
         <ProfileHeader />
 
         {/* Tabs */}
-        <div className="flex gap-2 px-6 border-b border-slate-200">
+        <div className="flex gap-2 px-6 border-b border-[var(--border)]">
           {["threads", "blogs", "replies", "reposts"].map((tab) => (
             <button
               key={tab}
@@ -55,13 +55,13 @@ export const MainContent = () => {
               }
               className={`px-5 py-4 font-semibold text-sm capitalize relative transition-all ${
                 ui.profileTab === tab
-                  ? "text-slate-900"
-                  : "text-slate-400 hover:text-slate-600"
+                  ? "text-[var(--accent)]"
+                  : "text-[var(--muted)] hover:text-[var(--foreground)]"
               }`}
             >
               {tab}
               {ui.profileTab === tab && (
-                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full" />
+                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[var(--accent)] rounded-full" />
               )}
             </button>
           ))}
@@ -77,7 +77,7 @@ export const MainContent = () => {
                 <p className="text-rose-500 mb-4">{blogs.error}</p>
                 <button
                   onClick={fetchBlogs}
-                  className="px-4 py-2 bg-slate-100 rounded-xl text-sm font-medium hover:bg-slate-200 transition-all"
+                  className="px-4 py-2 bg-[var(--surface)] rounded-xl text-sm font-medium hover:bg-[var(--surface-hover)] transition-all"
                 >
                   Try Again
                 </button>
@@ -94,7 +94,7 @@ export const MainContent = () => {
             )}
           </div>
         ) : (
-          <div className="divide-y divide-slate-100">
+          <div className="divide-y divide-[var(--border)]">
             {posts.loading ? (
               [1, 2, 3].map((i) => <PostSkeleton key={i} />)
             ) : posts.error ? (
@@ -102,7 +102,7 @@ export const MainContent = () => {
                 <p className="text-rose-500 mb-4">{posts.error}</p>
                 <button
                   onClick={fetchPosts}
-                  className="px-4 py-2 bg-slate-100 rounded-xl text-sm font-medium hover:bg-slate-200 transition-all"
+                  className="px-4 py-2 bg-[var(--surface)] rounded-xl text-sm font-medium hover:bg-[var(--surface-hover)] transition-all"
                 >
                   Try Again
                 </button>

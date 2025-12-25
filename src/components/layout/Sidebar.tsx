@@ -17,13 +17,13 @@ const NavLink = ({ href, icon, isActive }: NavLinkProps) => (
     href={href}
     className={`group relative w-12 h-12 flex items-center justify-center rounded-2xl transition-all duration-300 ${
       isActive
-        ? "bg-gradient-to-br from-indigo-500 to-purple-500 text-white shadow-lg shadow-indigo-500/30"
-        : "text-slate-400 hover:text-slate-600 hover:bg-slate-100"
+        ? "bg-[var(--accent)] text-[var(--background)] shadow-lg shadow-[var(--accent)]/30"
+        : "text-[var(--muted)] hover:text-[var(--accent)] hover:bg-[var(--surface-hover)]"
     }`}
   >
     {icon(isActive)}
     {isActive && (
-      <span className="absolute -right-1 w-1 h-6 bg-gradient-to-b from-indigo-500 to-purple-500 rounded-full" />
+      <span className="absolute -right-1 w-1 h-6 bg-[var(--accent)] rounded-full" />
     )}
   </Link>
 );
@@ -36,7 +36,7 @@ interface NavButtonProps {
 const NavButton = ({ icon, onClick }: NavButtonProps) => (
   <button
     onClick={onClick}
-    className="group relative w-12 h-12 flex items-center justify-center rounded-2xl transition-all duration-300 text-slate-400 hover:text-slate-600 hover:bg-slate-100"
+    className="group relative w-12 h-12 flex items-center justify-center rounded-2xl transition-all duration-300 text-[var(--muted)] hover:text-[var(--accent)] hover:bg-[var(--surface-hover)]"
   >
     {icon(false)}
   </button>
@@ -59,7 +59,7 @@ export const Sidebar = () => {
   };
 
   return (
-    <nav className="w-20 flex flex-col items-center py-6 fixed left-0 top-0 bottom-0 bg-white/80 backdrop-blur-xl border-r border-slate-200/50 z-50">
+    <nav className="w-20 flex flex-col items-center py-6 fixed left-0 top-0 bottom-0 bg-[var(--surface)]/95 backdrop-blur-xl border-r border-[var(--border)] z-50">
       <Link href="/" className="mb-8">
         {Icons.logo()}
       </Link>
@@ -87,7 +87,7 @@ export const Sidebar = () => {
       </div>
       <Link
         href="/login"
-        className="w-12 h-12 flex items-center justify-center rounded-2xl text-slate-400 hover:bg-slate-100 transition-all"
+        className="w-12 h-12 flex items-center justify-center rounded-2xl text-[var(--muted)] hover:text-[var(--accent)] hover:bg-[var(--surface-hover)] transition-all"
       >
         {Icons.menu()}
       </Link>

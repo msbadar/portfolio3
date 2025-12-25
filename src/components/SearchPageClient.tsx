@@ -12,9 +12,9 @@ const SearchContent = () => {
   return (
     <>
       <Sidebar />
-      <main className="flex-1 ml-20 mr-80 px-4 overflow-x-hidden">
-        <header className="sticky top-0 z-10 px-6 py-4 bg-white/70 backdrop-blur-xl border-b border-slate-200/50">
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-slate-900 to-slate-600 bg-clip-text text-transparent">
+      <main className="flex-1 ml-20 mr-80 min-w-0">
+        <header className="sticky top-0 z-10 px-6 py-4 bg-[var(--surface)]/95 backdrop-blur-xl border-b border-[var(--border)]">
+          <h1 className="text-2xl font-bold text-[var(--accent)]">
             Search
           </h1>
         </header>
@@ -27,21 +27,21 @@ const SearchContent = () => {
               onChange={(e) =>
                 dispatchUI({ type: "SET_SEARCH_QUERY", payload: e.target.value })
               }
-              className="w-full px-5 py-4 pl-14 bg-slate-100 border-0 rounded-2xl text-base focus:outline-none focus:ring-2 focus:ring-indigo-500/20 transition-all"
+              className="w-full px-5 py-4 pl-14 bg-[var(--background)] border border-[var(--border)] rounded-2xl text-base text-[var(--foreground)] placeholder-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/30 focus:border-[var(--accent)]/50 transition-all"
             />
-            <span className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400">
+            <span className="absolute left-5 top-1/2 -translate-y-1/2 text-[var(--muted)]">
               {Icons.search()}
             </span>
           </div>
 
           {ui.searchQuery ? (
-            <div className="text-center py-12 text-slate-500">
+            <div className="text-center py-12 text-[var(--muted)]">
               <p>Search results for &ldquo;{ui.searchQuery}&rdquo;</p>
               <p className="text-sm mt-2">No results found. Try a different search term.</p>
             </div>
           ) : (
-            <div className="text-center py-12 text-slate-500">
-              <div className="w-16 h-16 mx-auto mb-4 bg-slate-100 rounded-full flex items-center justify-center">
+            <div className="text-center py-12 text-[var(--muted)]">
+              <div className="w-16 h-16 mx-auto mb-4 bg-[var(--surface)] rounded-full flex items-center justify-center">
                 {Icons.search()}
               </div>
               <p>Start typing to search for threads, blogs, and users</p>
@@ -57,7 +57,7 @@ const SearchContent = () => {
 export const SearchPageClient = () => {
   return (
     <AppProvider>
-      <div className="flex justify-between min-h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50/30 font-sans text-slate-900">
+      <div className="flex min-h-screen bg-[var(--background)] font-sans text-[var(--foreground)]">
         <SearchContent />
       </div>
     </AppProvider>

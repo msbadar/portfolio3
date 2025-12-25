@@ -55,9 +55,9 @@ export const Icons = {
   verified: () => (
     <BadgeCheck
       size={16}
-      className="text-blue-500"
+      className="text-[#63ffda]"
       fill="currentColor"
-      stroke="white"
+      stroke="#0a0f0d"
     />
   ),
   more: () => <MoreHorizontal size={20} />,
@@ -66,14 +66,14 @@ export const Icons = {
       <rect width="48" height="48" rx="12" fill="url(#logoGradient)" />
       <path
         d="M24 14v20M14 24h20"
-        stroke="white"
+        stroke="#0a0f0d"
         strokeWidth="3"
         strokeLinecap="round"
       />
       <defs>
         <linearGradient id="logoGradient" x1="0" y1="0" x2="48" y2="48">
-          <stop stopColor="#6366f1" />
-          <stop offset="1" stopColor="#a855f7" />
+          <stop stopColor="#63ffda" />
+          <stop offset="1" stopColor="#4fd1c5" />
         </linearGradient>
       </defs>
     </svg>

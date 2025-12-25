@@ -20,7 +20,7 @@ const ToastContainerWithContext = () => {
 export default function App() {
   return (
     <AppProvider>
-      <div className="flex justify-between min-h-screen bg-linear-to-br from-slate-50 via-white to-indigo-50/30 font-sans text-slate-900">
+      <div className="flex min-h-screen bg-[var(--background)] font-sans text-[var(--foreground)]">
         <MainContent />
         <ToastContainerWithContext />
       </div>
