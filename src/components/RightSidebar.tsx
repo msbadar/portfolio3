@@ -25,7 +25,7 @@ export const RightSidebar = () => {
   ];
 
   return (
-    <aside className="w-[380px] p-8 fixed right-0 top-0 bottom-0 overflow-y-auto bg-white/50 backdrop-blur-xl border-l border-slate-200/50">
+    <aside className="w-96 p-8 fixed right-0 top-0 bottom-0 overflow-y-auto bg-white/50 backdrop-blur-xl border-l border-slate-200/50">
       <div className="relative mb-8">
         <input
           type="text"

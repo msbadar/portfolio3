@@ -23,7 +23,7 @@ export const Post = ({ post, onLike }: PostProps) => (
     <div className="flex-1 min-w-0">
       <div className="flex items-start justify-between mb-2.5">
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="font-semibold text-[15px]">{post.user.username}</span>
+          <span className="font-semibold text-sm">{post.user.username}</span>
           {post.user.verified && <span className="flex-shrink-0">{Icons.verified()}</span>}
           <span className="text-slate-400 text-sm">• {post.time}</span>
         </div>
@@ -31,9 +31,9 @@ export const Post = ({ post, onLike }: PostProps) => (
           {Icons.more()}
         </button>
       </div>
-      <p className="text-[15px] leading-relaxed mb-3.5">{post.content}</p>
+      <p className="text-sm leading-relaxed mb-3.5">{post.content}</p>
       {post.image && (
-        <div className="mb-4 rounded-2xl overflow-hidden relative h-[400px]">
+        <div className="mb-4 rounded-2xl overflow-hidden relative h-96">
           <Image
             src={post.image}
             alt={`Image shared by ${post.user.username}`}

@@ -29,7 +29,7 @@ const ProfileContent = () => {
   return (
     <>
       <Sidebar />
-      <main className="flex-1 max-w-[680px] ml-20 mr-[380px]">
+      <main className="flex-1 ml-24 mr-96 min-w-0 px-4">
         <ProfileHeader />
 
         {/* Tabs */}

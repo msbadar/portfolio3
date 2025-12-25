@@ -22,7 +22,7 @@ export const PostSkeleton = () => (
 
 export const BlogSkeleton = () => (
   <div className="flex bg-white rounded-3xl overflow-hidden border border-slate-200/50">
-    <Skeleton className="w-[240px] h-[180px]" />
+    <Skeleton className="w-60 h-44" />
     <div className="flex-1 p-6 space-y-3">
       <Skeleton className="h-5 w-24" />
       <Skeleton className="h-6 w-full" />

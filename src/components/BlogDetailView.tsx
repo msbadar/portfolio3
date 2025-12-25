@@ -48,7 +48,7 @@ export const BlogDetailView = () => {
         );
       if (line.trim() === "") return <div key={i} className="h-4" />;
       return (
-        <p key={i} className="mb-4 leading-[1.8] text-slate-600">
+        <p key={i} className="mb-4 leading-loose text-slate-600">
           {line}
         </p>
       );
@@ -58,7 +58,7 @@ export const BlogDetailView = () => {
   if (!blog) return null;
 
   return (
-    <main className="flex-1 max-w-[680px] ml-20 mr-[380px]">
+    <main className="flex-1 ml-24 mr-96 min-w-0 px-4">
       <header className="sticky top-0 z-10 px-6 py-4 bg-white/70 backdrop-blur-xl border-b border-slate-200/50">
         <div className="flex items-center gap-4">
           <button
@@ -74,7 +74,7 @@ export const BlogDetailView = () => {
       </header>
 
       <article className="animate-fadeIn">
-        <div className="relative h-[360px] overflow-hidden">
+        <div className="relative h-96 overflow-hidden">
           <Image
             src={blog.coverImage}
             alt={blog.title}
@@ -132,7 +132,7 @@ export const BlogDetailView = () => {
             </button>
           </div>
 
-          <div className="py-8 text-[17px]">{renderMarkdown(blog.content)}</div>
+          <div className="py-8 text-base">{renderMarkdown(blog.content)}</div>
 
           <div className="flex items-center gap-2 py-6 border-t border-slate-200">
             <button

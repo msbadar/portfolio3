@@ -19,7 +19,7 @@ export const BlogCard = ({ blog, onClick, index }: BlogCardProps) => (
     style={{ animation: `slideUp 0.5s ease ${index * 0.1}s both` }}
   >
     <div className="flex items-stretch">
-      <div className="relative w-[240px] h-[180px] overflow-hidden flex-shrink-0">
+      <div className="relative w-60 h-44 overflow-hidden flex-shrink-0">
         <Image
           src={blog.coverImage}
           alt={blog.title}

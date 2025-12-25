@@ -12,7 +12,7 @@ const SearchContent = () => {
   return (
     <>
       <Sidebar />
-      <main className="flex-1 max-w-[680px] ml-20 mr-[380px]">
+      <main className="flex-1 ml-24 mr-96 min-w-0 px-4">
         <header className="sticky top-0 z-10 px-6 py-4 bg-white/70 backdrop-blur-xl border-b border-slate-200/50">
           <h1 className="text-2xl font-bold bg-gradient-to-r from-slate-900 to-slate-600 bg-clip-text text-transparent">
             Search

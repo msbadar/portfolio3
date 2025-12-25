@@ -29,11 +29,11 @@ export const ComposeModal = () => {
 
   return (
     <div
-      className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-[1000]"
+      className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50"
       onClick={() => dispatchUI({ type: "TOGGLE_COMPOSE", payload: false })}
     >
       <div
-        className="bg-white rounded-3xl w-full max-w-[580px] shadow-2xl animate-scaleIn"
+        className="bg-white rounded-3xl w-full max-w-xl shadow-2xl animate-scaleIn"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100">
@@ -46,7 +46,7 @@ export const ComposeModal = () => {
             Cancel
           </button>
           <span className="font-bold text-lg">New Thread</span>
-          <div className="w-[60px]" />
+          <div className="w-16" />
         </div>
         <div className="p-6">
           <div className="flex gap-4">
@@ -61,10 +61,10 @@ export const ComposeModal = () => {
                 height={48}
                 className="w-12 h-12 rounded-2xl object-cover"
               />
-              <div className="w-0.5 flex-1 bg-gradient-to-b from-slate-200 to-transparent mt-3 rounded-full min-h-[40px]" />
+              <div className="w-0.5 flex-1 bg-gradient-to-b from-slate-200 to-transparent mt-3 rounded-full min-h-10" />
             </div>
             <div className="flex-1 min-w-0">
-              <span className="font-semibold text-[15px] block mb-2.5">
+              <span className="font-semibold text-sm block mb-2.5">
                 {users.currentUser?.username || "you"}
               </span>
               <textarea
@@ -72,7 +72,7 @@ export const ComposeModal = () => {
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 autoFocus
-                className="w-full border-none text-[16px] leading-relaxed resize-none outline-none min-h-[120px] placeholder-slate-400"
+                className="w-full border-none text-base leading-relaxed resize-none outline-none min-h-32 placeholder-slate-400"
               />
               <div className="flex gap-2 mt-3">
                 <button className="p-2 rounded-xl text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-all">
