@@ -2,6 +2,7 @@
 
 import React, { useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Icons } from "@/components/ui/Icons";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { useApp } from "@/context/AppContext";
@@ -14,6 +15,14 @@ export const RightSidebar = () => {
   useEffect(() => {
     fetchSuggestions();
   }, [fetchSuggestions]);
+
+  const footerLinks = [
+    { label: "About", href: "/about" },
+    { label: "Help", href: "/help" },
+    { label: "Privacy", href: "/privacy" },
+    { label: "Terms", href: "/terms" },
+    { label: "Careers", href: "/careers" },
+  ];
 
   return (
     <aside className="w-[380px] p-8 fixed right-0 top-0 bottom-0 overflow-y-auto bg-white/50 backdrop-blur-xl border-l border-slate-200/50">
@@ -91,14 +100,14 @@ export const RightSidebar = () => {
 
       <div className="text-xs text-slate-400 space-y-2">
         <div className="flex flex-wrap gap-x-3 gap-y-1">
-          {["About", "Help", "Privacy", "Terms", "Careers"].map((link) => (
-            <a
-              key={link}
-              href="#"
+          {footerLinks.map((link) => (
+            <Link
+              key={link.label}
+              href={link.href}
               className="hover:text-slate-600 transition-colors"
             >
-              {link}
-            </a>
+              {link.label}
+            </Link>
           ))}
         </div>
         <p>© 2025 Threadz</p>

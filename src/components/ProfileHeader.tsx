@@ -2,6 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Icons } from "@/components/ui/Icons";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { useUsers } from "@/hooks/useUsers";
@@ -51,9 +52,12 @@ export const ProfileHeader = () => {
             </div>
             <span className="text-slate-500">@{user.username}</span>
           </div>
-          <button className="px-6 py-2.5 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-xl font-semibold shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/40 transition-all flex-shrink-0">
+          <Link
+            href="/profile/edit"
+            className="px-6 py-2.5 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-xl font-semibold shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/40 transition-all flex-shrink-0"
+          >
             Edit Profile
-          </button>
+          </Link>
         </div>
         <p className="text-slate-600 mb-4 max-w-2xl leading-relaxed">{user.bio}</p>
         <div className="flex items-center gap-6 text-sm flex-wrap">
@@ -65,12 +69,16 @@ export const ProfileHeader = () => {
             <strong className="text-slate-900 font-semibold">{user.following}</strong>{" "}
             following
           </span>
-          <a
-            href="#"
-            className="flex items-center gap-1.5 text-indigo-600 hover:text-indigo-700 font-medium transition-colors"
-          >
-            {Icons.link()} {user.link}
-          </a>
+          {user.link && (
+            <a
+              href={`https://${user.link}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-indigo-600 hover:text-indigo-700 font-medium transition-colors"
+            >
+              {Icons.link()} {user.link}
+            </a>
+          )}
         </div>
       </div>
     </div>
