@@ -2,6 +2,7 @@ export const initialPostsData = [
   {
     id: 1,
     user: {
+      id: 101,
       name: "Maya Chen",
       username: "mayachen",
       avatar: "https://i.pravatar.cc/150?img=1",
@@ -20,6 +21,7 @@ export const initialPostsData = [
   {
     id: 2,
     user: {
+      id: 102,
       name: "Alex Rivera",
       username: "alexcodes",
       avatar: "https://i.pravatar.cc/150?img=3",
@@ -36,6 +38,7 @@ export const initialPostsData = [
   {
     id: 3,
     user: {
+      id: 103,
       name: "Jordan Kim",
       username: "jordankim",
       avatar: "https://i.pravatar.cc/150?img=5",
@@ -144,7 +147,7 @@ export const suggestionsData = [
 ];
 
 export const currentUserData = {
-  id: "current",
+  id: 0,
   name: "John Doe",
   username: "johndoe",
   avatar: "https://i.pravatar.cc/150?img=33",

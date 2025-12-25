@@ -1,4 +1,5 @@
 export type ToastType = "success" | "error" | "info";
+type FormattedCount = string;
 
 export interface ToastMessage {
   id: number;
@@ -7,13 +8,13 @@ export interface ToastMessage {
 }
 
 export interface User {
-  id: number | string;
+  id: number;
   name: string;
   username: string;
   avatar: string;
   verified?: boolean;
-  followers?: string;
-  following?: string;
+  followers?: FormattedCount;
+  following?: FormattedCount;
   link?: string;
   bio?: string;
 }

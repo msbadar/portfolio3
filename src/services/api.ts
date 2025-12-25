@@ -9,13 +9,13 @@ import { Blog, Post, User } from "@/types/app";
 const API_DELAY = 800; // Simulate network delay
 
 interface RequestOptions<T> {
-  data?: T;
+  data: T;
   canFail?: boolean;
 }
 
 const api = {
   // Simulate API calls with delays
-  async request<T>(endpoint: string, options: RequestOptions<T> = {}) {
+  async request<T>(endpoint: string, options: RequestOptions<T>) {
     await new Promise((resolve) => setTimeout(resolve, API_DELAY));
 
     // Simulate random failures (10% chance)
@@ -23,13 +23,13 @@ const api = {
       throw new Error("Network error. Please try again.");
     }
 
-    return options.data as T;
+    return options.data;
   },
 
   // Posts API
   posts: {
     async getAll(): Promise<Post[]> {
-      const data = await api.request("/posts", { data: initialPostsData });
+      const data = await api.request<Post[]>("/posts", { data: initialPostsData });
       return data;
     },
     async create(post: { content: string; user: User }): Promise<Post> {
@@ -58,11 +58,11 @@ const api = {
   // Blogs API
   blogs: {
     async getAll(): Promise<Blog[]> {
-      return api.request("/blogs", { data: initialBlogsData });
+      return api.request<Blog[]>("/blogs", { data: initialBlogsData });
     },
     async getById(id: number): Promise<Blog | undefined> {
       const blog = initialBlogsData.find((b) => b.id === id);
-      return api.request(`/blogs/${id}`, { data: blog });
+      return api.request<Blog | undefined>(`/blogs/${id}`, { data: blog });
     },
     async like(
       blogId: number,
@@ -75,7 +75,7 @@ const api = {
   // Users API
   users: {
     async getSuggestions(): Promise<User[]> {
-      return api.request("/users/suggestions", { data: suggestionsData });
+      return api.request<User[]>("/users/suggestions", { data: suggestionsData });
     },
     async follow(
       userId: number,
@@ -86,7 +86,7 @@ const api = {
       });
     },
     async getCurrentUser(): Promise<User> {
-      return api.request("/users/me", { data: currentUserData });
+      return api.request<User>("/users/me", { data: currentUserData });
     },
     async updateProfile(data: Partial<User>): Promise<User> {
       return api.request("/users/me", {
