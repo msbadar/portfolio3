@@ -60,7 +60,7 @@ export const RightSidebar = () => {
             >
               <Image
                 src={user.avatar}
-                alt={user.name}
+                alt={`${user.name}'s profile picture`}
                 width={48}
                 height={48}
                 className="w-12 h-12 rounded-2xl object-cover flex-shrink-0"

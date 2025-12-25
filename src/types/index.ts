@@ -1,6 +1,6 @@
 // User types
 export interface User {
-  id: string | number;
+  id: string;
   name: string;
   username: string;
   avatar: string;
@@ -114,7 +114,7 @@ export type UIAction =
   | { type: "SET_PROFILE_TAB"; payload: string }
   | { type: "TOGGLE_COMPOSE"; payload?: boolean }
   | { type: "SET_SEARCH_QUERY"; payload: string }
-  | { type: "ADD_TOAST"; payload: { message: string; type: string } }
+  | { type: "ADD_TOAST"; payload: { message: string; type: "success" | "error" | "info" } }
   | { type: "REMOVE_TOAST"; payload: number };
 
 export type UsersAction =

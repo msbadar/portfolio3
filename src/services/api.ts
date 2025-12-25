@@ -30,7 +30,7 @@ const api = {
   posts: {
     async getAll(): Promise<Post[]> {
       const data = await api.request("/posts", { data: initialPostsData });
-      return data as Post[];
+      return data ?? [];
     },
     async create(post: { content: string; user: User | null }): Promise<Post> {
       const newPost: Post = {
@@ -48,47 +48,56 @@ const api = {
         reposts: 0,
         liked: false,
       };
-      return api.request("/posts", { data: newPost }) as Promise<Post>;
+      const result = await api.request("/posts", { data: newPost });
+      return result ?? newPost;
     },
     async like(postId: number, liked: boolean): Promise<{ postId: number; liked: boolean }> {
-      return api.request(`/posts/${postId}/like`, { data: { postId, liked } }) as Promise<{ postId: number; liked: boolean }>;
+      const result = await api.request(`/posts/${postId}/like`, { data: { postId, liked } });
+      return result ?? { postId, liked };
     },
     async delete(postId: number): Promise<{ postId: number }> {
-      return api.request(`/posts/${postId}`, { data: { postId } }) as Promise<{ postId: number }>;
+      const result = await api.request(`/posts/${postId}`, { data: { postId } });
+      return result ?? { postId };
     },
   },
 
   // Blogs API
   blogs: {
     async getAll(): Promise<Blog[]> {
-      return api.request("/blogs", { data: initialBlogsData }) as Promise<Blog[]>;
+      const data = await api.request("/blogs", { data: initialBlogsData });
+      return data ?? [];
     },
     async getById(id: number): Promise<Blog | undefined> {
       const blog = initialBlogsData.find((b) => b.id === id);
-      return api.request(`/blogs/${id}`, { data: blog }) as Promise<Blog | undefined>;
+      return api.request(`/blogs/${id}`, { data: blog });
     },
     async like(blogId: number, liked: boolean): Promise<{ blogId: number; liked: boolean }> {
-      return api.request(`/blogs/${blogId}/like`, { data: { blogId, liked } }) as Promise<{ blogId: number; liked: boolean }>;
+      const result = await api.request(`/blogs/${blogId}/like`, { data: { blogId, liked } });
+      return result ?? { blogId, liked };
     },
   },
 
   // Users API
   users: {
     async getSuggestions(): Promise<Suggestion[]> {
-      return api.request("/users/suggestions", { data: suggestionsData }) as Promise<Suggestion[]>;
+      const data = await api.request("/users/suggestions", { data: suggestionsData });
+      return data ?? [];
     },
     async follow(userId: number, following: boolean): Promise<{ userId: number; following: boolean }> {
-      return api.request(`/users/${userId}/follow`, {
+      const result = await api.request(`/users/${userId}/follow`, {
         data: { userId, following },
-      }) as Promise<{ userId: number; following: boolean }>;
+      });
+      return result ?? { userId, following };
     },
     async getCurrentUser(): Promise<User> {
-      return api.request("/users/me", { data: currentUserData }) as Promise<User>;
+      const data = await api.request("/users/me", { data: currentUserData });
+      return data ?? currentUserData;
     },
     async updateProfile(data: Partial<User>): Promise<User> {
-      return api.request("/users/me", {
+      const result = await api.request("/users/me", {
         data: { ...currentUserData, ...data },
-      }) as Promise<User>;
+      });
+      return result ?? { ...currentUserData, ...data };
     },
   },
 };

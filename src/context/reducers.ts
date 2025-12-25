@@ -104,11 +104,17 @@ export const uiReducer = (state: UIState, action: UIAction): UIState => {
       return { ...state, showCompose: action.payload ?? !state.showCompose };
     case "SET_SEARCH_QUERY":
       return { ...state, searchQuery: action.payload };
-    case "ADD_TOAST":
+    case "ADD_TOAST": {
+      const newToast: Toast = {
+        id: Date.now(),
+        message: action.payload.message,
+        type: action.payload.type,
+      };
       return {
         ...state,
-        toasts: [...state.toasts, { id: Date.now(), ...action.payload } as Toast],
+        toasts: [...state.toasts, newToast],
       };
+    }
     case "REMOVE_TOAST":
       return {
         ...state,

@@ -36,7 +36,7 @@ export const Post = ({ post, onLike }: PostProps) => (
         <div className="mb-4 rounded-2xl overflow-hidden relative h-[400px]">
           <Image
             src={post.image}
-            alt="Post image"
+            alt={`Image shared by ${post.user.username}`}
             fill
             className="object-cover"
           />
