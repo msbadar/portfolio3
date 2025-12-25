@@ -2,7 +2,40 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+### Environment Variables
+
+Create a `.env.local` file in the root directory with the following variables:
+
+```bash
+# Database
+DATABASE_URL=postgresql://user:password@localhost:5432/portfolio
+
+# JWT Secret (required in production, min 32 characters)
+JWT_SECRET=your-secret-key-at-least-32-characters-long
+
+# Optional: Enable SSL for database in development
+DATABASE_SSL=false
+```
+
+### Database Setup
+
+This project uses PostgreSQL with Drizzle ORM. To set up the database:
+
+```bash
+# Generate migration files
+npm run db:generate
+
+# Apply migrations to your database
+npm run db:migrate
+
+# Or push schema directly (development)
+npm run db:push
+
+# Open Drizzle Studio to view/edit data
+npm run db:studio
+```
+
+### Run the Development Server
 
 ```bash
 npm run dev
