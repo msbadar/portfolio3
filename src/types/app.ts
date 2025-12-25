@@ -2,7 +2,7 @@ export type ToastType = "success" | "error" | "info";
 type FormattedCount = string;
 
 export interface ToastMessage {
-  id: number;
+  id: string;
   message: string;
   type: ToastType;
 }
@@ -89,7 +89,7 @@ export type UIAction =
   | { type: "TOGGLE_COMPOSE"; payload?: boolean }
   | { type: "SET_SEARCH_QUERY"; payload: string }
   | { type: "ADD_TOAST"; payload: Omit<ToastMessage, "id"> }
-  | { type: "REMOVE_TOAST"; payload: number };
+  | { type: "REMOVE_TOAST"; payload: string };
 
 export interface UsersState {
   currentUser: User | null;

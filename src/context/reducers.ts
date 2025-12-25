@@ -109,7 +109,7 @@ export const uiReducer = (state: UIState, action: UIAction): UIState => {
     case "SET_SEARCH_QUERY":
       return { ...state, searchQuery: action.payload };
     case "ADD_TOAST": {
-      const toastId = Date.now();
+      const toastId = crypto.randomUUID();
       return {
         ...state,
         toasts: [...state.toasts, { id: toastId, ...action.payload }],

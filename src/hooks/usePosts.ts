@@ -25,9 +25,8 @@ export const usePosts = () => {
         showToast("Please sign in to post", "error");
         return false;
       }
-      const author = user;
       try {
-        const newPost = await api.posts.create({ content, user: author });
+        const newPost = await api.posts.create({ content, user });
         dispatchPosts({ type: "ADD_POST", payload: newPost });
         showToast("Post created successfully!", "success");
         return true;
