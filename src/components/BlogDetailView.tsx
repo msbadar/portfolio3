@@ -58,9 +58,9 @@ export const BlogDetailView = () => {
   if (!blog) return null;
 
   return (
-    <main className="flex-1 ml-20 mr-80 min-w-0">
-      <header className="sticky top-0 z-10 px-6 py-4 bg-[var(--surface)]/95 backdrop-blur-xl border-b border-[var(--border)]">
-        <div className="flex items-center gap-4">
+    <main className="flex-1 min-w-0 bg-[var(--background)] overflow-y-auto">
+      <header className="sticky top-0 z-10 px-8 py-5 bg-[var(--surface)]/95 backdrop-blur-xl border-b border-[var(--border)]">
+        <div className="flex items-center gap-4 max-w-4xl mx-auto">
           <button
             onClick={clearSelection}
             className="p-2 -ml-2 rounded-xl hover:bg-[var(--surface-hover)] text-[var(--muted)] hover:text-[var(--foreground)] transition-all"
@@ -93,8 +93,8 @@ export const BlogDetailView = () => {
           </div>
         </div>
 
-        <div className="px-6 py-6">
-          <div className="flex items-center gap-4 pb-6 border-b border-[var(--border)]">
+        <div className="px-8 py-8 max-w-4xl mx-auto">
+          <div className="flex items-center gap-4 pb-8">
             <div className="relative flex-shrink-0">
               <Image
                 src={users.currentUser?.avatar || ""}
@@ -134,7 +134,7 @@ export const BlogDetailView = () => {
 
           <div className="py-6 text-base">{renderMarkdown(blog.content)}</div>
 
-          <div className="flex items-center gap-2 py-6 border-t border-[var(--border)]">
+          <div className="flex items-center gap-2 py-6">
             <button
               onClick={() => likeBlog(blog.id)}
               className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-medium transition-all ${
@@ -154,7 +154,7 @@ export const BlogDetailView = () => {
             </button>
           </div>
 
-          <div className="py-6 border-t border-[var(--border)]">
+          <div className="pt-6">
             <h3 className="text-lg font-bold mb-6 text-[var(--foreground)]">More articles</h3>
             <div className="grid gap-4">
               {blogs.data
@@ -166,7 +166,7 @@ export const BlogDetailView = () => {
                     onClick={() =>
                       dispatchBlogs({ type: "SELECT_BLOG", payload: b })
                     }
-                    className="group flex items-center gap-4 p-4 rounded-2xl bg-[var(--surface)] hover:bg-[var(--surface-hover)] border border-[var(--border)] hover:border-[var(--accent)]/30 cursor-pointer transition-all hover:shadow-lg hover:shadow-black/10"
+                    className="group flex items-center gap-4 p-4 rounded-2xl bg-[var(--surface)] hover:bg-[var(--surface-hover)] hover:shadow-lg hover:shadow-black/10 cursor-pointer transition-all"
                   >
                     <Image
                       src={b.coverImage}

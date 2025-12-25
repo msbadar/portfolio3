@@ -7,6 +7,7 @@ import { useBlogs } from "@/hooks/useBlogs";
 import { useUsers } from "@/hooks/useUsers";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { RightSidebar } from "@/components/RightSidebar";
+import { MobileMenu } from "@/components/MobileMenu";
 import { ProfileHeader } from "@/components/ProfileHeader";
 import { Post } from "@/components/Post";
 import { BlogCard } from "@/components/BlogCard";
@@ -28,19 +29,20 @@ const ProfileContent = () => {
 
   return (
     <>
+      <MobileMenu />
       <Sidebar />
-      <main className="flex-1 ml-20 mr-80 min-w-0">
+      <main className="flex-1 min-w-0 bg-[var(--background)] overflow-y-auto">
         <ProfileHeader />
 
         {/* Tabs */}
-        <div className="flex gap-2 px-6 border-b border-[var(--border)]">
+        <div className="flex gap-6 px-8 py-2 border-b border-[var(--border)]">
           {["threads", "blogs", "replies", "reposts"].map((tab) => (
             <button
               key={tab}
               onClick={() =>
                 dispatchUI({ type: "SET_PROFILE_TAB", payload: tab })
               }
-              className={`px-5 py-4 font-semibold text-sm capitalize relative transition-all ${
+              className={`px-2 py-3 font-semibold text-sm capitalize relative transition-all ${
                 ui.profileTab === tab
                   ? "text-[var(--accent)]"
                   : "text-[var(--muted)] hover:text-[var(--foreground)]"
@@ -56,7 +58,7 @@ const ProfileContent = () => {
 
         {/* Content */}
         {ui.profileTab === "blogs" ? (
-          <div className="p-6 grid gap-6">
+          <div className="p-8 grid gap-6 max-w-4xl mx-auto">
             {blogs.loading ? (
               [1, 2, 3].map((i) => <BlogSkeleton key={i} />)
             ) : blogs.error ? (
@@ -81,7 +83,7 @@ const ProfileContent = () => {
             )}
           </div>
         ) : (
-          <div className="divide-y divide-[var(--border)]">
+          <div className="p-8 space-y-3 max-w-2xl mx-auto">
             {posts.loading ? (
               [1, 2, 3].map((i) => <PostSkeleton key={i} />)
             ) : posts.error ? (

@@ -25,8 +25,8 @@ export const RightSidebar = () => {
   ];
 
   return (
-    <aside className="w-80 p-4 fixed right-0 top-0 bottom-0 overflow-y-auto bg-[var(--surface)]/95 backdrop-blur-xl border-l border-[var(--border)]">
-      <div className="relative mb-6">
+    <aside className="hidden lg:block w-80 px-6 py-8 sticky top-0 h-screen overflow-y-auto bg-[var(--surface)]/95 backdrop-blur-xl flex-shrink-0">
+      <div className="relative mb-8">
         <input
           type="text"
           placeholder="Search anything..."
@@ -41,7 +41,7 @@ export const RightSidebar = () => {
         </span>
       </div>
 
-      <div className="bg-[var(--surface-hover)] rounded-2xl p-4 border border-[var(--border)] shadow-xl shadow-black/10 mb-6">
+      <div className="bg-[var(--surface-hover)] rounded-2xl p-5 shadow-xl shadow-black/10 mb-6">
         <h3 className="font-bold text-base mb-4 flex items-center gap-2 text-[var(--foreground)]">
           <span className="w-7 h-7 bg-[var(--accent)] rounded-lg flex items-center justify-center text-[var(--background)] text-xs">
             ✨
@@ -62,39 +62,41 @@ export const RightSidebar = () => {
             ))}
           </div>
         ) : (
-          users.suggestions.map((user) => (
-            <div
-              key={user.id}
-              className="flex items-center gap-2 py-3 border-b border-[var(--border)] last:border-0"
-            >
-              <Image
-                src={user.avatar}
-                alt={`${user.name}'s profile picture`}
-                width={40}
-                height={40}
-                className="w-10 h-10 rounded-xl object-cover flex-shrink-0"
-              />
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-1 font-semibold text-sm text-[var(--foreground)] truncate">
-                  {user.username}
-                  {user.verified && Icons.verified()}
-                </div>
-                <span className="text-xs text-[var(--muted)] block truncate">
-                  {user.followers} followers
-                </span>
-              </div>
-              <button
-                onClick={() => toggleFollow(user.id)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex-shrink-0 ${
-                  users.following[user.id]
-                    ? "bg-[var(--border)] text-[var(--foreground)]"
-                    : "bg-[var(--accent)] text-[var(--background)] shadow-lg shadow-[var(--accent)]/30 hover:shadow-[var(--accent)]/40"
-                }`}
+          <div className="space-y-3">
+            {users.suggestions.map((user) => (
+              <div
+                key={user.id}
+                className="flex items-center gap-3 p-2 rounded-xl hover:bg-[var(--surface)] transition-all"
               >
-                {users.following[user.id] ? "Following" : "Follow"}
-              </button>
-            </div>
-          ))
+                <Image
+                  src={user.avatar}
+                  alt={`${user.name}'s profile picture`}
+                  width={40}
+                  height={40}
+                  className="w-10 h-10 rounded-xl object-cover flex-shrink-0"
+                />
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-1 font-semibold text-sm text-[var(--foreground)] truncate">
+                    {user.username}
+                    {user.verified && Icons.verified()}
+                  </div>
+                  <span className="text-xs text-[var(--muted)] block truncate">
+                    {user.followers} followers
+                  </span>
+                </div>
+                <button
+                  onClick={() => toggleFollow(user.id)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex-shrink-0 ${
+                    users.following[user.id]
+                      ? "bg-[var(--border)] text-[var(--foreground)]"
+                      : "bg-[var(--accent)] text-[var(--background)] shadow-lg shadow-[var(--accent)]/30 hover:shadow-[var(--accent)]/40"
+                  }`}
+                >
+                  {users.following[user.id] ? "Following" : "Follow"}
+                </button>
+              </div>
+            ))}
+          </div>
         )}
       </div>
 

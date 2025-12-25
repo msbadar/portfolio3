@@ -29,14 +29,14 @@ export const ComposeModal = () => {
 
   return (
     <div
-      className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50"
+      className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4"
       onClick={() => dispatchUI({ type: "TOGGLE_COMPOSE", payload: false })}
     >
       <div
-        className="bg-[var(--surface)] rounded-3xl w-full max-w-xl shadow-2xl shadow-black/50 animate-scaleIn border border-[var(--border)]"
+        className="bg-[var(--surface)] rounded-3xl w-full max-w-xl shadow-2xl shadow-black/50 animate-scaleIn overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--border)]">
+        <div className="flex items-center justify-between px-6 py-5">
           <button
             onClick={() =>
               dispatchUI({ type: "TOGGLE_COMPOSE", payload: false })
@@ -48,7 +48,7 @@ export const ComposeModal = () => {
           <span className="font-bold text-lg text-[var(--foreground)]">New Thread</span>
           <div className="w-16" />
         </div>
-        <div className="p-6">
+        <div className="px-6 pb-6">
           <div className="flex gap-4">
             <div className="flex flex-col items-center flex-shrink-0">
               <Image
@@ -64,7 +64,7 @@ export const ComposeModal = () => {
               <div className="w-0.5 flex-1 bg-gradient-to-b from-[var(--border)] to-transparent mt-3 rounded-full min-h-10" />
             </div>
             <div className="flex-1 min-w-0">
-              <span className="font-semibold text-sm block mb-2.5 text-[var(--foreground)]">
+              <span className="font-semibold text-sm block mb-3 text-[var(--foreground)]">
                 {users.currentUser?.username || "you"}
               </span>
               <textarea
@@ -74,7 +74,7 @@ export const ComposeModal = () => {
                 autoFocus
                 className="w-full bg-transparent border-none text-base leading-relaxed resize-none outline-none min-h-32 text-[var(--foreground)] placeholder-[var(--muted)]"
               />
-              <div className="flex gap-2 mt-3">
+              <div className="flex gap-2 mt-4">
                 <button className="p-2 rounded-xl text-[var(--muted)] hover:bg-[var(--surface-hover)] hover:text-[var(--accent)] transition-all">
                   {Icons.image()}
                 </button>
@@ -82,7 +82,7 @@ export const ComposeModal = () => {
             </div>
           </div>
         </div>
-        <div className="flex items-center justify-between px-6 py-4 border-t border-[var(--border)] bg-[var(--background)]/50 rounded-b-3xl">
+        <div className="flex items-center justify-between px-6 py-5 bg-[var(--background)]/50">
           <span className="text-sm text-[var(--muted)]">Anyone can reply</span>
           <button
             onClick={handleSubmit}

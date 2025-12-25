@@ -12,7 +12,7 @@ interface PostProps {
 }
 
 export const Post = ({ post, onLike }: PostProps) => (
-  <article className="flex gap-4 p-6 hover:bg-[var(--surface-hover)] transition-all">
+  <article className="flex gap-4 p-6 bg-[var(--surface)] rounded-2xl hover:bg-[var(--surface-hover)] transition-all">
     <Image
       src={post.user.avatar}
       alt={post.user.name}
@@ -21,17 +21,17 @@ export const Post = ({ post, onLike }: PostProps) => (
       className="w-12 h-12 rounded-2xl object-cover flex-shrink-0"
     />
     <div className="flex-1 min-w-0">
-      <div className="flex items-start justify-between mb-2.5">
+      <div className="flex items-start justify-between mb-3">
         <div className="flex items-center gap-2 flex-wrap">
           <span className="font-semibold text-sm text-[var(--foreground)]">{post.user.username}</span>
           {post.user.verified && <span className="flex-shrink-0">{Icons.verified()}</span>}
           <span className="text-[var(--muted)] text-sm">• {post.time}</span>
         </div>
-        <button className="p-2 rounded-xl text-[var(--muted)] hover:bg-[var(--surface)] hover:text-[var(--foreground)] transition-all flex-shrink-0 -mt-1">
+        <button className="p-2 rounded-xl text-[var(--muted)] hover:bg-[var(--background)] hover:text-[var(--foreground)] transition-all flex-shrink-0 -mt-1">
           {Icons.more()}
         </button>
       </div>
-      <p className="text-sm leading-relaxed mb-3.5 text-[var(--foreground)]">{post.content}</p>
+      <p className="text-sm leading-relaxed mb-4 text-[var(--foreground)]">{post.content}</p>
       {post.image && (
         <div className="mb-4 rounded-2xl overflow-hidden relative h-96">
           <Image
@@ -42,24 +42,24 @@ export const Post = ({ post, onLike }: PostProps) => (
           />
         </div>
       )}
-      <div className="flex gap-2">
+      <div className="flex gap-2 flex-wrap">
         <button
           onClick={() => onLike(post.id)}
           className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all ${
             post.liked
               ? "text-rose-500 bg-rose-500/10"
-              : "text-[var(--muted)] hover:bg-[var(--surface)] hover:text-[var(--foreground)]"
+              : "text-[var(--muted)] hover:bg-[var(--background)] hover:text-[var(--foreground)]"
           }`}
         >
           {Icons.heart(post.liked)} {formatCount(post.likes)}
         </button>
-        <button className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm text-[var(--muted)] hover:bg-[var(--surface)] hover:text-[var(--foreground)] font-medium transition-all">
+        <button className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm text-[var(--muted)] hover:bg-[var(--background)] hover:text-[var(--foreground)] font-medium transition-all">
           {Icons.comment()} {post.comments}
         </button>
-        <button className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm text-[var(--muted)] hover:bg-[var(--surface)] hover:text-[var(--foreground)] font-medium transition-all">
+        <button className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm text-[var(--muted)] hover:bg-[var(--background)] hover:text-[var(--foreground)] font-medium transition-all">
           {Icons.repost()} {post.reposts}
         </button>
-        <button className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm text-[var(--muted)] hover:bg-[var(--surface)] hover:text-[var(--foreground)] font-medium transition-all">
+        <button className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm text-[var(--muted)] hover:bg-[var(--background)] hover:text-[var(--foreground)] font-medium transition-all">
           {Icons.share()}
         </button>
       </div>

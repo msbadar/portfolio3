@@ -15,7 +15,7 @@ interface BlogCardProps {
 export const BlogCard = ({ blog, onClick, index }: BlogCardProps) => (
   <article
     onClick={() => onClick(blog)}
-    className="group relative bg-[var(--surface)] rounded-3xl overflow-hidden border border-[var(--border)] hover:border-[var(--accent)]/30 shadow-sm hover:shadow-xl hover:shadow-[var(--accent)]/5 transition-all duration-500 cursor-pointer"
+    className="group relative bg-[var(--surface)] rounded-3xl overflow-hidden shadow-lg hover:shadow-xl hover:shadow-[var(--accent)]/10 transition-all duration-500 cursor-pointer"
     style={{ animation: `slideUp 0.5s ease ${index * 0.1}s both` }}
   >
     <div className="flex flex-col sm:flex-row">
