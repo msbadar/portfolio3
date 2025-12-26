@@ -59,11 +59,11 @@ export const Sidebar = () => {
   };
 
   return (
-    <nav className="hidden md:flex w-20 flex-col items-center py-8 sticky top-0 h-screen bg-[var(--surface)]/95 backdrop-blur-xl flex-shrink-0">
-      <Link href="/" className="mb-10">
+    <nav className="hidden md:flex w-20 flex-col items-center py-10 sticky top-0 h-screen bg-[var(--surface)]/95 backdrop-blur-xl shadow-card flex-shrink-0">
+      <Link href="/" className="mb-12">
         {Icons.logo()}
       </Link>
-      <div className="flex flex-col gap-3 flex-1">
+      <div className="flex flex-col gap-4 flex-1">
         {navLinks.slice(0, 2).map((item) => (
           <NavLink
             key={item.id}

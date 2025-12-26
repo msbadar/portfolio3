@@ -70,7 +70,7 @@ export const ForgotPasswordForm = () => {
       </div>
 
       {error && (
-        <div className="mb-4 p-3 bg-red-500/10 border border-red-500/30 rounded-xl text-red-500 text-sm text-center">
+        <div className="mb-4 p-3 bg-[var(--accent)]/10 border border-[var(--accent)]/30 rounded-xl text-[var(--accent)] text-sm text-center">
           {error}
         </div>
       )}

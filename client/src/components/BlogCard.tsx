@@ -15,7 +15,7 @@ interface BlogCardProps {
 export const BlogCard = ({ blog, onClick, index }: BlogCardProps) => (
   <article
     onClick={() => onClick(blog)}
-    className="group relative bg-[var(--surface)] rounded-3xl overflow-hidden shadow-lg hover:shadow-xl hover:shadow-[var(--accent)]/10 transition-all duration-500 cursor-pointer"
+    className="group relative bg-[var(--surface)] rounded-3xl overflow-hidden shadow-card hover:shadow-elevated transition-all duration-500 cursor-pointer"
     style={{ animation: `slideUp 0.5s ease ${index * 0.1}s both` }}
   >
     <div className="flex flex-col sm:flex-row">
@@ -28,7 +28,7 @@ export const BlogCard = ({ blog, onClick, index }: BlogCardProps) => (
         />
         <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[var(--surface)]/20" />
       </div>
-      <div className="flex-1 p-5 flex flex-col justify-between min-w-0">
+      <div className="flex-1 p-6 flex flex-col justify-between min-w-0">
         <div>
           <div className="flex items-center gap-2 mb-2 flex-wrap">
             <span className="px-2.5 py-0.5 bg-[var(--accent)] text-[var(--background)] text-xs font-semibold rounded-full">
@@ -38,10 +38,10 @@ export const BlogCard = ({ blog, onClick, index }: BlogCardProps) => (
               {Icons.clock()} {blog.readTime}
             </span>
           </div>
-          <h3 className="text-lg font-bold mb-2 text-[var(--foreground)] group-hover:text-[var(--accent)] transition-colors line-clamp-2">
+          <h3 className="text-xl font-bold mb-3 text-[var(--foreground)] group-hover:text-[var(--accent)] transition-colors line-clamp-2">
             {blog.title}
           </h3>
-          <p className="text-[var(--muted)] text-sm mb-3 line-clamp-2">
+          <p className="text-[var(--muted)] text-sm mb-4 line-clamp-2">
             {blog.excerpt}
           </p>
         </div>

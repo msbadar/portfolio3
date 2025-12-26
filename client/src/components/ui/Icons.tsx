@@ -44,8 +44,8 @@ export const Icons = {
   heart: (filled: boolean) => (
     <Heart
       size={20}
-      fill={filled ? "#f43f5e" : "none"}
-      stroke={filled ? "#f43f5e" : "currentColor"}
+      fill={filled ? "currentColor" : "none"}
+      stroke="currentColor"
       strokeWidth={2}
     />
   ),
@@ -55,9 +55,9 @@ export const Icons = {
   verified: () => (
     <BadgeCheck
       size={16}
-      className="text-[#63ffda]"
+      className="text-[var(--accent)]"
       fill="currentColor"
-      stroke="#0a0f0d"
+      stroke="var(--background)"
     />
   ),
   more: () => <MoreHorizontal size={20} />,
@@ -66,14 +66,14 @@ export const Icons = {
       <rect width="48" height="48" rx="12" fill="url(#logoGradient)" />
       <path
         d="M24 14v20M14 24h20"
-        stroke="#0a0f0d"
+        stroke="var(--background)"
         strokeWidth="3"
         strokeLinecap="round"
       />
       <defs>
         <linearGradient id="logoGradient" x1="0" y1="0" x2="48" y2="48">
-          <stop stopColor="#63ffda" />
-          <stop offset="1" stopColor="#4fd1c5" />
+          <stop stopColor="var(--foreground)" />
+          <stop offset="1" stopColor="var(--accent)" />
         </linearGradient>
       </defs>
     </svg>

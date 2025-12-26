@@ -12,7 +12,7 @@ interface PostProps {
 }
 
 export const Post = ({ post, onLike }: PostProps) => (
-  <article className="flex gap-4 p-6 bg-[var(--surface)] rounded-2xl hover:bg-[var(--surface-hover)] transition-all">
+  <article className="flex gap-4 p-8 bg-[var(--surface)] rounded-2xl shadow-card hover:shadow-card-hover hover:bg-[var(--surface-hover)] transition-all">
     <Image
       src={post.user.avatar}
       alt={post.user.name}
@@ -47,7 +47,7 @@ export const Post = ({ post, onLike }: PostProps) => (
           onClick={() => onLike(post.id)}
           className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all ${
             post.liked
-              ? "text-rose-500 bg-rose-500/10"
+              ? "text-[var(--accent)] bg-[var(--accent)]/10"
               : "text-[var(--muted)] hover:bg-[var(--background)] hover:text-[var(--foreground)]"
           }`}
         >

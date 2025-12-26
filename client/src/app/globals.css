@@ -1,23 +1,23 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #0a0f0d;
-  --color-foreground: #e2e8f0;
-  --color-accent: #63ffda;
-  --color-accent-dim: #4fd1c5;
-  --color-surface: #111a16;
-  --color-surface-hover: #162420;
-  --color-border: #1e332b;
-  --color-muted: #64748b;
+  --color-background: #ffffff;
+  --color-foreground: #1a1a1a;
+  --color-accent: #4a4a4a;
+  --color-accent-dim: #6b6b6b;
+  --color-surface: #f8f8f8;
+  --color-surface-hover: #f0f0f0;
+  --color-border: #e0e0e0;
+  --color-muted: #737373;
 
-  --background: #0a0f0d;
-  --foreground: #e2e8f0;
-  --accent: #63ffda;
-  --accent-dim: #4fd1c5;
-  --surface: #111a16;
-  --surface-hover: #162420;
-  --border: #1e332b;
-  --muted: #64748b;
+  --background: #ffffff;
+  --foreground: #1a1a1a;
+  --accent: #4a4a4a;
+  --accent-dim: #6b6b6b;
+  --surface: #f8f8f8;
+  --surface-hover: #f0f0f0;
+  --border: #e0e0e0;
+  --muted: #737373;
 }
 
 @layer base {
@@ -37,6 +37,55 @@
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, Arial, Helvetica, sans-serif;
     min-height: 100vh;
     overflow-x: hidden;
+    line-height: 1.6;
+    letter-spacing: -0.01em;
+  }
+
+  /* Typography hierarchy for blog/portfolio feel */
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.03em;
+    margin-bottom: 1rem;
+  }
+
+  h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.875rem;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: -0.015em;
+    margin-bottom: 0.75rem;
+  }
+
+  h4 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.5;
+    letter-spacing: -0.01em;
+  }
+
+  p {
+    margin-bottom: 1rem;
+    line-height: 1.7;
+  }
+
+  /* Better link styling for blog content */
+  a {
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  a:hover {
+    color: var(--accent);
   }
 }
 
@@ -60,6 +109,38 @@
   .animate-fadeIn { animation: fadeIn 0.4s ease; }
   .animate-scaleIn { animation: scaleIn 0.25s ease; }
   .animate-slideUp { animation: slideUp 0.3s ease; }
+
+  /* Subtle shadows for depth and blog/portfolio feel */
+  .shadow-card {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
+  }
+
+  .shadow-card-hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+
+  .shadow-elevated {
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.06), 0 4px 6px rgba(0, 0, 0, 0.04);
+  }
+
+  /* Generous spacing utilities for premium feel */
+  .section-spacing {
+    padding: 3rem 0;
+  }
+
+  .card-spacing {
+    padding: 2rem;
+  }
+
+  @media (max-width: 768px) {
+    .section-spacing {
+      padding: 2rem 0;
+    }
+
+    .card-spacing {
+      padding: 1.5rem;
+    }
+  }
 }
 
 @layer base {
@@ -67,5 +148,5 @@
   ::-webkit-scrollbar { width: 6px; }
   ::-webkit-scrollbar-track { background: var(--surface); }
   ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-  ::-webkit-scrollbar-thumb:hover { background: var(--accent-dim); }
+  ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
 }

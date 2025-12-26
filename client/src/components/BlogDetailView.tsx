@@ -139,7 +139,7 @@ export const BlogDetailView = () => {
               onClick={() => likeBlog(blog.id)}
               className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-medium transition-all ${
                 blog.liked
-                  ? "bg-rose-500/10 text-rose-500"
+                  ? "bg-[var(--accent)]/10 text-[var(--accent)]"
                   : "hover:bg-[var(--surface-hover)] text-[var(--muted)]"
               }`}
             >

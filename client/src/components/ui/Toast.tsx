@@ -11,10 +11,10 @@ interface ToastProps {
 export const Toast = ({ message, type, onClose }: ToastProps) => {
   const bgColor =
     type === "success"
-      ? "bg-emerald-500"
+      ? "bg-[var(--foreground)]"
       : type === "error"
-      ? "bg-rose-500"
-      : "bg-slate-700";
+      ? "bg-[var(--accent)]"
+      : "bg-[var(--muted)]";
   const icon =
     type === "success"
       ? Icons.check()
