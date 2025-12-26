@@ -29,6 +29,70 @@ export const useBlogs = () => {
     dispatchBlogs({ type: "CLEAR_SELECTION" });
   }, [dispatchBlogs]);
 
+  const createBlog = useCallback(
+    async (blogData: {
+      title: string;
+      content: string;
+      excerpt: string;
+      coverImage?: string;
+      category: string;
+      readTime: string;
+    }) => {
+      try {
+        const newBlog = await api.blogs.create(blogData);
+        dispatchBlogs({ type: "ADD_BLOG", payload: newBlog });
+        showToast("Blog created successfully!", "success");
+        return newBlog;
+      } catch (error) {
+        const message = error instanceof Error ? error.message : "Failed to create blog";
+        showToast(message, "error");
+        throw error;
+      }
+    },
+    [dispatchBlogs, showToast]
+  );
+
+  const updateBlog = useCallback(
+    async (
+      blogId: number,
+      blogData: {
+        title?: string;
+        content?: string;
+        excerpt?: string;
+        coverImage?: string;
+        category?: string;
+        readTime?: string;
+      }
+    ) => {
+      try {
+        const updatedBlog = await api.blogs.update(blogId, blogData);
+        dispatchBlogs({ type: "UPDATE_BLOG", payload: updatedBlog });
+        showToast("Blog updated successfully!", "success");
+        return updatedBlog;
+      } catch (error) {
+        const message = error instanceof Error ? error.message : "Failed to update blog";
+        showToast(message, "error");
+        throw error;
+      }
+    },
+    [dispatchBlogs, showToast]
+  );
+
+  const deleteBlog = useCallback(
+    async (blogId: number) => {
+      try {
+        await api.blogs.delete(blogId);
+        dispatchBlogs({ type: "DELETE_BLOG", payload: blogId });
+        showToast("Blog deleted successfully!", "success");
+      } catch (error) {
+        const message = error instanceof Error ? error.message : "Failed to delete blog";
+        showToast(message, "error");
+        throw error;
+      }
+    },
+    [dispatchBlogs, showToast]
+  );
+
   const likeBlog = useCallback(
     async (blogId: number) => {
       dispatchBlogs({ type: "TOGGLE_LIKE", payload: blogId });
@@ -42,5 +106,14 @@ export const useBlogs = () => {
     [dispatchBlogs, showToast]
   );
 
-  return { blogs, fetchBlogs, selectBlog, clearSelection, likeBlog };
+  return {
+    blogs,
+    fetchBlogs,
+    selectBlog,
+    clearSelection,
+    createBlog,
+    updateBlog,
+    deleteBlog,
+    likeBlog,
+  };
 };

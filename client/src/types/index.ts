@@ -125,6 +125,9 @@ export type BlogsAction =
   | { type: "FETCH_ERROR"; payload: string }
   | { type: "SELECT_BLOG"; payload: Blog }
   | { type: "CLEAR_SELECTION" }
+  | { type: "ADD_BLOG"; payload: Blog }
+  | { type: "UPDATE_BLOG"; payload: Blog }
+  | { type: "DELETE_BLOG"; payload: number }
   | { type: "TOGGLE_LIKE"; payload: number };
 
 export type UIAction =

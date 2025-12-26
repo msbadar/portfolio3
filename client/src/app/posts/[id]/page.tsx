@@ -1,15 +1,12 @@
 "use client";
 
-import React from "react";
-import { AppProvider, useApp } from "@/context/AppContext";
+import React, { use } from "react";
+import { AppProvider } from "@/context/AppContext";
 import { AvatarMenu } from "@/components/AvatarMenu";
-import { MainContent } from "@/components/MainContent";
-import { BlogDetailView } from "@/components/BlogDetailView";
-import { ComposeModal } from "@/components/ComposeModal";
+import { PostDetailView } from "@/components/PostDetailView";
 import { ToastContainer } from "@/components/ui/Toast";
-import { useBlogs } from "@/hooks/useBlogs";
+import { useApp } from "@/context/AppContext";
 
-// Toast Container with Context
 const ToastContainerWithContext = () => {
   const { ui, dispatchUI } = useApp();
   return (
@@ -20,27 +17,29 @@ const ToastContainerWithContext = () => {
   );
 };
 
-// Main App Content
-const AppContent = () => {
-  const { blogs } = useBlogs();
-
+const PostDetailPageContent = ({ postId }: { postId: number }) => {
   return (
     <div className="flex min-h-screen bg-[var(--background)] font-sans text-[var(--foreground)]">
       <AvatarMenu />
       <div className="flex-1 max-w-5xl mx-auto w-full">
-        {blogs.selected ? <BlogDetailView /> : <MainContent />}
+        <PostDetailView postId={postId} />
       </div>
-      <ComposeModal />
       <ToastContainerWithContext />
     </div>
   );
 };
 
-// Root App with Provider
-export default function App() {
+export default function PostDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = use(params);
+  const postId = parseInt(id);
+
   return (
     <AppProvider>
-      <AppContent />
+      <PostDetailPageContent postId={postId} />
     </AppProvider>
   );
 }

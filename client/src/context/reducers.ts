@@ -66,6 +66,22 @@ export const blogsReducer = (state: BlogsState, action: BlogsAction): BlogsState
       return { ...state, selected: action.payload };
     case "CLEAR_SELECTION":
       return { ...state, selected: null };
+    case "ADD_BLOG":
+      return { ...state, data: [action.payload, ...state.data] };
+    case "UPDATE_BLOG": {
+      const updatedData = state.data.map((b) =>
+        b.id === action.payload.id ? action.payload : b
+      );
+      const updatedSelected =
+        state.selected?.id === action.payload.id ? action.payload : state.selected;
+      return { ...state, data: updatedData, selected: updatedSelected };
+    }
+    case "DELETE_BLOG":
+      return {
+        ...state,
+        data: state.data.filter((b) => b.id !== action.payload),
+        selected: state.selected?.id === action.payload ? null : state.selected,
+      };
     case "TOGGLE_LIKE": {
       const updatedData = state.data.map((b) =>
         b.id === action.payload

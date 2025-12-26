@@ -10,13 +10,7 @@ import {
   ParseIntPipe,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
-import {
-  CreatePostDto,
-  UpdatePostDto,
-  CreateBlogDto,
-  UpdateBlogDto,
-  CreateCommentDto,
-} from './dto';
+import { CreatePostDto, UpdatePostDto, CreateCommentDto } from './dto';
 import { JwtAuthGuard, OptionalAuthGuard } from '../auth/guards';
 import { CurrentUser } from '../common/decorators';
 import type { JWTPayload } from '../auth/auth.service';
@@ -82,40 +76,6 @@ export class PostsController {
     @CurrentUser() user: JWTPayload,
   ) {
     return this.postsService.toggleLike(id, user.userId);
-  }
-
-  // ==================== BLOGS (type='blog') ====================
-
-  @Get('blogs/all')
-  @UseGuards(OptionalAuthGuard)
-  async findAllBlogs(@CurrentUser() user: JWTPayload | null) {
-    const blogs = await this.postsService.findAllBlogs(user?.userId);
-    return { blogs };
-  }
-
-  @Post('blogs')
-  @UseGuards(JwtAuthGuard)
-  async createBlog(
-    @Body() createBlogDto: CreateBlogDto,
-    @CurrentUser() user: JWTPayload,
-  ) {
-    const blog = await this.postsService.createBlog(createBlogDto, user.userId);
-    return { blog };
-  }
-
-  @Put('blogs/:id')
-  @UseGuards(JwtAuthGuard)
-  async updateBlog(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() updateBlogDto: UpdateBlogDto,
-    @CurrentUser() user: JWTPayload,
-  ) {
-    const blog = await this.postsService.updateBlog(
-      id,
-      updateBlogDto,
-      user.userId,
-    );
-    return { blog };
   }
 
   // ==================== COMMENTS (type='comment') ====================

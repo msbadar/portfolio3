@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import Image from "next/image";
 import { Icons } from "@/components/ui/Icons";
 import { formatCount } from "@/utils/formatters";
@@ -15,6 +16,11 @@ interface PostProps {
 
 export const Post = ({ post, onLike }: PostProps) => {
   const { showToast } = useApp();
+  const MAX_CONTENT_LENGTH = 200;
+  const shouldTruncate = post.content.length > MAX_CONTENT_LENGTH;
+  const displayContent = shouldTruncate
+    ? post.content.slice(0, MAX_CONTENT_LENGTH) + "..."
+    : post.content;
 
   const handleShare = async () => {
     const success = await shareContent({
@@ -48,7 +54,18 @@ export const Post = ({ post, onLike }: PostProps) => {
             {Icons.more()}
           </button>
         </div>
-        <p className="text-sm leading-relaxed mb-4 text-[var(--foreground)]">{post.content}</p>
+        <p className="text-sm leading-relaxed mb-2 text-[var(--foreground)]">
+          {displayContent}
+        </p>
+        {shouldTruncate && (
+          <Link
+            href={`/posts/${post.id}`}
+            className="text-sm text-[var(--accent)] hover:underline mb-4 inline-block font-medium"
+          >
+            Read more
+          </Link>
+        )}
+        {!shouldTruncate && <div className="mb-4"></div>}
         {post.image && (
           <div className="mb-4 rounded-2xl overflow-hidden relative h-96">
             <Image
@@ -70,9 +87,12 @@ export const Post = ({ post, onLike }: PostProps) => {
           >
             {Icons.heart(post.liked)} {formatCount(post.likes)}
           </button>
-          <button className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm text-[var(--muted)] hover:bg-[var(--background)] hover:text-[var(--foreground)] font-medium transition-all">
+          <Link
+            href={`/posts/${post.id}`}
+            className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm text-[var(--muted)] hover:bg-[var(--background)] hover:text-[var(--foreground)] font-medium transition-all"
+          >
             {Icons.comment()} {post.comments}
-          </button>
+          </Link>
           <button className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm text-[var(--muted)] hover:bg-[var(--background)] hover:text-[var(--foreground)] font-medium transition-all">
             {Icons.repost()} {post.reposts}
           </button>

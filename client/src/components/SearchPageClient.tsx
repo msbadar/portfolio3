@@ -2,9 +2,7 @@
 
 import React from "react";
 import { AppProvider, useApp } from "@/context/AppContext";
-import { Sidebar } from "@/components/layout/Sidebar";
-import { RightSidebar } from "@/components/RightSidebar";
-import { MobileMenu } from "@/components/MobileMenu";
+import { AvatarMenu } from "@/components/AvatarMenu";
 import { Icons } from "@/components/ui/Icons";
 
 const SearchContent = () => {
@@ -12,8 +10,7 @@ const SearchContent = () => {
 
   return (
     <>
-      <MobileMenu />
-      <Sidebar />
+      <AvatarMenu />
       <main className="flex-1 min-w-0 bg-[var(--background)] overflow-y-auto">
         <header className="sticky top-0 z-10 px-8 py-6 bg-[var(--surface)]/95 backdrop-blur-xl border-b border-[var(--border)]">
           <h1 className="text-2xl font-bold text-[var(--accent)]">
@@ -51,7 +48,6 @@ const SearchContent = () => {
           )}
         </div>
       </main>
-      <RightSidebar />
     </>
   );
 };

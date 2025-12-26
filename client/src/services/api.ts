@@ -45,6 +45,10 @@ const api = {
       const data = await apiClient.get<PostsResponse>("/posts");
       return data.posts;
     },
+    async getById(id: number): Promise<Post> {
+      const data = await apiClient.get<PostResponse>(`/posts/${id}`);
+      return data.post;
+    },
     async create(post: { content: string; image?: string }): Promise<Post> {
       const data = await apiClient.post<PostResponse>("/posts", {
         content: post.content,
@@ -81,6 +85,34 @@ const api = {
     async getById(id: number): Promise<Blog> {
       const data = await apiClient.get<BlogResponse>(`/blogs/${id}`);
       return data.blog;
+    },
+    async create(blog: {
+      title: string;
+      content: string;
+      excerpt: string;
+      coverImage?: string;
+      category: string;
+      readTime: string;
+    }): Promise<Blog> {
+      const data = await apiClient.post<BlogResponse>("/blogs", blog);
+      return data.blog;
+    },
+    async update(
+      blogId: number,
+      blog: {
+        title?: string;
+        content?: string;
+        excerpt?: string;
+        coverImage?: string;
+        category?: string;
+        readTime?: string;
+      }
+    ): Promise<Blog> {
+      const data = await apiClient.put<BlogResponse>(`/blogs/${blogId}`, blog);
+      return data.blog;
+    },
+    async delete(blogId: number): Promise<void> {
+      await apiClient.delete(`/blogs/${blogId}`);
     },
     async like(blogId: number): Promise<LikeResponse> {
       return apiClient.post<LikeResponse>(`/blogs/${blogId}/like`);

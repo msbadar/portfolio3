@@ -5,9 +5,7 @@ import { AppProvider, useApp } from "@/context/AppContext";
 import { usePosts } from "@/hooks/usePosts";
 import { useBlogs } from "@/hooks/useBlogs";
 import { useUsers } from "@/hooks/useUsers";
-import { Sidebar } from "@/components/layout/Sidebar";
-import { RightSidebar } from "@/components/RightSidebar";
-import { MobileMenu } from "@/components/MobileMenu";
+import { AvatarMenu } from "@/components/AvatarMenu";
 import { ProfileHeader } from "@/components/ProfileHeader";
 import { Post } from "@/components/Post";
 import { BlogCard } from "@/components/BlogCard";
@@ -29,8 +27,7 @@ const ProfileContent = () => {
 
   return (
     <>
-      <MobileMenu />
-      <Sidebar />
+      <AvatarMenu />
       <main className="flex-1 min-w-0 bg-[var(--background)] overflow-y-auto">
         <ProfileHeader />
 
@@ -109,7 +106,6 @@ const ProfileContent = () => {
           </div>
         )}
       </main>
-      <RightSidebar />
       <ComposeModal />
     </>
   );
