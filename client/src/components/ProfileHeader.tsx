@@ -2,7 +2,6 @@
 
 import React from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { Icons } from "@/components/ui/Icons";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { useUsers } from "@/hooks/useUsers";
@@ -47,26 +46,30 @@ export const ProfileHeader = () => {
           />
           <div className="flex-1 pb-2 min-w-0">
             <div className="flex items-center gap-2 mb-1">
-              <h1 className="text-xl font-bold text-[var(--foreground)] truncate">{user.name}</h1>
-              <span className="flex-shrink-0">{user.verified && Icons.verified()}</span>
+              <h1 className="text-xl font-bold text-[var(--foreground)] truncate">
+                {user.name}
+              </h1>
+              <span className="flex-shrink-0">
+                {user.verified && Icons.verified()}
+              </span>
             </div>
             <span className="text-[var(--muted)]">@{user.username}</span>
           </div>
-          <Link
-            href="/profile/edit"
-            className="px-6 py-2.5 bg-[var(--accent)] text-[var(--background)] rounded-xl font-semibold shadow-lg shadow-[var(--accent)]/30 hover:shadow-[var(--accent)]/40 transition-all flex-shrink-0 text-sm"
-          >
-            Edit Profile
-          </Link>
         </div>
-        <p className="text-[var(--muted)] mb-5 max-w-2xl leading-relaxed text-sm">{user.bio}</p>
+        <p className="text-[var(--muted)] mb-5 max-w-2xl leading-relaxed text-sm">
+          {user.bio}
+        </p>
         <div className="flex items-center gap-6 text-sm flex-wrap">
           <span className="text-[var(--muted)]">
-            <strong className="text-[var(--foreground)] font-semibold">{user.followers}</strong>{" "}
+            <strong className="text-[var(--foreground)] font-semibold">
+              {user.followers}
+            </strong>{" "}
             followers
           </span>
           <span className="text-[var(--muted)]">
-            <strong className="text-[var(--foreground)] font-semibold">{user.following}</strong>{" "}
+            <strong className="text-[var(--foreground)] font-semibold">
+              {user.following}
+            </strong>{" "}
             following
           </span>
           {user.link && (
