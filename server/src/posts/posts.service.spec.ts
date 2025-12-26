@@ -98,10 +98,7 @@ describe('PostsService', () => {
     it('should create a post successfully', async () => {
       mockDb.query.users.findFirst.mockResolvedValue(mockUser);
 
-      const result = await service.create(
-        { content: 'Test post content' },
-        1,
-      );
+      const result = await service.create({ content: 'Test post content' }, 1);
 
       expect(result).toBeDefined();
       expect(result.type).toBe('post');
@@ -126,7 +123,10 @@ describe('PostsService', () => {
     });
 
     it('should throw ForbiddenException when user is not the owner', async () => {
-      mockDb.query.posts.findFirst.mockResolvedValue({ ...mockPost, userId: 2 });
+      mockDb.query.posts.findFirst.mockResolvedValue({
+        ...mockPost,
+        userId: 2,
+      });
 
       await expect(service.delete(1, 1)).rejects.toThrow(ForbiddenException);
     });
@@ -137,14 +137,16 @@ describe('PostsService', () => {
       mockDb.query.users.findFirst.mockResolvedValue(mockUser);
       mockDb.insert.mockReturnValue({
         values: jest.fn().mockReturnValue({
-          returning: jest.fn().mockResolvedValue([{
-            ...mockPost,
-            type: 'blog',
-            title: 'Test Blog',
-            excerpt: 'Test excerpt',
-            category: 'General',
-            readTime: '1 min read',
-          }]),
+          returning: jest.fn().mockResolvedValue([
+            {
+              ...mockPost,
+              type: 'blog',
+              title: 'Test Blog',
+              excerpt: 'Test excerpt',
+              category: 'General',
+              readTime: '1 min read',
+            },
+          ]),
         }),
       });
 
@@ -169,15 +171,17 @@ describe('PostsService', () => {
       mockDb.query.posts.findFirst.mockResolvedValue(mockPost);
       mockDb.insert.mockReturnValue({
         values: jest.fn().mockReturnValue({
-          returning: jest.fn().mockResolvedValue([{
-            id: 2,
-            type: 'comment',
-            parentId: 1,
-            content: 'Test comment',
-            likes: 0,
-            comments: 0,
-            reposts: 0,
-          }]),
+          returning: jest.fn().mockResolvedValue([
+            {
+              id: 2,
+              type: 'comment',
+              parentId: 1,
+              content: 'Test comment',
+              likes: 0,
+              comments: 0,
+              reposts: 0,
+            },
+          ]),
         }),
       });
       mockDb.update.mockReturnValue({

@@ -31,10 +31,12 @@ export async function shareContent(data: ShareData): Promise<boolean> {
     }
   }
 
-  // Fallback: Copy to clipboard
-  const shareText = data.title 
-    ? `${data.title}${data.text ? ` - ${data.text}` : ''} ${shareUrl}`
-    : `${data.text || ''} ${shareUrl}`.trim();
+  // Fallback: Copy to clipboard with proper formatting
+  const parts: string[] = [];
+  if (data.title) parts.push(data.title);
+  if (data.text) parts.push(data.text);
+  if (shareUrl) parts.push(shareUrl);
+  const shareText = parts.join(' - ');
 
   return copyToClipboard(shareText);
 }
@@ -45,7 +47,9 @@ export async function shareContent(data: ShareData): Promise<boolean> {
  */
 export async function copyToClipboard(text: string): Promise<boolean> {
   if (typeof navigator === 'undefined' || !navigator.clipboard) {
-    // Fallback for older browsers
+    // Fallback for older browsers using deprecated execCommand
+    // This is intentionally kept as a last resort for browsers that don't support
+    // the modern Clipboard API (e.g., older Safari, IE)
     try {
       const textArea = document.createElement('textarea');
       textArea.value = text;

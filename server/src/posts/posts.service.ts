@@ -47,6 +47,9 @@ export interface PostResponse {
   liked: boolean;
 }
 
+// Average words per minute for reading time calculation
+const WORDS_PER_MINUTE = 200;
+
 @Injectable()
 export class PostsService {
   constructor(
@@ -75,7 +78,7 @@ export class PostsService {
 
   private calculateReadTime(content: string): string {
     const wordCount = content.trim().split(/\s+/).length;
-    return `${Math.max(1, Math.ceil(wordCount / 200))} min read`;
+    return `${Math.max(1, Math.ceil(wordCount / WORDS_PER_MINUTE))} min read`;
   }
 
   private async mapPostToResponse(
@@ -396,7 +399,7 @@ export class PostsService {
         type: 'blog',
         content: createBlogDto.content.trim(),
         title: createBlogDto.title.trim(),
-        excerpt: createBlogDto.excerpt?.trim() || '',
+        excerpt: createBlogDto.excerpt?.trim() || null,
         coverImage: createBlogDto.coverImage || null,
         readTime,
         category: createBlogDto.category || 'General',
@@ -453,7 +456,7 @@ export class PostsService {
       .update(posts)
       .set({
         title: updateBlogDto.title.trim(),
-        excerpt: updateBlogDto.excerpt?.trim() || '',
+        excerpt: updateBlogDto.excerpt?.trim() || null,
         content: updateBlogDto.content.trim(),
         coverImage: updateBlogDto.coverImage || null,
         category: updateBlogDto.category || 'General',
