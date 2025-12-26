@@ -104,16 +104,20 @@ export class UsersService {
     const updateData: Partial<typeof users.$inferInsert> = {};
 
     if (updateUserDto.name !== undefined) {
-      updateData.name = updateUserDto.name.trim();
+      const trimmedName = updateUserDto.name.trim();
+      updateData.name = trimmedName || existingUser.name;
     }
     if (updateUserDto.bio !== undefined) {
-      updateData.bio = updateUserDto.bio.trim();
+      const trimmedBio = updateUserDto.bio.trim();
+      updateData.bio = trimmedBio || null;
     }
     if (updateUserDto.link !== undefined) {
-      updateData.link = updateUserDto.link.trim();
+      const trimmedLink = updateUserDto.link.trim();
+      updateData.link = trimmedLink || null;
     }
     if (updateUserDto.avatar !== undefined) {
-      updateData.avatar = updateUserDto.avatar.trim();
+      const trimmedAvatar = updateUserDto.avatar.trim();
+      updateData.avatar = trimmedAvatar || null;
     }
 
     updateData.updatedAt = new Date();

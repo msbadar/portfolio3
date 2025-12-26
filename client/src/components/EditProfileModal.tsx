@@ -8,33 +8,30 @@ import { useApp } from "@/context/AppContext";
 import { useUsers } from "@/hooks/useUsers";
 import api from "@/services/api";
 
-interface EditProfileModalProps {
-  isOpen: boolean;
+interface EditProfileFormProps {
+  initialName: string;
+  initialBio: string;
+  initialLink: string;
+  avatar: string;
   onClose: () => void;
 }
 
-export const EditProfileModal = ({ isOpen, onClose }: EditProfileModalProps) => {
+const EditProfileForm = ({
+  initialName,
+  initialBio,
+  initialLink,
+  avatar,
+  onClose,
+}: EditProfileFormProps) => {
   const { showToast } = useApp();
-  const { users, fetchCurrentUser } = useUsers();
-  const [name, setName] = useState("");
-  const [bio, setBio] = useState("");
-  const [link, setLink] = useState("");
+  const { fetchCurrentUser } = useUsers();
+  const [name, setName] = useState(initialName);
+  const [bio, setBio] = useState(initialBio);
+  const [link, setLink] = useState(initialLink);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
-  const [initialized, setInitialized] = useState(false);
-
-  // Reset form state when modal opens
-  const handleModalOpen = () => {
-    if (!initialized && users.currentUser) {
-      setName(users.currentUser.name || "");
-      setBio(users.currentUser.bio || "");
-      setLink(users.currentUser.link || "");
-      setInitialized(true);
-    }
-  };
 
   const handleClose = () => {
-    setInitialized(false);
     setShowPreview(false);
     onClose();
   };
@@ -57,13 +54,6 @@ export const EditProfileModal = ({ isOpen, onClose }: EditProfileModalProps) => 
     }
     setIsSubmitting(false);
   };
-
-  if (!isOpen) return null;
-
-  // Initialize values on first render when open
-  if (!initialized && users.currentUser) {
-    handleModalOpen();
-  }
 
   return (
     <div
@@ -98,7 +88,7 @@ export const EditProfileModal = ({ isOpen, onClose }: EditProfileModalProps) => 
           {/* Avatar Section */}
           <div className="flex items-center gap-4">
             <Image
-              src={users.currentUser?.avatar || "https://i.pravatar.cc/150?img=33"}
+              src={avatar}
               alt="Your avatar"
               width={80}
               height={80}
@@ -170,5 +160,29 @@ export const EditProfileModal = ({ isOpen, onClose }: EditProfileModalProps) => 
         </div>
       </div>
     </div>
+  );
+};
+
+interface EditProfileModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export const EditProfileModal = ({ isOpen, onClose }: EditProfileModalProps) => {
+  const { users } = useUsers();
+
+  if (!isOpen) return null;
+
+  // When isOpen becomes true, we render the form with current user data
+  // When isOpen becomes false, the form is unmounted, so next time it opens
+  // it will get fresh initial values from the current user
+  return (
+    <EditProfileForm
+      initialName={users.currentUser?.name || ""}
+      initialBio={users.currentUser?.bio || ""}
+      initialLink={users.currentUser?.link || ""}
+      avatar={users.currentUser?.avatar || "https://i.pravatar.cc/150?img=33"}
+      onClose={onClose}
+    />
   );
 };

@@ -48,16 +48,18 @@ export const Markdown = ({ content, className = "" }: MarkdownProps) => {
           li: ({ children }) => (
             <li className="text-[var(--foreground)]">{children}</li>
           ),
-          a: ({ href, children }) => (
-            <a
-              href={href}
-              className="text-[var(--accent)] hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {children}
-            </a>
-          ),
+          a: ({ href, children }) => {
+            const isExternal = href?.startsWith("http") || href?.startsWith("//");
+            return (
+              <a
+                href={href}
+                className="text-[var(--accent)] hover:underline"
+                {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+              >
+                {children}
+              </a>
+            );
+          },
           code: ({ children, className: codeClassName }) => {
             const isInline = !codeClassName;
             return isInline ? (

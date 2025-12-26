@@ -96,7 +96,7 @@ const LineChart = ({ data, labels }: LineChartProps) => {
               cy={y}
               r="2"
               fill="var(--accent)"
-              className="hover:r-3 transition-all"
+              className="transition-transform hover:scale-150"
             />
           );
         })}
