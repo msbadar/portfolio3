@@ -1,69 +1,144 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfolio 3
+
+A full-stack portfolio application with a separate client (Next.js) and server (NestJS).
+
+## Project Structure
+
+```
+├── client/          # Next.js frontend application
+│   ├── src/         # React components, hooks, and pages
+│   ├── public/      # Static assets
+│   └── package.json
+├── server/          # NestJS backend API
+│   ├── src/         # API modules (auth, posts, blogs, users)
+│   └── package.json
+└── README.md
+```
 
 ## Getting Started
 
-### Environment Variables
+### Prerequisites
 
-Create a `.env.local` file in the root directory with the following variables:
+- Node.js 18+
+- PostgreSQL database
+
+### Server Setup
+
+1. Navigate to the server directory:
+
+```bash
+cd server
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Create a `.env` file based on `.env.example`:
 
 ```bash
 # Database
 DATABASE_URL=postgresql://user:password@localhost:5432/portfolio
-
-# JWT Secret (required in production, min 32 characters)
-JWT_SECRET=your-secret-key-at-least-32-characters-long
-
-# Optional: Enable SSL for database in development
 DATABASE_SSL=false
+
+# JWT
+JWT_SECRET=your-secret-key-min-32-characters-long
+
+# Server
+NODE_ENV=development
+PORT=3001
+
+# Client URL (for CORS)
+CLIENT_URL=http://localhost:3000
 ```
 
-### Database Setup
-
-This project uses PostgreSQL with Drizzle ORM. To set up the database:
+4. Set up the database:
 
 ```bash
-# Generate migration files
-npm run db:generate
-
-# Apply migrations to your database
-npm run db:migrate
-
-# Or push schema directly (development)
+# Push schema to database
 npm run db:push
 
-# Open Drizzle Studio to view/edit data
-npm run db:studio
+# Or generate and run migrations
+npm run db:generate
+npm run db:migrate
 ```
 
-### Run the Development Server
+5. Start the server:
+
+```bash
+npm run start:dev
+```
+
+The server will be available at `http://localhost:3001`.
+
+### Client Setup
+
+1. Navigate to the client directory:
+
+```bash
+cd client
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Create a `.env.local` file:
+
+```bash
+NEXT_PUBLIC_API_URL=http://localhost:3001/api
+```
+
+4. Start the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The client will be available at `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## API Endpoints
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Authentication
+- `POST /api/auth/register` - Register a new user
+- `POST /api/auth/login` - Login
+- `POST /api/auth/logout` - Logout
+- `GET /api/auth/me` - Get current user
 
-## Learn More
+### Posts
+- `GET /api/posts` - Get all posts
+- `GET /api/posts/:id` - Get a single post
+- `POST /api/posts` - Create a post
+- `PUT /api/posts/:id` - Update a post
+- `DELETE /api/posts/:id` - Delete a post
+- `POST /api/posts/:id/like` - Toggle like on a post
 
-To learn more about Next.js, take a look at the following resources:
+### Blogs
+- `GET /api/blogs` - Get all blogs
+- `GET /api/blogs/:id` - Get a single blog
+- `POST /api/blogs` - Create a blog
+- `PUT /api/blogs/:id` - Update a blog
+- `DELETE /api/blogs/:id` - Delete a blog
+- `POST /api/blogs/:id/like` - Toggle like on a blog
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Users
+- `GET /api/users/suggestions` - Get user suggestions
+- `POST /api/users/:id/follow` - Toggle follow on a user
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Technologies
 
-## Deploy on Vercel
+### Client
+- Next.js 16
+- React 19
+- TypeScript
+- TailwindCSS
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Server
+- NestJS 11
+- Drizzle ORM
+- PostgreSQL
+- JWT Authentication
