@@ -80,14 +80,14 @@ const ProfileContent = () => {
             )}
           </div>
         ) : (
-          <div className="p-8 space-y-3 max-w-2xl mx-auto">
+          <div className="p-8 space-y-3 max-w-4xl mx-auto">
             {posts.loading ? (
               [1, 2, 3].map((i) => <PostSkeleton key={i} />)
             ) : posts.error ? (
               <div className="text-center py-12">
                 <p className="text-rose-500 mb-4">{posts.error}</p>
                 <button
-                  onClick={fetchPosts}
+                  onClick={() => fetchPosts()}
                   className="px-4 py-2 bg-[var(--surface)] rounded-xl text-sm font-medium hover:bg-[var(--surface-hover)] transition-all"
                 >
                   Try Again

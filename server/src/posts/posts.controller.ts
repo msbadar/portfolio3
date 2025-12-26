@@ -8,11 +8,18 @@ import {
   Body,
   UseGuards,
   ParseIntPipe,
+  Query,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
-import { CreatePostDto, UpdatePostDto, CreateCommentDto } from './dto';
+import {
+  CreatePostDto,
+  UpdatePostDto,
+  CreateCommentDto,
+  FilterPostsDto,
+} from './dto';
 import { JwtAuthGuard, OptionalAuthGuard } from '../auth/guards';
 import { CurrentUser } from '../common/decorators';
+import { Site } from '../common/decorators/site.decorator';
 import type { JWTPayload } from '../auth/auth.service';
 
 @Controller('posts')
@@ -23,8 +30,16 @@ export class PostsController {
 
   @Get()
   @UseGuards(OptionalAuthGuard)
-  async findAll(@CurrentUser() user: JWTPayload | null) {
-    const posts = await this.postsService.findAll(user?.userId);
+  async findAll(
+    @Query() filters: FilterPostsDto,
+    @CurrentUser() user: JWTPayload | null,
+    @Site() site: string | null,
+  ) {
+    const posts = await this.postsService.findAll(
+      user?.userId,
+      site ?? undefined,
+      filters,
+    );
     return { posts };
   }
 

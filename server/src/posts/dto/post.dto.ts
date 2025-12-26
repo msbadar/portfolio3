@@ -1,4 +1,11 @@
-import { IsString, IsNotEmpty, IsOptional, IsNumber } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  IsOptional,
+  IsNumber,
+  IsIn,
+} from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class CreatePostDto {
   @IsString()
@@ -68,4 +75,28 @@ export class CreateCommentDto {
   @IsString()
   @IsNotEmpty()
   content: string;
+}
+
+export class FilterPostsDto {
+  @IsOptional()
+  @IsIn(['post', 'blog', 'comment'])
+  type?: 'post' | 'blog' | 'comment';
+
+  @IsOptional()
+  @IsString()
+  category?: string;
+
+  @IsOptional()
+  @IsString()
+  search?: string;
+
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  limit?: number;
+
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  offset?: number;
 }

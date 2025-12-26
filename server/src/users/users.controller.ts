@@ -12,16 +12,23 @@ import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto';
 import { JwtAuthGuard, OptionalAuthGuard } from '../auth/guards';
 import { CurrentUser } from '../common/decorators';
+import { Site } from '../common/decorators/site.decorator';
 import type { JWTPayload } from '../auth/auth.service';
 
-@Controller('users')
+@Controller('user')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get('suggestions')
   @UseGuards(OptionalAuthGuard)
-  async getSuggestions(@CurrentUser() user: JWTPayload | null) {
-    const suggestions = await this.usersService.getSuggestions(user?.userId);
+  async getSuggestions(
+    @CurrentUser() user: JWTPayload | null,
+    @Site() site: string | null,
+  ) {
+    const suggestions = await this.usersService.getSuggestions(
+      user?.userId,
+      site ?? undefined,
+    );
     return { suggestions };
   }
 

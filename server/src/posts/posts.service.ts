@@ -4,15 +4,16 @@ import {
   NotFoundException,
   ForbiddenException,
 } from '@nestjs/common';
-import { eq, desc, and, sql } from 'drizzle-orm';
+import { eq, desc, and, sql, inArray, or, like, SQL } from 'drizzle-orm';
 import { DATABASE_CONNECTION } from '../db/database.module';
-import { posts, users, postLikes } from '../db/schema';
+import { posts, users, postLikes, sites, userSites } from '../db/schema';
 import {
   CreatePostDto,
   UpdatePostDto,
   CreateBlogDto,
   UpdateBlogDto,
   CreateCommentDto,
+  FilterPostsDto,
 } from './dto';
 import type { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import * as schema from '../db/schema';
@@ -146,8 +147,71 @@ export class PostsService {
 
   // ==================== POSTS (type='post') ====================
 
-  async findAll(userId?: number): Promise<PostResponse[]> {
-    const allPosts = await this.db
+  async findAll(
+    userId?: number,
+    site?: string,
+    filters?: FilterPostsDto,
+  ): Promise<PostResponse[]> {
+    // Build where conditions
+    const conditions: SQL<unknown>[] = [];
+
+    // Type filter
+    if (filters?.type) {
+      // Specific type requested
+      conditions.push(eq(posts.type, filters.type));
+    } else {
+      // Default: exclude comments, include posts and blogs
+      conditions.push(inArray(posts.type, ['post', 'blog']));
+    }
+
+    // Category filter (for blogs)
+    if (filters?.category) {
+      conditions.push(eq(posts.category, filters.category));
+    }
+
+    // Search filter (search in content, title, excerpt)
+    if (filters?.search) {
+      const searchPattern = `%${filters.search}%`;
+      const searchCondition = or(
+        like(posts.content, searchPattern),
+        like(posts.title, searchPattern),
+        like(posts.excerpt, searchPattern),
+      );
+      if (searchCondition) {
+        conditions.push(searchCondition);
+      }
+    }
+
+    // Filter by site if provided
+    if (site) {
+      // First, find the site ID
+      const siteRecord = await this.db.query.sites.findFirst({
+        where: eq(sites.name, site),
+      });
+
+      if (siteRecord) {
+        // Get all user IDs associated with this site
+        const userSiteRecords = await this.db
+          .select({ userId: userSites.userId })
+          .from(userSites)
+          .where(eq(userSites.siteId, siteRecord.id));
+
+        const userIdsInSite = userSiteRecords.map((us) => us.userId);
+
+        if (userIdsInSite.length > 0) {
+          conditions.push(inArray(posts.userId, userIdsInSite));
+        } else {
+          // No users in this site, return empty
+          return [];
+        }
+      } else {
+        // Site not found, return empty
+        return [];
+      }
+    }
+
+    // Build query with pagination
+    const baseQuery = this.db
       .select({
         id: posts.id,
         type: posts.type,
@@ -170,8 +234,14 @@ export class PostsService {
       })
       .from(posts)
       .leftJoin(users, eq(posts.userId, users.id))
-      .where(eq(posts.type, 'post'))
-      .orderBy(desc(posts.createdAt));
+      .where(and(...conditions))
+      .orderBy(desc(posts.createdAt))
+      .$dynamic();
+
+    // Apply pagination
+    const allPosts = await (filters?.limit
+      ? baseQuery.limit(filters.limit).offset(filters?.offset || 0)
+      : baseQuery);
 
     return Promise.all(
       allPosts.map((post) => this.mapPostToResponse(post, userId)),
@@ -346,7 +416,38 @@ export class PostsService {
 
   // ==================== BLOGS (type='blog') ====================
 
-  async findAllBlogs(userId?: number): Promise<PostResponse[]> {
+  async findAllBlogs(userId?: number, site?: string): Promise<PostResponse[]> {
+    // Build where conditions
+    const conditions = [eq(posts.type, 'blog')];
+
+    // Filter by site if provided
+    if (site) {
+      // First, find the site ID
+      const siteRecord = await this.db.query.sites.findFirst({
+        where: eq(sites.name, site),
+      });
+
+      if (siteRecord) {
+        // Get all user IDs associated with this site
+        const userSiteRecords = await this.db
+          .select({ userId: userSites.userId })
+          .from(userSites)
+          .where(eq(userSites.siteId, siteRecord.id));
+
+        const userIdsInSite = userSiteRecords.map((us) => us.userId);
+
+        if (userIdsInSite.length > 0) {
+          conditions.push(inArray(posts.userId, userIdsInSite));
+        } else {
+          // No users in this site, return empty
+          return [];
+        }
+      } else {
+        // Site not found, return empty
+        return [];
+      }
+    }
+
     const allBlogs = await this.db
       .select({
         id: posts.id,
@@ -370,7 +471,7 @@ export class PostsService {
       })
       .from(posts)
       .leftJoin(users, eq(posts.userId, users.id))
-      .where(eq(posts.type, 'blog'))
+      .where(and(...conditions))
       .orderBy(desc(posts.createdAt));
 
     return Promise.all(

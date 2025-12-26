@@ -7,8 +7,14 @@ import React, {
   useCallback,
   useEffect,
 } from "react";
-import { postsReducer, blogsReducer, uiReducer, usersReducer } from "./reducers";
+import {
+  postsReducer,
+  blogsReducer,
+  uiReducer,
+  usersReducer,
+} from "./reducers";
 import type {
+  Post,
   PostsState,
   PostsAction,
   BlogsState,
@@ -39,9 +45,17 @@ export const useApp = () => {
   return context;
 };
 
-export const AppProvider = ({ children }: { children: React.ReactNode }) => {
+interface AppProviderProps {
+  children: React.ReactNode;
+  initialPosts?: Post[];
+}
+
+export const AppProvider = ({
+  children,
+  initialPosts = [],
+}: AppProviderProps) => {
   const [posts, dispatchPosts] = useReducer(postsReducer, {
-    data: [],
+    data: initialPosts,
     loading: false,
     error: null,
   });
@@ -69,9 +83,12 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
   });
 
   // Toast helper
-  const showToast = useCallback((message: string, type: "success" | "error" | "info" = "info") => {
-    dispatchUI({ type: "ADD_TOAST", payload: { message, type } });
-  }, []);
+  const showToast = useCallback(
+    (message: string, type: "success" | "error" | "info" = "info") => {
+      dispatchUI({ type: "ADD_TOAST", payload: { message, type } });
+    },
+    []
+  );
 
   // Auto-remove toasts
   useEffect(() => {

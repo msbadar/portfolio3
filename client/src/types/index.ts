@@ -42,22 +42,25 @@ export interface Post {
   time: string;
   liked: boolean;
   parentId?: number;
+
+  // Blog-specific fields (optional)
+  title?: string;
+  excerpt?: string;
+  coverImage?: string;
+  readTime?: string;
+  category?: string;
+  date?: string;
 }
 
 // Blog types (stored as posts with type='blog')
-export interface Blog {
-  id: number;
-  type?: PostType;
+export interface Blog extends Post {
+  type: 'blog';
   title: string;
   excerpt: string;
-  content: string;
   coverImage: string;
   readTime: string;
   date: string;
-  likes: number;
-  comments: number;
   category: string;
-  liked: boolean;
 }
 
 // Comment types (stored as posts with type='comment')

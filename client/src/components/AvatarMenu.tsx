@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { Icons } from "@/components/ui/Icons";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { useApp } from "@/context/AppContext";
+import { useAuth } from "@/context/AuthContext";
 import { useUsers } from "@/hooks/useUsers";
 
 export const AvatarMenu = () => {
@@ -14,7 +15,9 @@ export const AvatarMenu = () => {
   const menuRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const { ui, dispatchUI } = useApp();
-  const { users, toggleFollow, fetchSuggestions, fetchCurrentUser } = useUsers();
+  const { user: authUser, loading: authLoading } = useAuth();
+  const { users, toggleFollow, fetchSuggestions, fetchCurrentUser } =
+    useUsers();
 
   useEffect(() => {
     fetchCurrentUser();
@@ -40,14 +43,28 @@ export const AvatarMenu = () => {
 
   const navLinks = [
     { id: "home", href: "/", icon: Icons.home, label: "Home" },
-    { id: "search", href: "/search", icon: () => Icons.search(), label: "Search" },
+    {
+      id: "search",
+      href: "/search",
+      icon: () => Icons.search(),
+      label: "Search",
+    },
     { id: "blogs", href: "/blogs", icon: Icons.activity, label: "Blogs" },
-    { id: "profile", href: "/profile", icon: () => Icons.profile(), label: "Profile" },
   ];
 
   const profileLinks = [
-    { id: "edit-profile", href: "/profile/edit", icon: () => Icons.profile(), label: "Edit Profile" },
-    { id: "settings", href: "/settings", icon: () => Icons.menu(), label: "Settings" },
+    {
+      id: "edit-profile",
+      href: "/profile/edit",
+      icon: () => Icons.profile(),
+      label: "Edit Profile",
+    },
+    {
+      id: "settings",
+      href: "/settings",
+      icon: () => Icons.menu(),
+      label: "Settings",
+    },
     { id: "login", href: "/login", icon: () => Icons.close(), label: "Logout" },
   ];
 
@@ -64,73 +81,32 @@ export const AvatarMenu = () => {
     return pathname.startsWith(href);
   };
 
-  const user = users.currentUser;
-
   return (
-    <div ref={menuRef} className="fixed top-6 right-6 z-50">
-      {/* Avatar Button */}
+    <>
+      {/* Hamburger Menu Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative w-14 h-14 rounded-full ring-2 ring-[var(--accent)] ring-offset-2 ring-offset-[var(--background)] hover:ring-4 transition-all duration-300 shadow-lg overflow-hidden"
+        className="fixed top-6 right-6 z-50 w-12 h-12 rounded-xl bg-[var(--surface)] ring-2 ring-[var(--accent)] ring-offset-2 ring-offset-[var(--background)] hover:ring-4 transition-all duration-300 shadow-lg flex items-center justify-center"
       >
-        {user ? (
-          <Image
-            src={user.avatar}
-            alt={user.name}
-            width={56}
-            height={56}
-            className="w-full h-full object-cover"
-          />
-        ) : (
-          <div className="w-full h-full bg-[var(--surface)] flex items-center justify-center">
-            {Icons.profile()}
-          </div>
-        )}
-        {isOpen && (
-          <span className="absolute inset-0 bg-black/20 backdrop-blur-sm" />
-        )}
+        {isOpen ? Icons.close() : Icons.menu()}
       </button>
 
-      {/* Dropdown Menu */}
+      {/* Backdrop Overlay */}
       {isOpen && (
-        <div className="absolute top-16 right-0 w-96 max-h-[85vh] overflow-y-auto bg-[var(--surface)] backdrop-blur-xl rounded-3xl shadow-2xl border border-[var(--border)] animate-slideIn">
+        <div
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 animate-fadeIn"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+
+      {/* Right Sidebar */}
+      {isOpen && (
+        <div
+          ref={menuRef}
+          className="fixed top-0 right-0 h-full w-96 bg-[var(--surface)] shadow-2xl border-l border-[var(--border)] z-50 overflow-y-auto animate-slideInRight"
+        >
           {/* User Profile Section */}
-          {user ? (
-            <div className="p-6 border-b border-[var(--border)]">
-              <div className="flex items-center gap-4 mb-4">
-                <Image
-                  src={user.avatar}
-                  alt={user.name}
-                  width={56}
-                  height={56}
-                  className="w-14 h-14 rounded-2xl object-cover ring-2 ring-[var(--accent)]/30"
-                />
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1">
-                    <h3 className="font-bold text-base text-[var(--foreground)] truncate">
-                      {user.name}
-                    </h3>
-                    {user.verified && Icons.verified()}
-                  </div>
-                  <span className="text-sm text-[var(--muted)]">@{user.username}</span>
-                </div>
-              </div>
-              <div className="flex gap-4 text-sm">
-                <span className="text-[var(--muted)]">
-                  <strong className="text-[var(--foreground)] font-semibold">
-                    {user.followers}
-                  </strong>{" "}
-                  followers
-                </span>
-                <span className="text-[var(--muted)]">
-                  <strong className="text-[var(--foreground)] font-semibold">
-                    {user.following}
-                  </strong>{" "}
-                  following
-                </span>
-              </div>
-            </div>
-          ) : (
+          {authLoading ? (
             <div className="p-6 border-b border-[var(--border)]">
               <div className="flex items-center gap-4 mb-4">
                 <Skeleton className="w-14 h-14 rounded-2xl" />
@@ -140,11 +116,68 @@ export const AvatarMenu = () => {
                 </div>
               </div>
             </div>
+          ) : authUser ? (
+            <div className="p-6 border-b border-[var(--border)]">
+              <div className="flex items-center gap-4 mb-4">
+                <Image
+                  src={authUser.avatar || '/default-avatar.png'}
+                  alt={authUser.name}
+                  width={56}
+                  height={56}
+                  className="w-14 h-14 rounded-2xl object-cover ring-2 ring-[var(--accent)]/30"
+                />
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <h3 className="font-bold text-base text-[var(--foreground)] truncate">
+                      {authUser.name}
+                    </h3>
+                    {authUser.verified && Icons.verified()}
+                  </div>
+                  <span className="text-sm text-[var(--muted)]">
+                    @{authUser.username}
+                  </span>
+                </div>
+              </div>
+              <div className="flex gap-4 text-sm">
+                <span className="text-[var(--muted)]">
+                  <strong className="text-[var(--foreground)] font-semibold">
+                    {authUser.followers}
+                  </strong>{" "}
+                  followers
+                </span>
+                <span className="text-[var(--muted)]">
+                  <strong className="text-[var(--foreground)] font-semibold">
+                    {authUser.following}
+                  </strong>{" "}
+                  following
+                </span>
+              </div>
+            </div>
+          ) : (
+            <div className="p-6 border-b border-[var(--border)]">
+              <div className="text-center space-y-4">
+                <h3 className="font-bold text-lg text-[var(--foreground)]">
+                  Welcome to Threadz
+                </h3>
+                <p className="text-sm text-[var(--muted)]">
+                  Sign in to connect with others and share your thoughts
+                </p>
+                <Link
+                  href="/login"
+                  onClick={() => setIsOpen(false)}
+                  className="block w-full px-6 py-3 bg-[var(--accent)] text-[var(--background)] font-semibold rounded-xl hover:shadow-lg hover:shadow-[var(--accent)]/30 transition-all"
+                >
+                  Sign In
+                </Link>
+              </div>
+            </div>
           )}
 
           {/* Navigation Links */}
           <div className="p-4 border-b border-[var(--border)]">
-            <h4 className="text-xs font-semibold text-[var(--muted)] mb-3 px-2">NAVIGATION</h4>
+            <h4 className="text-xs font-semibold text-[var(--muted)] mb-3 px-2">
+              NAVIGATION
+            </h4>
             <nav className="space-y-1">
               {navLinks.map((item) => {
                 const isActive = getIsActive(item.href);
@@ -159,23 +192,31 @@ export const AvatarMenu = () => {
                         : "text-[var(--foreground)] hover:bg-[var(--surface-hover)]"
                     }`}
                   >
-                    <span className={isActive ? "text-[var(--background)]" : "text-[var(--muted)]"}>
+                    <span
+                      className={
+                        isActive
+                          ? "text-[var(--background)]"
+                          : "text-[var(--muted)]"
+                      }
+                    >
                       {item.icon(isActive)}
                     </span>
                     <span className="font-medium text-sm">{item.label}</span>
                   </Link>
                 );
               })}
-              <button
-                onClick={() => {
-                  dispatchUI({ type: "TOGGLE_COMPOSE", payload: true });
-                  setIsOpen(false);
-                }}
-                className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-[var(--foreground)] hover:bg-[var(--surface-hover)] transition-all duration-200"
-              >
-                <span className="text-[var(--muted)]">{Icons.create()}</span>
-                <span className="font-medium text-sm">Create Post</span>
-              </button>
+              {authUser && (
+                <button
+                  onClick={() => {
+                    dispatchUI({ type: "TOGGLE_COMPOSE", payload: true });
+                    setIsOpen(false);
+                  }}
+                  className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-[var(--foreground)] hover:bg-[var(--surface-hover)] transition-all duration-200"
+                >
+                  <span className="text-[var(--muted)]">{Icons.create()}</span>
+                  <span className="font-medium text-sm">Create Post</span>
+                </button>
+              )}
             </nav>
           </div>
 
@@ -187,7 +228,10 @@ export const AvatarMenu = () => {
                 placeholder="Search anything..."
                 value={ui.searchQuery}
                 onChange={(e) =>
-                  dispatchUI({ type: "SET_SEARCH_QUERY", payload: e.target.value })
+                  dispatchUI({
+                    type: "SET_SEARCH_QUERY",
+                    payload: e.target.value,
+                  })
                 }
                 className="w-full px-4 py-3 pl-10 bg-[var(--background)] border border-[var(--border)] rounded-xl text-sm text-[var(--foreground)] placeholder-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/30 focus:border-[var(--accent)]/50 transition-all"
               />
@@ -249,7 +293,9 @@ export const AvatarMenu = () => {
                           : "bg-[var(--accent)] text-[var(--background)] shadow-lg shadow-[var(--accent)]/30 hover:shadow-[var(--accent)]/40"
                       }`}
                     >
-                      {users.following[suggestedUser.id] ? "Following" : "Follow"}
+                      {users.following[suggestedUser.id]
+                        ? "Following"
+                        : "Follow"}
                     </button>
                   </div>
                 ))}
@@ -258,22 +304,26 @@ export const AvatarMenu = () => {
           </div>
 
           {/* Profile Actions */}
-          <div className="p-4 border-b border-[var(--border)]">
-            <h4 className="text-xs font-semibold text-[var(--muted)] mb-3 px-2">ACCOUNT</h4>
-            <nav className="space-y-1">
-              {profileLinks.map((item) => (
-                <Link
-                  key={item.id}
-                  href={item.href}
-                  onClick={() => setIsOpen(false)}
-                  className="flex items-center gap-3 px-4 py-3 rounded-xl text-[var(--foreground)] hover:bg-[var(--surface-hover)] transition-all duration-200"
-                >
-                  <span className="text-[var(--muted)]">{item.icon()}</span>
-                  <span className="font-medium text-sm">{item.label}</span>
-                </Link>
-              ))}
-            </nav>
-          </div>
+          {authUser && (
+            <div className="p-4 border-b border-[var(--border)]">
+              <h4 className="text-xs font-semibold text-[var(--muted)] mb-3 px-2">
+                ACCOUNT
+              </h4>
+              <nav className="space-y-1">
+                {profileLinks.map((item) => (
+                  <Link
+                    key={item.id}
+                    href={item.href}
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center gap-3 px-4 py-3 rounded-xl text-[var(--foreground)] hover:bg-[var(--surface-hover)] transition-all duration-200"
+                  >
+                    <span className="text-[var(--muted)]">{item.icon()}</span>
+                    <span className="font-medium text-sm">{item.label}</span>
+                  </Link>
+                ))}
+              </nav>
+            </div>
+          )}
 
           {/* Footer Links */}
           <div className="p-4">
@@ -295,6 +345,6 @@ export const AvatarMenu = () => {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 };

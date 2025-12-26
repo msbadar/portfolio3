@@ -4,9 +4,9 @@ import {
   NotFoundException,
   BadRequestException,
 } from '@nestjs/common';
-import { eq, and, sql, ne, notInArray, desc } from 'drizzle-orm';
+import { eq, and, sql, ne, notInArray, desc, inArray } from 'drizzle-orm';
 import { DATABASE_CONNECTION } from '../db/database.module';
-import { users, userFollows } from '../db/schema';
+import { users, userFollows, sites, userSites } from '../db/schema';
 import type { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import * as schema from '../db/schema';
 import type { UpdateUserDto } from './dto';
@@ -49,7 +49,10 @@ export class UsersService {
     return count.toString();
   }
 
-  async getSuggestions(userId?: number): Promise<SuggestionResponse[]> {
+  async getSuggestions(
+    userId?: number,
+    site?: string,
+  ): Promise<SuggestionResponse[]> {
     let excludeIds: number[] = [];
 
     if (userId) {
@@ -59,6 +62,48 @@ export class UsersService {
         .where(eq(userFollows.followerId, userId));
 
       excludeIds = [userId, ...followedUsers.map((f) => f.followingId)];
+    }
+
+    // If site is provided, filter users by site
+    let userIdsInSite: number[] | null = null;
+    if (site) {
+      // First, find the site ID
+      const siteRecord = await this.db.query.sites.findFirst({
+        where: eq(sites.name, site),
+      });
+
+      if (siteRecord) {
+        // Get all user IDs associated with this site
+        const userSiteRecords = await this.db
+          .select({ userId: userSites.userId })
+          .from(userSites)
+          .where(eq(userSites.siteId, siteRecord.id));
+
+        userIdsInSite = userSiteRecords.map((us) => us.userId);
+      } else {
+        // Site not found, return empty results
+        userIdsInSite = [];
+      }
+    }
+
+    // Build where conditions
+    const conditions: ReturnType<typeof eq>[] = [];
+
+    // Exclude followed users and self
+    if (excludeIds.length > 0) {
+      conditions.push(notInArray(users.id, excludeIds));
+    } else {
+      conditions.push(ne(users.id, 0));
+    }
+
+    // Filter by site if provided
+    if (userIdsInSite !== null) {
+      if (userIdsInSite.length > 0) {
+        conditions.push(inArray(users.id, userIdsInSite));
+      } else {
+        // No users in this site, return empty
+        return [];
+      }
     }
 
     const suggestedUsers = await this.db
@@ -71,11 +116,7 @@ export class UsersService {
         followers: users.followers,
       })
       .from(users)
-      .where(
-        excludeIds.length > 0
-          ? notInArray(users.id, excludeIds)
-          : ne(users.id, 0),
-      )
+      .where(and(...conditions))
       .orderBy(desc(users.followers))
       .limit(5);
 

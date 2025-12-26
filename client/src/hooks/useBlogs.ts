@@ -12,7 +12,8 @@ export const useBlogs = () => {
       const data = await api.blogs.getAll();
       dispatchBlogs({ type: "FETCH_SUCCESS", payload: data });
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Failed to fetch blogs";
+      const message =
+        error instanceof Error ? error.message : "Failed to fetch blogs";
       dispatchBlogs({ type: "FETCH_ERROR", payload: message });
       showToast(message, "error");
     }
@@ -44,7 +45,8 @@ export const useBlogs = () => {
         showToast("Blog created successfully!", "success");
         return newBlog;
       } catch (error) {
-        const message = error instanceof Error ? error.message : "Failed to create blog";
+        const message =
+          error instanceof Error ? error.message : "Failed to create blog";
         showToast(message, "error");
         throw error;
       }
@@ -70,7 +72,8 @@ export const useBlogs = () => {
         showToast("Blog updated successfully!", "success");
         return updatedBlog;
       } catch (error) {
-        const message = error instanceof Error ? error.message : "Failed to update blog";
+        const message =
+          error instanceof Error ? error.message : "Failed to update blog";
         showToast(message, "error");
         throw error;
       }
@@ -85,7 +88,8 @@ export const useBlogs = () => {
         dispatchBlogs({ type: "DELETE_BLOG", payload: blogId });
         showToast("Blog deleted successfully!", "success");
       } catch (error) {
-        const message = error instanceof Error ? error.message : "Failed to delete blog";
+        const message =
+          error instanceof Error ? error.message : "Failed to delete blog";
         showToast(message, "error");
         throw error;
       }

@@ -1,8 +1,8 @@
 "use client";
 
-import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { Icons } from "@/components/ui/Icons";
 import { Markdown } from "@/components/ui/Markdown";
 import { PostDropdown } from "@/components/PostDropdown";
@@ -19,6 +19,7 @@ interface PostProps {
 }
 
 export const Post = ({ post, onLike, onDelete }: PostProps) => {
+  const router = useRouter();
   const { showToast } = useApp();
   const { users } = useUsers();
   const MAX_CONTENT_LENGTH = 200;
@@ -28,12 +29,21 @@ export const Post = ({ post, onLike, onDelete }: PostProps) => {
     : post.content;
 
   const isOwnPost = users.currentUser?.username === post.user.username;
+  const isBlog = post.type === "blog";
+
+  const handlePostClick = () => {
+    router.push(`/posts/${post.id}`);
+  };
 
   const handleShare = async () => {
     const success = await shareContent({
       title: `Post by @${post.user.username}`,
-      text: post.content.slice(0, 100) + (post.content.length > 100 ? "..." : ""),
-      url: typeof window !== "undefined" ? `${window.location.origin}/posts/${post.id}` : undefined,
+      text:
+        post.content.slice(0, 100) + (post.content.length > 100 ? "..." : ""),
+      url:
+        typeof window !== "undefined"
+          ? `${window.location.origin}/posts/${post.id}`
+          : undefined,
     });
 
     if (success) {
@@ -56,7 +66,10 @@ export const Post = ({ post, onLike, onDelete }: PostProps) => {
   };
 
   return (
-    <article className="flex gap-4 p-8 bg-[var(--surface)] rounded-2xl shadow-card hover:shadow-card-hover hover:bg-[var(--surface-hover)] transition-all">
+    <article
+      onClick={handlePostClick}
+      className="flex gap-4 p-8 bg-[var(--surface)] rounded-2xl shadow-card hover:shadow-card-hover hover:bg-[var(--surface-hover)] transition-all cursor-pointer"
+    >
       <Image
         src={post.user.avatar}
         alt={post.user.name}
@@ -67,31 +80,66 @@ export const Post = ({ post, onLike, onDelete }: PostProps) => {
       <div className="flex-1 min-w-0">
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="font-semibold text-sm text-[var(--foreground)]">{post.user.username}</span>
-            {post.user.verified && <span className="flex-shrink-0">{Icons.verified()}</span>}
+            <span className="font-semibold text-sm text-[var(--foreground)]">
+              {post.user.username}
+            </span>
+            {post.user.verified && (
+              <span className="flex-shrink-0">{Icons.verified()}</span>
+            )}
             <span className="text-[var(--muted)] text-sm">• {post.time}</span>
+            {isBlog && post.category && (
+              <>
+                <span className="text-[var(--muted)] text-sm">•</span>
+                <span className="px-2.5 py-0.5 bg-[var(--accent)] text-white text-xs rounded-full font-medium">
+                  {post.category}
+                </span>
+              </>
+            )}
           </div>
-          <PostDropdown
-            postId={post.id}
-            isOwnPost={isOwnPost}
-            onSave={handleSave}
-            onReport={handleReport}
-            onDelete={isOwnPost ? handleDelete : undefined}
-          />
+          <div onClick={(e) => e.stopPropagation()}>
+            <PostDropdown
+              postId={post.id}
+              isOwnPost={isOwnPost}
+              onSave={handleSave}
+              onReport={handleReport}
+              onDelete={isOwnPost ? handleDelete : undefined}
+            />
+          </div>
         </div>
-        <div className="text-sm leading-relaxed mb-2 text-[var(--foreground)]">
-          <Markdown content={displayContent} />
-        </div>
-        {shouldTruncate && (
+        {isBlog && post.title && (
+          <h2 className="text-xl font-bold mb-2 text-[var(--foreground)]">
+            {post.title}
+          </h2>
+        )}
+        {isBlog && post.excerpt ? (
+          <p className="text-sm text-[var(--muted)] mb-2 leading-relaxed">
+            {post.excerpt}
+          </p>
+        ) : (
+          <div className="text-sm leading-relaxed mb-2 text-[var(--foreground)]">
+            <Markdown content={displayContent} />
+          </div>
+        )}
+        {shouldTruncate && !isBlog && (
           <Link
             href={`/posts/${post.id}`}
+            onClick={(e) => e.stopPropagation()}
             className="text-sm text-[var(--accent)] hover:underline mb-4 inline-block font-medium"
           >
             Read more
           </Link>
         )}
-        {!shouldTruncate && <div className="mb-4"></div>}
-        {post.image && (
+        {!shouldTruncate && !isBlog && <div className="mb-4"></div>}
+        {isBlog && post.coverImage ? (
+          <div className="mb-4 rounded-2xl overflow-hidden relative h-64">
+            <Image
+              src={post.coverImage}
+              alt={post.title || `Blog by ${post.user.username}`}
+              fill
+              className="object-cover"
+            />
+          </div>
+        ) : !isBlog && post.image ? (
           <div className="mb-4 rounded-2xl overflow-hidden relative h-96">
             <Image
               src={post.image}
@@ -100,10 +148,13 @@ export const Post = ({ post, onLike, onDelete }: PostProps) => {
               className="object-cover"
             />
           </div>
-        )}
+        ) : null}
         <div className="flex gap-2 flex-wrap">
           <button
-            onClick={() => onLike(post.id)}
+            onClick={(e) => {
+              e.stopPropagation();
+              onLike(post.id);
+            }}
             className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all ${
               post.liked
                 ? "text-[var(--accent)] bg-[var(--accent)]/10"
@@ -114,15 +165,22 @@ export const Post = ({ post, onLike, onDelete }: PostProps) => {
           </button>
           <Link
             href={`/posts/${post.id}`}
+            onClick={(e) => e.stopPropagation()}
             className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm text-[var(--muted)] hover:bg-[var(--background)] hover:text-[var(--foreground)] font-medium transition-all"
           >
             {Icons.comment()} {post.comments}
           </Link>
-          <button className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm text-[var(--muted)] hover:bg-[var(--background)] hover:text-[var(--foreground)] font-medium transition-all">
+          <button
+            onClick={(e) => e.stopPropagation()}
+            className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm text-[var(--muted)] hover:bg-[var(--background)] hover:text-[var(--foreground)] font-medium transition-all"
+          >
             {Icons.repost()} {post.reposts}
           </button>
-          <button 
-            onClick={handleShare}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              handleShare();
+            }}
             className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm text-[var(--muted)] hover:bg-[var(--background)] hover:text-[var(--foreground)] font-medium transition-all"
           >
             {Icons.share()}

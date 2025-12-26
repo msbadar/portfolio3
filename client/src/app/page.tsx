@@ -1,45 +1,28 @@
-"use client";
+import { AppProvider } from "@/context/AppContext";
+import { AppContent } from "@/components/AppContent";
+import { serverApi } from "@/lib/server-api";
 
-import React from "react";
-import { AppProvider, useApp } from "@/context/AppContext";
-import { AvatarMenu } from "@/components/AvatarMenu";
-import { MainContent } from "@/components/MainContent";
-import { BlogDetailView } from "@/components/BlogDetailView";
-import { ComposeModal } from "@/components/ComposeModal";
-import { ToastContainer } from "@/components/ui/Toast";
-import { useBlogs } from "@/hooks/useBlogs";
+interface HomeProps {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}
 
-// Toast Container with Context
-const ToastContainerWithContext = () => {
-  const { ui, dispatchUI } = useApp();
-  return (
-    <ToastContainer
-      toasts={ui.toasts}
-      onRemove={(id) => dispatchUI({ type: "REMOVE_TOAST", payload: id })}
-    />
-  );
-};
+// Server Component - fetches posts on the server
+export default async function App({ searchParams }: HomeProps) {
+  // Await searchParams (Next.js 15+ requirement)
+  const params = await searchParams;
 
-// Main App Content
-const AppContent = () => {
-  const { blogs } = useBlogs();
+  // Extract filters from URL search params
+  const filters = {
+    type: (params.type as "post" | "blog") || undefined,
+    category: params.category as string | undefined,
+    search: params.search as string | undefined,
+  };
+
+  // Fetch posts on the server for initial load with filters
+  const initialPosts = await serverApi.posts.getAll(filters);
 
   return (
-    <div className="flex min-h-screen bg-[var(--background)] font-sans text-[var(--foreground)]">
-      <AvatarMenu />
-      <div className="flex-1 max-w-5xl mx-auto w-full">
-        {blogs.selected ? <BlogDetailView /> : <MainContent />}
-      </div>
-      <ComposeModal />
-      <ToastContainerWithContext />
-    </div>
-  );
-};
-
-// Root App with Provider
-export default function App() {
-  return (
-    <AppProvider>
+    <AppProvider initialPosts={initialPosts}>
       <AppContent />
     </AppProvider>
   );

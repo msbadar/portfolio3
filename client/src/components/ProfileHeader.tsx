@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import Image from "next/image";
 import { Icons } from "@/components/ui/Icons";
 import { Markdown } from "@/components/ui/Markdown";
@@ -68,7 +69,31 @@ export const ProfileHeader = () => {
           </div>
           <div className="text-[var(--muted)] mb-5 max-w-2xl text-sm">
             {user.bio ? (
-              <Markdown content={user.bio} />
+              <>
+                <div className={user.bio.length > 200 ? "line-clamp-3" : ""}>
+                  <Markdown content={user.bio} />
+                </div>
+                {user.bio.length > 200 && (
+                  <Link
+                    href="/about"
+                    className="inline-flex items-center gap-1 text-[var(--accent)] hover:text-[var(--accent-dim)] font-medium text-sm mt-2 transition-colors"
+                  >
+                    Read more
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M6 12l4-4-4-4" />
+                    </svg>
+                  </Link>
+                )}
+              </>
             ) : (
               <p className="text-[var(--muted)] italic">No bio yet</p>
             )}

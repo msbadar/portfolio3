@@ -1,16 +1,18 @@
 import { apiClient } from "@/lib/api-client";
 import type { Post, Blog, User, Suggestion, Comment } from "@/types";
 
-interface PostsResponse {
-  posts: Post[];
+// Generic API response types
+interface ListResponse<T> {
+  [key: string]: T[];
 }
 
+interface ItemResponse<T> {
+  [key: string]: T;
+}
+
+// Specific response types (only when structure differs from generic)
 interface PostResponse {
   post: Post;
-}
-
-interface BlogsResponse {
-  blogs: Blog[];
 }
 
 interface BlogResponse {
@@ -38,17 +40,48 @@ interface FollowResponse {
   following: boolean;
 }
 
+// Generic CRUD operations
+const createCrudApi = <T>(
+  resource: string,
+  resourceKey: string,
+  listKey: string
+) => ({
+  async getAll(): Promise<T[]> {
+    const data = await apiClient.get<ListResponse<T>>(`/${resource}`);
+    return data[listKey];
+  },
+
+  async getById(id: number): Promise<T> {
+    const data = await apiClient.get<ItemResponse<T>>(`/${resource}/${id}`);
+    return data[resourceKey];
+  },
+
+  async delete(id: number): Promise<void> {
+    await apiClient.delete(`/${resource}/${id}`);
+  },
+
+  async like(id: number): Promise<LikeResponse> {
+    return apiClient.post<LikeResponse>(`/${resource}/${id}/like`);
+  },
+});
+
 const api = {
   // Posts API
   posts: {
-    async getAll(): Promise<Post[]> {
-      const data = await apiClient.get<PostsResponse>("/posts");
+    ...createCrudApi<Post>("posts", "post", "posts"),
+
+    // Override getAll to support filters
+    async getAll(filters?: {
+      type?: 'post' | 'blog' | 'comment';
+      category?: string;
+      search?: string;
+      limit?: number;
+      offset?: number;
+    }): Promise<Post[]> {
+      const data = await apiClient.get<ListResponse<Post>>("/posts", filters);
       return data.posts;
     },
-    async getById(id: number): Promise<Post> {
-      const data = await apiClient.get<PostResponse>(`/posts/${id}`);
-      return data.post;
-    },
+
     async create(post: { content: string; image?: string }): Promise<Post> {
       const data = await apiClient.post<PostResponse>("/posts", {
         content: post.content,
@@ -56,18 +89,19 @@ const api = {
       });
       return data.post;
     },
-    async like(postId: number): Promise<LikeResponse> {
-      return apiClient.post<LikeResponse>(`/posts/${postId}/like`);
-    },
-    async delete(postId: number): Promise<void> {
-      await apiClient.delete(`/posts/${postId}`);
-    },
+
     // Comments API (comments are stored as posts with type='comment')
     async getComments(postId: number): Promise<Comment[]> {
-      const data = await apiClient.get<CommentsResponse>(`/posts/${postId}/comments`);
+      const data = await apiClient.get<CommentsResponse>(
+        `/posts/${postId}/comments`
+      );
       return data.comments;
     },
-    async createComment(comment: { parentId: number; content: string }): Promise<Comment> {
+
+    async createComment(comment: {
+      parentId: number;
+      content: string;
+    }): Promise<Comment> {
       const data = await apiClient.post<CommentResponse>("/posts/comments", {
         parentId: comment.parentId,
         content: comment.content,
@@ -78,14 +112,8 @@ const api = {
 
   // Blogs API (blogs are stored as posts with type='blog')
   blogs: {
-    async getAll(): Promise<Blog[]> {
-      const data = await apiClient.get<BlogsResponse>("/blogs");
-      return data.blogs;
-    },
-    async getById(id: number): Promise<Blog> {
-      const data = await apiClient.get<BlogResponse>(`/blogs/${id}`);
-      return data.blog;
-    },
+    ...createCrudApi<Blog>("blogs", "blog", "blogs"),
+
     async create(blog: {
       title: string;
       content: string;
@@ -97,6 +125,7 @@ const api = {
       const data = await apiClient.post<BlogResponse>("/blogs", blog);
       return data.blog;
     },
+
     async update(
       blogId: number,
       blog: {
@@ -111,29 +140,27 @@ const api = {
       const data = await apiClient.put<BlogResponse>(`/blogs/${blogId}`, blog);
       return data.blog;
     },
-    async delete(blogId: number): Promise<void> {
-      await apiClient.delete(`/blogs/${blogId}`);
-    },
-    async like(blogId: number): Promise<LikeResponse> {
-      return apiClient.post<LikeResponse>(`/blogs/${blogId}/like`);
-    },
   },
 
   // Users API
   users: {
     async getSuggestions(): Promise<Suggestion[]> {
-      const data = await apiClient.get<SuggestionsResponse>("/users/suggestions");
+      const data = await apiClient.get<SuggestionsResponse>(
+        "/user/suggestions"
+      );
       return data.suggestions;
     },
     async follow(userId: number): Promise<FollowResponse> {
-      return apiClient.post<FollowResponse>(`/users/${userId}/follow`);
+      return apiClient.post<FollowResponse>(`/user/${userId}/follow`);
     },
     async getCurrentUser(): Promise<User> {
-      const data = await apiClient.get<{ success: boolean; user: User }>("/auth/me");
+      const data = await apiClient.get<{ success: boolean; user: User }>(
+        "/auth/me"
+      );
       return data.user;
     },
     async updateProfile(userData: Partial<User>): Promise<User> {
-      const data = await apiClient.put<{ user: User }>("/users/me", userData);
+      const data = await apiClient.put<{ user: User }>("/user/me", userData);
       return data.user;
     },
   },

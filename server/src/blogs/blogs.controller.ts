@@ -13,6 +13,7 @@ import { PostsService } from '../posts/posts.service';
 import { CreateBlogDto, UpdateBlogDto } from './dto';
 import { JwtAuthGuard, OptionalAuthGuard } from '../auth/guards';
 import { CurrentUser } from '../common/decorators';
+import { Site } from '../common/decorators/site.decorator';
 import type { JWTPayload } from '../auth/auth.service';
 
 // This controller provides backward-compatible /blogs endpoints
@@ -23,8 +24,14 @@ export class BlogsController {
 
   @Get()
   @UseGuards(OptionalAuthGuard)
-  async findAll(@CurrentUser() user: JWTPayload | null) {
-    const blogs = await this.postsService.findAllBlogs(user?.userId);
+  async findAll(
+    @CurrentUser() user: JWTPayload | null,
+    @Site() site: string | null,
+  ) {
+    const blogs = await this.postsService.findAllBlogs(
+      user?.userId,
+      site ?? undefined,
+    );
     return { blogs };
   }
 

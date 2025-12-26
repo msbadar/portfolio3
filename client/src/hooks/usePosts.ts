@@ -5,13 +5,18 @@ import api from "@/services/api";
 export const usePosts = () => {
   const { posts, dispatchPosts, showToast } = useApp();
 
-  const fetchPosts = useCallback(async () => {
+  const fetchPosts = useCallback(async (filters?: {
+    type?: 'post' | 'blog';
+    category?: string;
+    search?: string;
+  }) => {
     dispatchPosts({ type: "FETCH_START" });
     try {
-      const data = await api.posts.getAll();
+      const data = await api.posts.getAll(filters);
       dispatchPosts({ type: "FETCH_SUCCESS", payload: data });
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Failed to fetch posts";
+      const message =
+        error instanceof Error ? error.message : "Failed to fetch posts";
       dispatchPosts({ type: "FETCH_ERROR", payload: message });
       showToast(message, "error");
     }
@@ -25,7 +30,8 @@ export const usePosts = () => {
         showToast("Post created successfully!", "success");
         return true;
       } catch (error) {
-        const message = error instanceof Error ? error.message : "Failed to create post";
+        const message =
+          error instanceof Error ? error.message : "Failed to create post";
         showToast(message, "error");
         return false;
       }
@@ -67,7 +73,8 @@ export const usePosts = () => {
         dispatchPosts({ type: "DELETE_POST", payload: postId });
         showToast("Post deleted", "success");
       } catch (error) {
-        const message = error instanceof Error ? error.message : "Failed to delete post";
+        const message =
+          error instanceof Error ? error.message : "Failed to delete post";
         showToast(message, "error");
       }
     },

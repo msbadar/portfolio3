@@ -7,7 +7,8 @@ export const metadata: Metadata = {
     default: "Threadz - Social Platform",
     template: "%s | Threadz",
   },
-  description: "A modern social platform for sharing threads and blogs. Connect with others and share your thoughts.",
+  description:
+    "A modern social platform for sharing threads and blogs. Connect with others and share your thoughts.",
   keywords: ["social platform", "threads", "blogs", "community", "share"],
   authors: [{ name: "Threadz Team" }],
   creator: "Threadz",

@@ -96,3 +96,22 @@ export const passwordResetTokens = pgTable('password_reset_tokens', {
   used: boolean('used').default(false),
   createdAt: timestamp('created_at').defaultNow(),
 });
+
+// Sites table
+export const sites = pgTable('sites', {
+  id: serial('id').primaryKey(),
+  name: varchar('name', { length: 255 }).notNull().unique(),
+  createdAt: timestamp('created_at').defaultNow(),
+});
+
+// User sites junction table (many-to-many relationship)
+export const userSites = pgTable('user_sites', {
+  id: serial('id').primaryKey(),
+  userId: integer('user_id')
+    .references(() => users.id, { onDelete: 'cascade' })
+    .notNull(),
+  siteId: integer('site_id')
+    .references(() => sites.id, { onDelete: 'cascade' })
+    .notNull(),
+  createdAt: timestamp('created_at').defaultNow(),
+});
