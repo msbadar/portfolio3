@@ -9,6 +9,7 @@ import { DATABASE_CONNECTION } from '../db/database.module';
 import { users, userFollows } from '../db/schema';
 import type { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import * as schema from '../db/schema';
+import type { UpdateUserDto } from './dto';
 
 export interface SuggestionResponse {
   id: number;
@@ -17,6 +18,18 @@ export interface SuggestionResponse {
   avatar: string;
   verified: boolean;
   followers: string;
+}
+
+export interface UserProfileResponse {
+  id: string;
+  name: string;
+  username: string;
+  avatar: string;
+  verified: boolean;
+  bio?: string;
+  followers?: string;
+  following?: string;
+  link?: string;
 }
 
 @Injectable()
@@ -74,6 +87,54 @@ export class UsersService {
       verified: user.verified || false,
       followers: this.formatFollowers(user.followers || 0),
     }));
+  }
+
+  async updateProfile(
+    userId: number,
+    updateUserDto: UpdateUserDto,
+  ): Promise<UserProfileResponse> {
+    const existingUser = await this.db.query.users.findFirst({
+      where: eq(users.id, userId),
+    });
+
+    if (!existingUser) {
+      throw new NotFoundException('User not found');
+    }
+
+    const updateData: Partial<typeof users.$inferInsert> = {};
+
+    if (updateUserDto.name !== undefined) {
+      updateData.name = updateUserDto.name.trim();
+    }
+    if (updateUserDto.bio !== undefined) {
+      updateData.bio = updateUserDto.bio.trim();
+    }
+    if (updateUserDto.link !== undefined) {
+      updateData.link = updateUserDto.link.trim();
+    }
+    if (updateUserDto.avatar !== undefined) {
+      updateData.avatar = updateUserDto.avatar.trim();
+    }
+
+    updateData.updatedAt = new Date();
+
+    const [updatedUser] = await this.db
+      .update(users)
+      .set(updateData)
+      .where(eq(users.id, userId))
+      .returning();
+
+    return {
+      id: updatedUser.id.toString(),
+      name: updatedUser.name,
+      username: updatedUser.username,
+      avatar: updatedUser.avatar || '',
+      verified: updatedUser.verified || false,
+      bio: updatedUser.bio || undefined,
+      followers: this.formatFollowers(updatedUser.followers || 0),
+      following: this.formatFollowers(updatedUser.following || 0),
+      link: updatedUser.link || undefined,
+    };
   }
 
   async toggleFollow(

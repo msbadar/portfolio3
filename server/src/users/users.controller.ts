@@ -2,11 +2,14 @@ import {
   Controller,
   Get,
   Post,
+  Put,
+  Body,
   Param,
   UseGuards,
   ParseIntPipe,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
+import { UpdateUserDto } from './dto';
 import { JwtAuthGuard, OptionalAuthGuard } from '../auth/guards';
 import { CurrentUser } from '../common/decorators';
 import type { JWTPayload } from '../auth/auth.service';
@@ -20,6 +23,19 @@ export class UsersController {
   async getSuggestions(@CurrentUser() user: JWTPayload | null) {
     const suggestions = await this.usersService.getSuggestions(user?.userId);
     return { suggestions };
+  }
+
+  @Put('me')
+  @UseGuards(JwtAuthGuard)
+  async updateProfile(
+    @Body() updateUserDto: UpdateUserDto,
+    @CurrentUser() user: JWTPayload,
+  ) {
+    const updatedUser = await this.usersService.updateProfile(
+      user.userId,
+      updateUserDto,
+    );
+    return { user: updatedUser };
   }
 
   @Post(':id/follow')

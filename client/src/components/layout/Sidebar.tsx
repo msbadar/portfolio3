@@ -85,12 +85,24 @@ export const Sidebar = () => {
           />
         ))}
       </div>
-      <Link
-        href="/login"
-        className="w-12 h-12 flex items-center justify-center rounded-2xl text-[var(--muted)] hover:text-[var(--accent)] hover:bg-[var(--surface-hover)] transition-all"
-      >
-        {Icons.menu()}
-      </Link>
+      <div className="flex flex-col gap-3">
+        <Link
+          href="/settings"
+          className={`w-12 h-12 flex items-center justify-center rounded-2xl transition-all ${
+            getIsActive("/settings")
+              ? "bg-[var(--accent)] text-[var(--background)] shadow-lg shadow-[var(--accent)]/30"
+              : "text-[var(--muted)] hover:text-[var(--accent)] hover:bg-[var(--surface-hover)]"
+          }`}
+        >
+          {Icons.settings(getIsActive("/settings"))}
+        </Link>
+        <Link
+          href="/login"
+          className="w-12 h-12 flex items-center justify-center rounded-2xl text-[var(--muted)] hover:text-[var(--accent)] hover:bg-[var(--surface-hover)] transition-all"
+        >
+          {Icons.menu()}
+        </Link>
+      </div>
     </nav>
   );
 };

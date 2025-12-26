@@ -4,23 +4,30 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Icons } from "@/components/ui/Icons";
+import { Markdown } from "@/components/ui/Markdown";
+import { PostDropdown } from "@/components/PostDropdown";
 import { formatCount } from "@/utils/formatters";
 import { shareContent } from "@/utils/share";
 import { useApp } from "@/context/AppContext";
+import { useUsers } from "@/hooks/useUsers";
 import type { Post as PostType } from "@/types";
 
 interface PostProps {
   post: PostType;
   onLike: (postId: number) => void;
+  onDelete?: (postId: number) => void;
 }
 
-export const Post = ({ post, onLike }: PostProps) => {
+export const Post = ({ post, onLike, onDelete }: PostProps) => {
   const { showToast } = useApp();
+  const { users } = useUsers();
   const MAX_CONTENT_LENGTH = 200;
   const shouldTruncate = post.content.length > MAX_CONTENT_LENGTH;
   const displayContent = shouldTruncate
     ? post.content.slice(0, MAX_CONTENT_LENGTH) + "..."
     : post.content;
+
+  const isOwnPost = users.currentUser?.username === post.user.username;
 
   const handleShare = async () => {
     const success = await shareContent({
@@ -31,6 +38,20 @@ export const Post = ({ post, onLike }: PostProps) => {
 
     if (success) {
       showToast("Shared successfully!", "success");
+    }
+  };
+
+  const handleSave = () => {
+    showToast("Post saved!", "success");
+  };
+
+  const handleReport = () => {
+    showToast("Post reported. We'll review it shortly.", "info");
+  };
+
+  const handleDelete = () => {
+    if (onDelete) {
+      onDelete(post.id);
     }
   };
 
@@ -50,13 +71,17 @@ export const Post = ({ post, onLike }: PostProps) => {
             {post.user.verified && <span className="flex-shrink-0">{Icons.verified()}</span>}
             <span className="text-[var(--muted)] text-sm">• {post.time}</span>
           </div>
-          <button className="p-2 rounded-xl text-[var(--muted)] hover:bg-[var(--background)] hover:text-[var(--foreground)] transition-all flex-shrink-0 -mt-1">
-            {Icons.more()}
-          </button>
+          <PostDropdown
+            postId={post.id}
+            isOwnPost={isOwnPost}
+            onSave={handleSave}
+            onReport={handleReport}
+            onDelete={isOwnPost ? handleDelete : undefined}
+          />
         </div>
-        <p className="text-sm leading-relaxed mb-2 text-[var(--foreground)]">
-          {displayContent}
-        </p>
+        <div className="text-sm leading-relaxed mb-2 text-[var(--foreground)]">
+          <Markdown content={displayContent} />
+        </div>
         {shouldTruncate && (
           <Link
             href={`/posts/${post.id}`}

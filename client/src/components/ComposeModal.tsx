@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { Icons } from "@/components/ui/Icons";
+import { Markdown } from "@/components/ui/Markdown";
 import { useApp } from "@/context/AppContext";
 import { usePosts } from "@/hooks/usePosts";
 import { useUsers } from "@/hooks/useUsers";
@@ -11,15 +12,20 @@ export const ComposeModal = () => {
   const { ui, dispatchUI } = useApp();
   const { createPost } = usePosts();
   const { users } = useUsers();
+  const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
 
   const handleSubmit = async () => {
     if (!content.trim() || isSubmitting) return;
     setIsSubmitting(true);
-    const success = await createPost(content);
+    const fullContent = title.trim() ? `# ${title.trim()}\n\n${content}` : content;
+    const success = await createPost(fullContent);
     if (success) {
+      setTitle("");
       setContent("");
+      setShowPreview(false);
       dispatchUI({ type: "TOGGLE_COMPOSE", payload: false });
     }
     setIsSubmitting(false);
@@ -33,7 +39,7 @@ export const ComposeModal = () => {
       onClick={() => dispatchUI({ type: "TOGGLE_COMPOSE", payload: false })}
     >
       <div
-        className="bg-[var(--surface)] rounded-3xl w-full max-w-xl shadow-2xl shadow-black/50 animate-scaleIn overflow-hidden"
+        className="bg-[var(--surface)] rounded-3xl w-full max-w-xl shadow-2xl shadow-black/50 animate-scaleIn overflow-hidden max-h-[90vh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between px-6 py-5">
@@ -46,9 +52,18 @@ export const ComposeModal = () => {
             Cancel
           </button>
           <span className="font-bold text-lg text-[var(--foreground)]">New Thread</span>
-          <div className="w-16" />
+          <button
+            onClick={() => setShowPreview(!showPreview)}
+            className={`text-sm font-medium transition-colors ${
+              showPreview
+                ? "text-[var(--accent)]"
+                : "text-[var(--muted)] hover:text-[var(--foreground)]"
+            }`}
+          >
+            {showPreview ? "Edit" : "Preview"}
+          </button>
         </div>
-        <div className="px-6 pb-6">
+        <div className="px-6 pb-6 overflow-y-auto flex-1">
           <div className="flex gap-4">
             <div className="flex flex-col items-center flex-shrink-0">
               <Image
@@ -67,17 +82,41 @@ export const ComposeModal = () => {
               <span className="font-semibold text-sm block mb-3 text-[var(--foreground)]">
                 {users.currentUser?.username || "you"}
               </span>
-              <textarea
-                placeholder="Start a thread..."
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                autoFocus
-                className="w-full bg-transparent border-none text-base leading-relaxed resize-none outline-none min-h-32 text-[var(--foreground)] placeholder-[var(--muted)]"
-              />
+              {showPreview ? (
+                <div className="min-h-32 p-3 bg-[var(--background)] rounded-xl">
+                  <Markdown
+                    content={
+                      title.trim()
+                        ? `# ${title.trim()}\n\n${content}`
+                        : content || "*No content to preview*"
+                    }
+                  />
+                </div>
+              ) : (
+                <>
+                  <input
+                    type="text"
+                    placeholder="Title (optional)"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    className="w-full bg-transparent border-none text-lg font-semibold leading-relaxed outline-none mb-2 text-[var(--foreground)] placeholder-[var(--muted)]"
+                  />
+                  <textarea
+                    placeholder="Start a thread... (Markdown supported)"
+                    value={content}
+                    onChange={(e) => setContent(e.target.value)}
+                    autoFocus
+                    className="w-full bg-transparent border-none text-base leading-relaxed resize-none outline-none min-h-32 text-[var(--foreground)] placeholder-[var(--muted)]"
+                  />
+                </>
+              )}
               <div className="flex gap-2 mt-4">
                 <button className="p-2 rounded-xl text-[var(--muted)] hover:bg-[var(--surface-hover)] hover:text-[var(--accent)] transition-all">
                   {Icons.image()}
                 </button>
+                <span className="text-xs text-[var(--muted)] self-center ml-2">
+                  Markdown supported
+                </span>
               </div>
             </div>
           </div>

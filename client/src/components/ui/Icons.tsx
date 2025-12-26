@@ -21,6 +21,8 @@ import {
   Check,
   XCircle,
   Loader2,
+  Settings,
+  BarChart2,
 } from "lucide-react";
 
 export const Icons = {
@@ -95,4 +97,12 @@ export const Icons = {
   check: () => <Check size={16} strokeWidth={3} />,
   error: () => <XCircle size={16} strokeWidth={2} />,
   loader: () => <Loader2 size={20} strokeWidth={2} className="animate-spin" />,
+  settings: (active?: boolean) => (
+    <Settings
+      size={24}
+      fill={active ? "currentColor" : "none"}
+      strokeWidth={2}
+    />
+  ),
+  insights: () => <BarChart2 size={24} strokeWidth={2} />,
 };

@@ -1,14 +1,17 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { Icons } from "@/components/ui/Icons";
+import { Markdown } from "@/components/ui/Markdown";
 import { Skeleton } from "@/components/ui/Skeleton";
+import { EditProfileModal } from "@/components/EditProfileModal";
 import { useUsers } from "@/hooks/useUsers";
 
 export const ProfileHeader = () => {
   const { users } = useUsers();
   const user = users.currentUser;
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   if (!user) {
     return (
@@ -33,57 +36,73 @@ export const ProfileHeader = () => {
   }
 
   return (
-    <div className="relative border-b border-[var(--border)]">
-      <div className="h-40 bg-gradient-to-r from-[var(--accent)] via-[var(--accent-dim)] to-[#0d9488]" />
-      <div className="px-8 pb-6">
-        <div className="flex items-end gap-4 -mt-16 mb-6 flex-wrap sm:flex-nowrap">
-          <Image
-            src={user.avatar}
-            alt={user.name}
-            width={96}
-            height={96}
-            className="w-24 h-24 rounded-3xl object-cover ring-4 ring-[var(--background)] shadow-2xl flex-shrink-0"
-          />
-          <div className="flex-1 pb-2 min-w-0">
-            <div className="flex items-center gap-2 mb-1">
-              <h1 className="text-xl font-bold text-[var(--foreground)] truncate">
-                {user.name}
-              </h1>
-              <span className="flex-shrink-0">
-                {user.verified && Icons.verified()}
-              </span>
+    <>
+      <div className="relative border-b border-[var(--border)]">
+        <div className="h-40 bg-gradient-to-r from-[var(--accent)] via-[var(--accent-dim)] to-[#0d9488]" />
+        <div className="px-8 pb-6">
+          <div className="flex items-end gap-4 -mt-16 mb-6 flex-wrap sm:flex-nowrap">
+            <Image
+              src={user.avatar}
+              alt={user.name}
+              width={96}
+              height={96}
+              className="w-24 h-24 rounded-3xl object-cover ring-4 ring-[var(--background)] shadow-2xl flex-shrink-0"
+            />
+            <div className="flex-1 pb-2 min-w-0">
+              <div className="flex items-center gap-2 mb-1">
+                <h1 className="text-xl font-bold text-[var(--foreground)] truncate">
+                  {user.name}
+                </h1>
+                <span className="flex-shrink-0">
+                  {user.verified && Icons.verified()}
+                </span>
+              </div>
+              <span className="text-[var(--muted)]">@{user.username}</span>
             </div>
-            <span className="text-[var(--muted)]">@{user.username}</span>
+            <button
+              onClick={() => setIsEditModalOpen(true)}
+              className="px-4 py-2 bg-[var(--surface)] border border-[var(--border)] rounded-xl text-sm font-medium text-[var(--foreground)] hover:bg-[var(--surface-hover)] transition-colors flex-shrink-0"
+            >
+              Edit Profile
+            </button>
+          </div>
+          <div className="text-[var(--muted)] mb-5 max-w-2xl text-sm">
+            {user.bio ? (
+              <Markdown content={user.bio} />
+            ) : (
+              <p className="text-[var(--muted)] italic">No bio yet</p>
+            )}
+          </div>
+          <div className="flex items-center gap-6 text-sm flex-wrap">
+            <span className="text-[var(--muted)]">
+              <strong className="text-[var(--foreground)] font-semibold">
+                {user.followers}
+              </strong>{" "}
+              followers
+            </span>
+            <span className="text-[var(--muted)]">
+              <strong className="text-[var(--foreground)] font-semibold">
+                {user.following}
+              </strong>{" "}
+              following
+            </span>
+            {user.link && (
+              <a
+                href={`https://${user.link}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 text-[var(--accent)] hover:text-[var(--accent-dim)] font-medium transition-colors"
+              >
+                {Icons.link()} {user.link}
+              </a>
+            )}
           </div>
         </div>
-        <p className="text-[var(--muted)] mb-5 max-w-2xl leading-relaxed text-sm">
-          {user.bio}
-        </p>
-        <div className="flex items-center gap-6 text-sm flex-wrap">
-          <span className="text-[var(--muted)]">
-            <strong className="text-[var(--foreground)] font-semibold">
-              {user.followers}
-            </strong>{" "}
-            followers
-          </span>
-          <span className="text-[var(--muted)]">
-            <strong className="text-[var(--foreground)] font-semibold">
-              {user.following}
-            </strong>{" "}
-            following
-          </span>
-          {user.link && (
-            <a
-              href={`https://${user.link}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-[var(--accent)] hover:text-[var(--accent-dim)] font-medium transition-colors"
-            >
-              {Icons.link()} {user.link}
-            </a>
-          )}
-        </div>
       </div>
-    </div>
+      <EditProfileModal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+      />
+    </>
   );
 };
