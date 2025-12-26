@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { PostsModule } from './posts/posts.module';
 import { BlogsModule } from './blogs/blogs.module';
 import { UsersModule } from './users/users.module';
+import { ActivityPubModule } from './activitypub/activitypub.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { UsersModule } from './users/users.module';
     PostsModule,
     BlogsModule,
     UsersModule,
+    ActivityPubModule,
   ],
   controllers: [AppController],
   providers: [AppService],

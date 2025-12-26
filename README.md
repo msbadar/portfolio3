@@ -129,6 +129,19 @@ The client will be available at `http://localhost:3000`.
 - `GET /api/users/suggestions` - Get user suggestions
 - `POST /api/users/:id/follow` - Toggle follow on a user
 
+### ActivityPub (Federation)
+ActivityPub endpoints for federated social networking (Mastodon, Threads, etc.):
+
+- `GET /.well-known/webfinger` - WebFinger discovery (e.g., `?resource=acct:user@domain`)
+- `GET /.well-known/nodeinfo` - NodeInfo discovery
+- `GET /nodeinfo/2.1` - Server information (NodeInfo 2.1)
+- `GET /users/:username` - User actor profile (ActivityPub Actor)
+- `GET /users/:username/outbox` - User's activities/posts (ActivityPub Outbox)
+- `GET /users/:username/followers` - User's followers collection
+- `GET /users/:username/following` - User's following collection
+- `POST /users/:username/inbox` - Receive activities (ActivityPub Inbox)
+- `POST /inbox` - Shared inbox for server-wide activities
+
 ## Technologies
 
 ### Client
@@ -142,3 +155,4 @@ The client will be available at `http://localhost:3000`.
 - Drizzle ORM
 - PostgreSQL
 - JWT Authentication
+- ActivityPub (W3C decentralized social networking protocol)
