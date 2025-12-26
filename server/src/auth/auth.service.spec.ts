@@ -102,9 +102,7 @@ describe('AuthService', () => {
         email: 'nonexistent@example.com',
       });
 
-      expect(result.message).toContain(
-        'If an account exists with this email',
-      );
+      expect(result.message).toContain('If an account exists with this email');
     });
 
     it('should create reset token for existing user', async () => {
@@ -117,9 +115,7 @@ describe('AuthService', () => {
         email: 'test@example.com',
       });
 
-      expect(result.message).toContain(
-        'If an account exists with this email',
-      );
+      expect(result.message).toContain('If an account exists with this email');
       expect(mockDb.delete).toHaveBeenCalled();
       expect(mockDb.insert).toHaveBeenCalled();
     });
@@ -130,7 +126,10 @@ describe('AuthService', () => {
       mockDb.query.passwordResetTokens.findFirst.mockResolvedValue(null);
 
       await expect(
-        service.resetPassword({ token: 'invalid-token', password: 'newpassword' }),
+        service.resetPassword({
+          token: 'invalid-token',
+          password: 'newpassword',
+        }),
       ).rejects.toThrow(BadRequestException);
     });
 
