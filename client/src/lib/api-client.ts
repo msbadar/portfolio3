@@ -1,4 +1,20 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+// API URL configuration
+// In production, NEXT_PUBLIC_API_URL must be set, otherwise we throw an error
+// In development, we fall back to localhost
+const getApiUrl = (): string => {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  if (apiUrl) {
+    return apiUrl;
+  }
+  // Development fallback - only works when running locally
+  if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
+    return 'http://localhost:3001/api';
+  }
+  // Production without API URL configured - use relative path
+  return '/api';
+};
+
+const API_URL = getApiUrl();
 
 let authToken: string | null = null;
 

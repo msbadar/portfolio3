@@ -41,17 +41,21 @@ export class AuthService {
 
   private getJwtSecret(): Uint8Array {
     const secret = this.configService.get<string>('JWT_SECRET');
-    if (
-      !secret &&
-      this.configService.get<string>('NODE_ENV') === 'production'
-    ) {
-      throw new Error(
-        'JWT_SECRET environment variable is required in production',
+    const nodeEnv = this.configService.get<string>('NODE_ENV');
+
+    if (!secret) {
+      if (nodeEnv === 'production') {
+        throw new Error(
+          'JWT_SECRET environment variable is required in production',
+        );
+      }
+      // Development-only fallback with a warning
+      console.warn(
+        'WARNING: Using development fallback JWT secret. Set JWT_SECRET environment variable for production.',
       );
+      return new TextEncoder().encode('dev-secret-key-min-32-chars-long!');
     }
-    return new TextEncoder().encode(
-      secret || 'dev-secret-key-min-32-chars-long!',
-    );
+    return new TextEncoder().encode(secret);
   }
 
   async createToken(userId: number, email: string): Promise<string> {
