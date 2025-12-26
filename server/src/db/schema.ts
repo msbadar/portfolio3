@@ -104,3 +104,15 @@ export const sessions = pgTable('sessions', {
   expiresAt: timestamp('expires_at').notNull(),
   createdAt: timestamp('created_at').defaultNow(),
 });
+
+// Password reset tokens table
+export const passwordResetTokens = pgTable('password_reset_tokens', {
+  id: serial('id').primaryKey(),
+  userId: integer('user_id')
+    .references(() => users.id, { onDelete: 'cascade' })
+    .notNull(),
+  token: varchar('token', { length: 500 }).notNull().unique(),
+  expiresAt: timestamp('expires_at').notNull(),
+  used: boolean('used').default(false),
+  createdAt: timestamp('created_at').defaultNow(),
+});
