@@ -125,7 +125,7 @@ export class ActivityPubController {
   getFollowers(@Param('username') username: string, @Res() res: Response) {
     // Returns an empty collection for now
     // In a full implementation, this would return federated followers
-    const baseUrl = this.activityPubService['getBaseUrl']?.() || '';
+    const baseUrl = this.activityPubService.getBaseUrl();
     const actorUrl = `${baseUrl}/users/${username}`;
 
     return res.type(ACTIVITY_JSON).json({
@@ -140,7 +140,7 @@ export class ActivityPubController {
   @Get('users/:username/following')
   getFollowing(@Param('username') username: string, @Res() res: Response) {
     // Returns an empty collection for now
-    const baseUrl = this.activityPubService['getBaseUrl']?.() || '';
+    const baseUrl = this.activityPubService.getBaseUrl();
     const actorUrl = `${baseUrl}/users/${username}`;
 
     return res.type(ACTIVITY_JSON).json({

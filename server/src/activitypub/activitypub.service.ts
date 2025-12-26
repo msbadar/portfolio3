@@ -33,7 +33,7 @@ export class ActivityPubService {
         : 'http';
   }
 
-  private getBaseUrl(): string {
+  getBaseUrl(): string {
     return `${this.protocol}://${this.domain}`;
   }
 
