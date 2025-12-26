@@ -10,7 +10,13 @@ import {
   ParseIntPipe,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
-import { CreatePostDto, UpdatePostDto } from './dto';
+import {
+  CreatePostDto,
+  UpdatePostDto,
+  CreateBlogDto,
+  UpdateBlogDto,
+  CreateCommentDto,
+} from './dto';
 import { JwtAuthGuard, OptionalAuthGuard } from '../auth/guards';
 import { CurrentUser } from '../common/decorators';
 import type { JWTPayload } from '../auth/auth.service';
@@ -18,6 +24,8 @@ import type { JWTPayload } from '../auth/auth.service';
 @Controller('posts')
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
+
+  // ==================== POSTS (type='post') ====================
 
   @Get()
   @UseGuards(OptionalAuthGuard)
@@ -74,5 +82,64 @@ export class PostsController {
     @CurrentUser() user: JWTPayload,
   ) {
     return this.postsService.toggleLike(id, user.userId);
+  }
+
+  // ==================== BLOGS (type='blog') ====================
+
+  @Get('blogs/all')
+  @UseGuards(OptionalAuthGuard)
+  async findAllBlogs(@CurrentUser() user: JWTPayload | null) {
+    const blogs = await this.postsService.findAllBlogs(user?.userId);
+    return { blogs };
+  }
+
+  @Post('blogs')
+  @UseGuards(JwtAuthGuard)
+  async createBlog(
+    @Body() createBlogDto: CreateBlogDto,
+    @CurrentUser() user: JWTPayload,
+  ) {
+    const blog = await this.postsService.createBlog(createBlogDto, user.userId);
+    return { blog };
+  }
+
+  @Put('blogs/:id')
+  @UseGuards(JwtAuthGuard)
+  async updateBlog(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateBlogDto: UpdateBlogDto,
+    @CurrentUser() user: JWTPayload,
+  ) {
+    const blog = await this.postsService.updateBlog(
+      id,
+      updateBlogDto,
+      user.userId,
+    );
+    return { blog };
+  }
+
+  // ==================== COMMENTS (type='comment') ====================
+
+  @Get(':id/comments')
+  @UseGuards(OptionalAuthGuard)
+  async findComments(
+    @Param('id', ParseIntPipe) id: number,
+    @CurrentUser() user: JWTPayload | null,
+  ) {
+    const comments = await this.postsService.findComments(id, user?.userId);
+    return { comments };
+  }
+
+  @Post('comments')
+  @UseGuards(JwtAuthGuard)
+  async createComment(
+    @Body() createCommentDto: CreateCommentDto,
+    @CurrentUser() user: JWTPayload,
+  ) {
+    const comment = await this.postsService.createComment(
+      createCommentDto,
+      user.userId,
+    );
+    return { comment };
   }
 }

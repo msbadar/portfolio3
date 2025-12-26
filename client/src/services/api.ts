@@ -1,5 +1,5 @@
 import { apiClient } from "@/lib/api-client";
-import type { Post, Blog, User, Suggestion } from "@/types";
+import type { Post, Blog, User, Suggestion, Comment } from "@/types";
 
 interface PostsResponse {
   posts: Post[];
@@ -15,6 +15,14 @@ interface BlogsResponse {
 
 interface BlogResponse {
   blog: Blog;
+}
+
+interface CommentsResponse {
+  comments: Comment[];
+}
+
+interface CommentResponse {
+  comment: Comment;
 }
 
 interface SuggestionsResponse {
@@ -50,9 +58,21 @@ const api = {
     async delete(postId: number): Promise<void> {
       await apiClient.delete(`/posts/${postId}`);
     },
+    // Comments API (comments are stored as posts with type='comment')
+    async getComments(postId: number): Promise<Comment[]> {
+      const data = await apiClient.get<CommentsResponse>(`/posts/${postId}/comments`);
+      return data.comments;
+    },
+    async createComment(comment: { parentId: number; content: string }): Promise<Comment> {
+      const data = await apiClient.post<CommentResponse>("/posts/comments", {
+        parentId: comment.parentId,
+        content: comment.content,
+      });
+      return data.comment;
+    },
   },
 
-  // Blogs API
+  // Blogs API (blogs are stored as posts with type='blog')
   blogs: {
     async getAll(): Promise<Blog[]> {
       const data = await apiClient.get<BlogsResponse>("/blogs");

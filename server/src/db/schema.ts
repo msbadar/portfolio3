@@ -25,14 +25,24 @@ export const users = pgTable('users', {
   updatedAt: timestamp('updated_at').defaultNow(),
 });
 
-// Posts table
+// Unified Posts table - stores posts, blogs, and comments
+// type: 'post' for short posts, 'blog' for long-form content, 'comment' for comments
 export const posts = pgTable('posts', {
   id: serial('id').primaryKey(),
   userId: integer('user_id')
     .references(() => users.id, { onDelete: 'cascade' })
     .notNull(),
+  type: varchar('type', { length: 20 }).notNull().default('post'), // 'post', 'blog', 'comment'
+  parentId: integer('parent_id'), // Self-reference for comments (references posts.id)
   content: text('content').notNull(),
   image: varchar('image', { length: 500 }),
+  // Blog-specific fields (null for posts/comments)
+  title: varchar('title', { length: 255 }),
+  excerpt: text('excerpt'),
+  coverImage: varchar('cover_image', { length: 500 }),
+  readTime: varchar('read_time', { length: 50 }),
+  category: varchar('category', { length: 100 }),
+  // Engagement metrics
   likes: integer('likes').default(0),
   comments: integer('comments').default(0),
   reposts: integer('reposts').default(0),
@@ -40,25 +50,7 @@ export const posts = pgTable('posts', {
   updatedAt: timestamp('updated_at').defaultNow(),
 });
 
-// Blogs table
-export const blogs = pgTable('blogs', {
-  id: serial('id').primaryKey(),
-  userId: integer('user_id')
-    .references(() => users.id, { onDelete: 'cascade' })
-    .notNull(),
-  title: varchar('title', { length: 255 }).notNull(),
-  excerpt: text('excerpt'),
-  content: text('content').notNull(),
-  coverImage: varchar('cover_image', { length: 500 }),
-  readTime: varchar('read_time', { length: 50 }),
-  likes: integer('likes').default(0),
-  comments: integer('comments').default(0),
-  category: varchar('category', { length: 100 }),
-  createdAt: timestamp('created_at').defaultNow(),
-  updatedAt: timestamp('updated_at').defaultNow(),
-});
-
-// Post likes table (for tracking which users liked which posts)
+// Post likes table (for tracking which users liked which posts/blogs/comments)
 export const postLikes = pgTable('post_likes', {
   id: serial('id').primaryKey(),
   userId: integer('user_id')
@@ -66,18 +58,6 @@ export const postLikes = pgTable('post_likes', {
     .notNull(),
   postId: integer('post_id')
     .references(() => posts.id, { onDelete: 'cascade' })
-    .notNull(),
-  createdAt: timestamp('created_at').defaultNow(),
-});
-
-// Blog likes table
-export const blogLikes = pgTable('blog_likes', {
-  id: serial('id').primaryKey(),
-  userId: integer('user_id')
-    .references(() => users.id, { onDelete: 'cascade' })
-    .notNull(),
-  blogId: integer('blog_id')
-    .references(() => blogs.id, { onDelete: 'cascade' })
     .notNull(),
   createdAt: timestamp('created_at').defaultNow(),
 });

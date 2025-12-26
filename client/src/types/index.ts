@@ -28,8 +28,11 @@ export interface PostUser {
   verified: boolean;
 }
 
+export type PostType = "post" | "blog" | "comment";
+
 export interface Post {
   id: number;
+  type?: PostType;
   user: PostUser;
   content: string;
   image?: string;
@@ -38,11 +41,13 @@ export interface Post {
   reposts: number;
   time: string;
   liked: boolean;
+  parentId?: number;
 }
 
-// Blog types
+// Blog types (stored as posts with type='blog')
 export interface Blog {
   id: number;
+  type?: PostType;
   title: string;
   excerpt: string;
   content: string;
@@ -52,6 +57,19 @@ export interface Blog {
   likes: number;
   comments: number;
   category: string;
+  liked: boolean;
+}
+
+// Comment types (stored as posts with type='comment')
+export interface Comment {
+  id: number;
+  type: "comment";
+  parentId: number;
+  user: PostUser;
+  content: string;
+  likes: number;
+  comments: number;
+  time: string;
   liked: boolean;
 }
 

@@ -4,6 +4,7 @@ import React from "react";
 import Image from "next/image";
 import { Icons } from "@/components/ui/Icons";
 import { formatCount } from "@/utils/formatters";
+import { shareContent } from "@/utils/share";
 import { useBlogs } from "@/hooks/useBlogs";
 import { useUsers } from "@/hooks/useUsers";
 import { useApp } from "@/context/AppContext";
@@ -11,8 +12,22 @@ import { useApp } from "@/context/AppContext";
 export const BlogDetailView = () => {
   const { blogs, clearSelection, likeBlog } = useBlogs();
   const { users, toggleBookmark } = useUsers();
-  const { dispatchBlogs } = useApp();
+  const { dispatchBlogs, showToast } = useApp();
   const blog = blogs.selected;
+
+  const handleShare = async () => {
+    if (!blog) return;
+    
+    const success = await shareContent({
+      title: blog.title,
+      text: blog.excerpt,
+      url: typeof window !== "undefined" ? `${window.location.origin}/blogs/${blog.id}` : undefined,
+    });
+
+    if (success) {
+      showToast("Shared successfully!", "success");
+    }
+  };
 
   const renderMarkdown = (content: string) => {
     return content.split("\n").map((line, i) => {
@@ -149,7 +164,10 @@ export const BlogDetailView = () => {
             <button className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-[var(--muted)] hover:bg-[var(--surface-hover)] font-medium transition-all">
               {Icons.comment()} {formatCount(blog.comments)}
             </button>
-            <button className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-[var(--muted)] hover:bg-[var(--surface-hover)] font-medium transition-all ml-auto">
+            <button 
+              onClick={handleShare}
+              className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-[var(--muted)] hover:bg-[var(--surface-hover)] font-medium transition-all ml-auto"
+            >
               {Icons.share()} Share
             </button>
           </div>

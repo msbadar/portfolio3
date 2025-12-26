@@ -9,20 +9,22 @@ import {
   UseGuards,
   ParseIntPipe,
 } from '@nestjs/common';
-import { BlogsService } from './blogs.service';
+import { PostsService } from '../posts/posts.service';
 import { CreateBlogDto, UpdateBlogDto } from './dto';
 import { JwtAuthGuard, OptionalAuthGuard } from '../auth/guards';
 import { CurrentUser } from '../common/decorators';
 import type { JWTPayload } from '../auth/auth.service';
 
+// This controller provides backward-compatible /blogs endpoints
+// All data is stored in the unified posts table with type='blog'
 @Controller('blogs')
 export class BlogsController {
-  constructor(private readonly blogsService: BlogsService) {}
+  constructor(private readonly postsService: PostsService) {}
 
   @Get()
   @UseGuards(OptionalAuthGuard)
   async findAll(@CurrentUser() user: JWTPayload | null) {
-    const blogs = await this.blogsService.findAll(user?.userId);
+    const blogs = await this.postsService.findAllBlogs(user?.userId);
     return { blogs };
   }
 
@@ -32,7 +34,7 @@ export class BlogsController {
     @Param('id', ParseIntPipe) id: number,
     @CurrentUser() user: JWTPayload | null,
   ) {
-    const blog = await this.blogsService.findOne(id, user?.userId);
+    const blog = await this.postsService.findOne(id, user?.userId);
     return { blog };
   }
 
@@ -42,7 +44,7 @@ export class BlogsController {
     @Body() createBlogDto: CreateBlogDto,
     @CurrentUser() user: JWTPayload,
   ) {
-    const blog = await this.blogsService.create(createBlogDto, user.userId);
+    const blog = await this.postsService.createBlog(createBlogDto, user.userId);
     return { blog };
   }
 
@@ -53,7 +55,11 @@ export class BlogsController {
     @Body() updateBlogDto: UpdateBlogDto,
     @CurrentUser() user: JWTPayload,
   ) {
-    const blog = await this.blogsService.update(id, updateBlogDto, user.userId);
+    const blog = await this.postsService.updateBlog(
+      id,
+      updateBlogDto,
+      user.userId,
+    );
     return { blog };
   }
 
@@ -63,7 +69,7 @@ export class BlogsController {
     @Param('id', ParseIntPipe) id: number,
     @CurrentUser() user: JWTPayload,
   ) {
-    await this.blogsService.delete(id, user.userId);
+    await this.postsService.delete(id, user.userId);
     return { success: true };
   }
 
@@ -73,6 +79,6 @@ export class BlogsController {
     @Param('id', ParseIntPipe) id: number,
     @CurrentUser() user: JWTPayload,
   ) {
-    return this.blogsService.toggleLike(id, user.userId);
+    return this.postsService.toggleLike(id, user.userId);
   }
 }
