@@ -131,6 +131,16 @@ export const LoginForm = () => {
             className="w-full px-4 py-3 bg-[var(--background)] border border-[var(--border)] rounded-xl text-[var(--foreground)] focus:outline-none focus:border-[var(--accent)] transition-colors"
             placeholder="••••••••"
           />
+          {!isRegister && (
+            <div className="mt-2 text-right">
+              <a
+                href="/forgot-password"
+                className="text-[var(--accent)] hover:underline text-sm"
+              >
+                Forgot password?
+              </a>
+            </div>
+          )}
         </div>
 
         <button

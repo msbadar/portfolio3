@@ -9,7 +9,12 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { AuthService, JWTPayload } from './auth.service';
-import { LoginDto, RegisterDto } from './dto';
+import {
+  LoginDto,
+  RegisterDto,
+  ForgotPasswordDto,
+  ResetPasswordDto,
+} from './dto';
 import { JwtAuthGuard } from './guards';
 
 @Controller('auth')
@@ -44,6 +49,27 @@ export class AuthController {
     // In a JWT-based auth system, logout is typically handled client-side
     // by removing the token from storage
     return { success: true };
+  }
+
+  @Post('forgot-password')
+  @HttpCode(HttpStatus.OK)
+  async forgotPassword(@Body() forgotPasswordDto: ForgotPasswordDto) {
+    const result = await this.authService.forgotPassword(forgotPasswordDto);
+    return {
+      success: true,
+      message: result.message,
+      ...(result.resetToken && { resetToken: result.resetToken }),
+    };
+  }
+
+  @Post('reset-password')
+  @HttpCode(HttpStatus.OK)
+  async resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
+    await this.authService.resetPassword(resetPasswordDto);
+    return {
+      success: true,
+      message: 'Password has been reset successfully.',
+    };
   }
 
   @Get('me')

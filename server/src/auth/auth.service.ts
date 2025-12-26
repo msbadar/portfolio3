@@ -1,11 +1,22 @@
-import { Injectable, Inject, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  Inject,
+  UnauthorizedException,
+  BadRequestException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { SignJWT, jwtVerify } from 'jose';
 import * as bcrypt from 'bcryptjs';
-import { eq, or } from 'drizzle-orm';
+import { randomBytes } from 'crypto';
+import { eq, or, and, gt } from 'drizzle-orm';
 import { DATABASE_CONNECTION } from '../db/database.module';
-import { users } from '../db/schema';
-import { LoginDto, RegisterDto } from './dto';
+import { users, passwordResetTokens } from '../db/schema';
+import {
+  LoginDto,
+  RegisterDto,
+  ForgotPasswordDto,
+  ResetPasswordDto,
+} from './dto';
 import type { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import * as schema from '../db/schema';
 
@@ -182,5 +193,90 @@ export class AuthService {
     }
 
     return this.formatAuthUser(user);
+  }
+
+  async forgotPassword(
+    forgotPasswordDto: ForgotPasswordDto,
+  ): Promise<{ message: string; resetToken?: string }> {
+    const { email } = forgotPasswordDto;
+
+    const user = await this.db.query.users.findFirst({
+      where: eq(users.email, email),
+    });
+
+    // Always return success message to prevent email enumeration
+    if (!user) {
+      return {
+        message:
+          'If an account exists with this email, a password reset link has been sent.',
+      };
+    }
+
+    // Generate a secure random token
+    const resetToken = randomBytes(32).toString('hex');
+
+    // Token expires in 1 hour
+    const expiresAt = new Date(Date.now() + 60 * 60 * 1000);
+
+    // Delete any existing reset tokens for this user
+    await this.db
+      .delete(passwordResetTokens)
+      .where(eq(passwordResetTokens.userId, user.id));
+
+    // Create new reset token
+    await this.db.insert(passwordResetTokens).values({
+      userId: user.id,
+      token: resetToken,
+      expiresAt,
+      used: false,
+    });
+
+    // In a production app, you would send an email here
+    // For now, we return the token in the response (only in development)
+    const nodeEnv = this.configService.get<string>('NODE_ENV');
+    if (nodeEnv !== 'production') {
+      return {
+        message:
+          'If an account exists with this email, a password reset link has been sent.',
+        resetToken,
+      };
+    }
+
+    return {
+      message:
+        'If an account exists with this email, a password reset link has been sent.',
+    };
+  }
+
+  async resetPassword(resetPasswordDto: ResetPasswordDto): Promise<void> {
+    const { token, password } = resetPasswordDto;
+
+    // Find the reset token
+    const resetTokenRecord = await this.db.query.passwordResetTokens.findFirst({
+      where: and(
+        eq(passwordResetTokens.token, token),
+        eq(passwordResetTokens.used, false),
+        gt(passwordResetTokens.expiresAt, new Date()),
+      ),
+    });
+
+    if (!resetTokenRecord) {
+      throw new BadRequestException('Invalid or expired reset token');
+    }
+
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Update the user's password
+    await this.db
+      .update(users)
+      .set({ password: hashedPassword, updatedAt: new Date() })
+      .where(eq(users.id, resetTokenRecord.userId));
+
+    // Mark the token as used
+    await this.db
+      .update(passwordResetTokens)
+      .set({ used: true })
+      .where(eq(passwordResetTokens.id, resetTokenRecord.id));
   }
 }

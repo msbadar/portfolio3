@@ -7,7 +7,16 @@ import React, {
   useCallback,
   useEffect,
 } from "react";
-import type { AuthUser, LoginCredentials, RegisterCredentials, AuthResponse } from "@/lib/auth-types";
+import type {
+  AuthUser,
+  LoginCredentials,
+  RegisterCredentials,
+  AuthResponse,
+  ForgotPasswordCredentials,
+  ResetPasswordCredentials,
+  ForgotPasswordResponse,
+  ResetPasswordResponse,
+} from "@/lib/auth-types";
 import { apiClient, setAuthToken, getAuthToken } from "@/lib/api-client";
 
 interface AuthContextType {
@@ -17,6 +26,8 @@ interface AuthContextType {
   register: (credentials: RegisterCredentials) => Promise<AuthResponse>;
   logout: () => Promise<void>;
   refreshUser: () => Promise<void>;
+  forgotPassword: (credentials: ForgotPasswordCredentials) => Promise<ForgotPasswordResponse>;
+  resetPassword: (credentials: ResetPasswordCredentials) => Promise<ResetPasswordResponse>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -105,6 +116,26 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, []);
 
+  const forgotPassword = useCallback(async (credentials: ForgotPasswordCredentials): Promise<ForgotPasswordResponse> => {
+    try {
+      const data = await apiClient.post<ForgotPasswordResponse>("/auth/forgot-password", credentials);
+      return data;
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "An error occurred";
+      return { success: false, message: "", error: message };
+    }
+  }, []);
+
+  const resetPassword = useCallback(async (credentials: ResetPasswordCredentials): Promise<ResetPasswordResponse> => {
+    try {
+      const data = await apiClient.post<ResetPasswordResponse>("/auth/reset-password", credentials);
+      return data;
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "An error occurred";
+      return { success: false, message: "", error: message };
+    }
+  }, []);
+
   const value = {
     user,
     loading,
@@ -112,6 +143,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     register,
     logout,
     refreshUser,
+    forgotPassword,
+    resetPassword,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
