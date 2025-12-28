@@ -275,7 +275,7 @@ const DashboardContent = () => {
     setSavingBlog(false);
   };
 
-  const activeBlogId = selectedBlog?.id ?? blogs.data[0]?.id ?? "";
+  const activeBlogId = selectedBlog?.id ?? blogs.data[0]?.id ?? null;
   const initialDomain = users.currentUser?.link || "";
 
   return (
