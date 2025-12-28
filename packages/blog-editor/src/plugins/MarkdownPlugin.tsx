@@ -75,9 +75,15 @@ export function MarkdownPlugin({
   // Initialize content from markdown
   useEffect(() => {
     if (initialContent) {
-      editor.update(() => {
-        $convertFromMarkdownString(initialContent, BLOG_TRANSFORMERS);
-      });
+      // Use a small delay to ensure the editor is fully mounted
+      const timer = setTimeout(() => {
+        editor.update(() => {
+          const root = $getRoot();
+          root.clear();
+          $convertFromMarkdownString(initialContent, BLOG_TRANSFORMERS);
+        });
+      }, 0);
+      return () => clearTimeout(timer);
     }
   }, [editor, initialContent]);
 

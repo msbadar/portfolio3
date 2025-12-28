@@ -17,7 +17,6 @@ import { AutoLinkNode, LinkNode } from '@lexical/link';
 import { TableNode, TableCellNode, TableRowNode } from '@lexical/table';
 import { HashtagNode } from '@lexical/hashtag';
 import { OverflowNode } from '@lexical/overflow';
-import { HorizontalRuleNode } from '@lexical/react/LexicalHorizontalRuleNode';
 import { EditorState, SerializedEditorState, $getRoot } from 'lexical';
 import { $convertToMarkdownString } from '@lexical/markdown';
 import { Settings } from 'lucide-react';
@@ -114,7 +113,6 @@ export function BlogEditor({
         TableRowNode,
         HashtagNode,
         OverflowNode,
-        HorizontalRuleNode,
         CustomHRNode,
         ImageNode,
       ],
