@@ -42,19 +42,9 @@ export default function EditorPage() {
 
   return (
     <div className="min-h-screen bg-[var(--background)]">
-      <div className="max-w-4xl mx-auto py-8 px-4">
-        <header className="mb-8">
-          <h1 className="text-3xl font-bold text-[var(--foreground)] mb-2">
-            Blog Editor Demo
-          </h1>
-          <p className="text-[var(--muted)]">
-            A comprehensive, Medium-like blog editor built with Lexical. Select text to see the inline formatting menu. Click the settings button on the right to add metadata.
-          </p>
-        </header>
-
-        <BlogEditor
-          placeholder="Start writing your amazing blog post..."
-          initialContent={`# Welcome to the Blog Editor
+      <BlogEditor
+        placeholder="Start writing your amazing blog post... Type '/' for commands"
+        initialContent={`# Welcome to the Blog Editor
 
 This is a **comprehensive** blog editor with support for:
 
@@ -66,20 +56,20 @@ This is a **comprehensive** blog editor with support for:
 
 ## Try it out
 
-Select any text to see the inline formatting menu, or click the settings button on the right to add metadata like title, description, and keywords.`}
-          initialMetadata={{
-            title: "My Amazing Blog Post",
-            description: "A demo of the blog editor capabilities",
-            keywords: ["blog", "editor", "demo"],
-            author: "Demo Author",
-          }}
-          onSave={handleSave}
-          onImageUpload={handleImageUpload}
-          showWordCount={true}
-          showCharCount={true}
-          showReadingTime={true}
-          fullPage={false}
-        />
+Select any text to see the inline formatting menu. Type "/" for slash commands to insert blocks. Click the + button on empty lines to add content.`}
+        initialMetadata={{
+          title: "My Amazing Blog Post",
+          description: "A demo of the blog editor capabilities",
+          keywords: ["blog", "editor", "demo"],
+          author: "Demo Author",
+        }}
+        onSave={handleSave}
+        onImageUpload={handleImageUpload}
+        showWordCount={true}
+        showCharCount={true}
+        showReadingTime={true}
+        fullPage={true}
+      />
 
         {savedContent && (
           <div className="mt-8 p-6 bg-[var(--surface)] rounded-xl border border-[var(--border)]">
@@ -113,7 +103,6 @@ Select any text to see the inline formatting menu, or click the settings button 
             </pre>
           </div>
         )}
-      </div>
     </div>
   );
 }

@@ -19,13 +19,15 @@ import { HashtagNode } from '@lexical/hashtag';
 import { OverflowNode } from '@lexical/overflow';
 import { EditorState, SerializedEditorState, $getRoot } from 'lexical';
 import { $convertToMarkdownString } from '@lexical/markdown';
-import { Settings } from 'lucide-react';
+import { SlidersHorizontal } from 'lucide-react';
 
 import { defaultTheme, editorStyles } from '../themes';
 import { ImageNode } from '../plugins/ImageNode';
 import { HorizontalRuleNode as CustomHRNode } from '../plugins/HorizontalRuleNode';
 import { ImagePlugin } from '../plugins/ImagePlugin';
 import { FloatingToolbarPlugin } from '../plugins/FloatingToolbarPlugin';
+import { PlusButtonPlugin } from '../plugins/PlusButtonPlugin';
+import { SlashCommandsPlugin } from '../plugins/SlashCommandsPlugin';
 import { MarkdownPlugin, BLOG_TRANSFORMERS } from '../plugins/MarkdownPlugin';
 import { MetadataPopup } from './MetadataPopup';
 import {
@@ -191,7 +193,7 @@ export function BlogEditor({
         className={`blog-editor-container ${fullPage ? 'full-page' : ''} ${className}`}
       >
         <LexicalComposer initialConfig={initialConfig}>
-          <div style={{ position: 'relative' }}>
+          <div style={{ position: 'relative', paddingLeft: '40px' }}>
             <RichTextPlugin
               contentEditable={
                 <ContentEditable
@@ -204,7 +206,13 @@ export function BlogEditor({
               placeholder={<Placeholder text={placeholder} />}
               ErrorBoundary={LexicalErrorBoundary}
             />
-            {!readOnly && <FloatingToolbarPlugin />}
+            {!readOnly && (
+              <>
+                <FloatingToolbarPlugin />
+                <PlusButtonPlugin onImageUpload={onImageUpload} />
+                <SlashCommandsPlugin onImageUpload={onImageUpload} />
+              </>
+            )}
           </div>
 
           <HistoryPlugin />
@@ -260,7 +268,7 @@ export function BlogEditor({
           </div>
         )}
 
-        {/* Metadata button */}
+        {/* Metadata button - top right */}
         <button
           type="button"
           className="blog-editor-metadata-button"
@@ -268,7 +276,7 @@ export function BlogEditor({
           title="Blog settings"
           aria-label="Open blog settings"
         >
-          <Settings size={24} />
+          <SlidersHorizontal size={20} />
         </button>
 
         {/* Metadata popup */}

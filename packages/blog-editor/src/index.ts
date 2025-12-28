@@ -16,6 +16,8 @@ export {
   ImagePlugin,
   INSERT_IMAGE_COMMAND,
   FloatingToolbarPlugin,
+  PlusButtonPlugin,
+  SlashCommandsPlugin,
   MarkdownPlugin,
   useMarkdownExport,
   useMarkdownImport,

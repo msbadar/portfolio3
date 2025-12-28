@@ -6,6 +6,8 @@ export type { SerializedHorizontalRuleNode } from './HorizontalRuleNode';
 
 export { ImagePlugin, INSERT_IMAGE_COMMAND } from './ImagePlugin';
 export { FloatingToolbarPlugin } from './FloatingToolbarPlugin';
+export { PlusButtonPlugin } from './PlusButtonPlugin';
+export { SlashCommandsPlugin } from './SlashCommandsPlugin';
 export {
   MarkdownPlugin,
   useMarkdownExport,
