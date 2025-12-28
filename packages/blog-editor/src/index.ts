@@ -15,7 +15,7 @@ export {
   $isHorizontalRuleNode,
   ImagePlugin,
   INSERT_IMAGE_COMMAND,
-  ToolbarPlugin,
+  FloatingToolbarPlugin,
   MarkdownPlugin,
   useMarkdownExport,
   useMarkdownImport,

@@ -351,10 +351,9 @@ export const editorStyles = `
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem 1rem;
-  border: 1px solid var(--border, #e0e0e0);
-  border-top: none;
-  border-radius: 0 0 0.5rem 0.5rem;
+  padding: 0.75rem 1rem;
+  margin-top: 0.5rem;
+  border-radius: 0.5rem;
   background: var(--surface, #f8f8f8);
   font-size: 0.75rem;
   color: var(--muted, #737373);
@@ -629,5 +628,93 @@ export const editorStyles = `
   border-radius: 0.375rem;
   cursor: pointer;
   font-size: 0.875rem;
+}
+
+/* Floating inline toolbar (Notion/Medium style) */
+.blog-editor-floating-toolbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 8px;
+  background: var(--foreground, #1a1a1a);
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  z-index: 1000;
+  transition: opacity 0.15s ease;
+  will-change: transform;
+}
+
+.blog-editor-floating-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  color: var(--background, #ffffff);
+  transition: all 0.1s ease;
+}
+
+.blog-editor-floating-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.blog-editor-floating-btn.active {
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+}
+
+.blog-editor-floating-divider {
+  width: 1px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 0 4px;
+}
+
+.blog-editor-floating-link-input {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.blog-editor-floating-link-input input {
+  width: 200px;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.15);
+  color: var(--background, #ffffff);
+  font-size: 13px;
+  outline: none;
+}
+
+.blog-editor-floating-link-input input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.blog-editor-floating-link-input input:focus {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.blog-editor-floating-link-btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--background, #ffffff);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.1s ease;
+}
+
+.blog-editor-floating-link-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
 }
 `;

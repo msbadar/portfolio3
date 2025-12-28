@@ -48,8 +48,7 @@ export default function EditorPage() {
             Blog Editor Demo
           </h1>
           <p className="text-[var(--muted)]">
-            A comprehensive, Medium-like blog editor built with Lexical. Click the
-            settings button on the right to add metadata.
+            A comprehensive, Medium-like blog editor built with Lexical. Select text to see the inline formatting menu. Click the settings button on the right to add metadata.
           </p>
         </header>
 
@@ -67,7 +66,7 @@ This is a **comprehensive** blog editor with support for:
 
 ## Try it out
 
-Use the toolbar above to format your content, or click the settings button on the right to add metadata like title, description, and keywords.`}
+Select any text to see the inline formatting menu, or click the settings button on the right to add metadata like title, description, and keywords.`}
           initialMetadata={{
             title: "My Amazing Blog Post",
             description: "A demo of the blog editor capabilities",

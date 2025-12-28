@@ -25,7 +25,7 @@ import { defaultTheme, editorStyles } from '../themes';
 import { ImageNode } from '../plugins/ImageNode';
 import { HorizontalRuleNode as CustomHRNode } from '../plugins/HorizontalRuleNode';
 import { ImagePlugin } from '../plugins/ImagePlugin';
-import { ToolbarPlugin } from '../plugins/ToolbarPlugin';
+import { FloatingToolbarPlugin } from '../plugins/FloatingToolbarPlugin';
 import { MarkdownPlugin, BLOG_TRANSFORMERS } from '../plugins/MarkdownPlugin';
 import { MetadataPopup } from './MetadataPopup';
 import {
@@ -60,7 +60,7 @@ export function BlogEditor({
   onMetadataChange,
   onSave,
   onImageUpload,
-  onFileUpload,
+  onFileUpload: _onFileUpload,
   fullPage = false,
   theme: customTheme,
   readOnly = false,
@@ -191,27 +191,20 @@ export function BlogEditor({
         className={`blog-editor-container ${fullPage ? 'full-page' : ''} ${className}`}
       >
         <LexicalComposer initialConfig={initialConfig}>
-          {!readOnly && (
-            <ToolbarPlugin
-              onImageUpload={onImageUpload}
-              onFileUpload={onFileUpload}
-              disabled={readOnly}
-            />
-          )}
-
           <div style={{ position: 'relative' }}>
             <RichTextPlugin
               contentEditable={
                 <ContentEditable
                   className="blog-editor-root"
                   style={{
-                    borderRadius: readOnly ? '0.5rem' : '0 0 0.5rem 0.5rem',
+                    borderRadius: '0.5rem',
                   }}
                 />
               }
               placeholder={<Placeholder text={placeholder} />}
               ErrorBoundary={LexicalErrorBoundary}
             />
+            {!readOnly && <FloatingToolbarPlugin />}
           </div>
 
           <HistoryPlugin />

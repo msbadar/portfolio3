@@ -5,7 +5,7 @@ export { HorizontalRuleNode, $createHorizontalRuleNode, $isHorizontalRuleNode } 
 export type { SerializedHorizontalRuleNode } from './HorizontalRuleNode';
 
 export { ImagePlugin, INSERT_IMAGE_COMMAND } from './ImagePlugin';
-export { ToolbarPlugin } from './ToolbarPlugin';
+export { FloatingToolbarPlugin } from './FloatingToolbarPlugin';
 export {
   MarkdownPlugin,
   useMarkdownExport,
