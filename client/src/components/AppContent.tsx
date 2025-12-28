@@ -5,6 +5,7 @@ import { AvatarMenu } from "@/components/AvatarMenu";
 import { MainContent } from "@/components/MainContent";
 import { ComposeModal } from "@/components/ComposeModal";
 import { ToastContainer } from "@/components/ui/Toast";
+import { Chat } from "@/components/Chat";
 
 // Toast Container with Context
 const ToastContainerWithContext = () => {
@@ -27,6 +28,7 @@ export const AppContent = () => {
       </div>
       <ComposeModal />
       <ToastContainerWithContext />
+      <Chat />
     </div>
   );
 };
