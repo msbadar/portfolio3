@@ -523,7 +523,7 @@ export const MarkdownEditor = forwardRef<MarkdownEditorRef, MarkdownEditorProps>
 
         {/* Editor / Preview Area */}
         <div
-          className={`relative border border-t-0 border-[var(--border)] rounded-b-xl overflow-hidden ${
+          className={`relative border border-t-0 border-[var(--border)] overflow-hidden ${
             isDragging ? "ring-2 ring-[var(--accent)] bg-[var(--accent)]/5" : ""
           }`}
           onDrop={handleDrop}

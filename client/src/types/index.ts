@@ -57,7 +57,7 @@ export interface Blog extends Post {
   type: 'blog';
   title: string;
   excerpt: string;
-  coverImage: string;
+  coverImage?: string;
   readTime: string;
   date: string;
   category: string;
