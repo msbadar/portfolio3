@@ -1,0 +1,80 @@
+{
+  "name": "@portfolio/blog-editor",
+  "version": "1.0.0",
+  "description": "A comprehensive blog editor with Lexical, supporting markdown, file uploads, and image editing",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "lint": "eslint src",
+    "type-check": "tsc --noEmit",
+    "test": "jest --passWithNoTests",
+    "clean": "rm -rf dist"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "dependencies": {
+    "@lexical/clipboard": "^0.30.0",
+    "@lexical/code": "^0.30.0",
+    "@lexical/file": "^0.30.0",
+    "@lexical/hashtag": "^0.30.0",
+    "@lexical/headless": "^0.30.0",
+    "@lexical/history": "^0.30.0",
+    "@lexical/html": "^0.30.0",
+    "@lexical/link": "^0.30.0",
+    "@lexical/list": "^0.30.0",
+    "@lexical/markdown": "^0.30.0",
+    "@lexical/overflow": "^0.30.0",
+    "@lexical/plain-text": "^0.30.0",
+    "@lexical/react": "^0.30.0",
+    "@lexical/rich-text": "^0.30.0",
+    "@lexical/selection": "^0.30.0",
+    "@lexical/table": "^0.30.0",
+    "@lexical/text": "^0.30.0",
+    "@lexical/utils": "^0.30.0",
+    "lexical": "^0.30.0",
+    "lucide-react": "^0.562.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@typescript-eslint/eslint-plugin": "^8.20.0",
+    "@typescript-eslint/parser": "^8.20.0",
+    "eslint": "^9",
+    "jest": "^30.0.0",
+    "jest-environment-jsdom": "^30.0.0",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "ts-jest": "^29.2.5",
+    "tsup": "^8.4.0",
+    "typescript": "^5"
+  },
+  "keywords": [
+    "editor",
+    "blog",
+    "markdown",
+    "lexical",
+    "react",
+    "wysiwyg",
+    "rich-text"
+  ],
+  "author": "",
+  "license": "MIT"
+}
