@@ -118,6 +118,8 @@ export const uiReducer = (state: UIState, action: UIAction): UIState => {
       return { ...state, profileTab: action.payload };
     case "TOGGLE_COMPOSE":
       return { ...state, showCompose: action.payload ?? !state.showCompose };
+    case "TOGGLE_BLOG_COMPOSE":
+      return { ...state, showBlogCompose: action.payload ?? !state.showBlogCompose };
     case "SET_SEARCH_QUERY":
       return { ...state, searchQuery: action.payload };
     case "ADD_TOAST": {

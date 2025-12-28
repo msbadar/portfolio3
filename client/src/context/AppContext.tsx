@@ -71,6 +71,7 @@ export const AppProvider = ({
     activeTab: "home",
     profileTab: "threads",
     showCompose: false,
+    showBlogCompose: false,
     searchQuery: "",
     toasts: [],
   });

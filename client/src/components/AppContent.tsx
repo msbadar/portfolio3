@@ -4,6 +4,7 @@ import { useApp } from "@/context/AppContext";
 import { AvatarMenu } from "@/components/AvatarMenu";
 import { MainContent } from "@/components/MainContent";
 import { ComposeModal } from "@/components/ComposeModal";
+import { BlogComposeModal } from "@/components/BlogComposeModal";
 import { ToastContainer } from "@/components/ui/Toast";
 
 // Toast Container with Context
@@ -26,6 +27,7 @@ export const AppContent = () => {
         <MainContent />
       </div>
       <ComposeModal />
+      <BlogComposeModal />
       <ToastContainerWithContext />
     </div>
   );

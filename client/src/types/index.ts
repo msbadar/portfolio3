@@ -94,6 +94,7 @@ export interface UIState {
   activeTab: string;
   profileTab: string;
   showCompose: boolean;
+  showBlogCompose: boolean;
   searchQuery: string;
   toasts: Toast[];
 }
@@ -137,6 +138,7 @@ export type UIAction =
   | { type: "SET_ACTIVE_TAB"; payload: string }
   | { type: "SET_PROFILE_TAB"; payload: string }
   | { type: "TOGGLE_COMPOSE"; payload?: boolean }
+  | { type: "TOGGLE_BLOG_COMPOSE"; payload?: boolean }
   | { type: "SET_SEARCH_QUERY"; payload: string }
   | { type: "ADD_TOAST"; payload: { message: string; type: "success" | "error" | "info" } }
   | { type: "REMOVE_TOAST"; payload: number };

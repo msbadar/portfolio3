@@ -4,14 +4,17 @@ import React, { useEffect, useState, useRef } from "react";
 import { usePosts } from "@/hooks/usePosts";
 import { usePostFilters } from "@/hooks/usePostFilters";
 import { useUsers } from "@/hooks/useUsers";
+import { useApp } from "@/context/AppContext";
 import { ProfileHeader } from "@/components/ProfileHeader";
 import { Post } from "@/components/Post";
 import { PostSkeleton } from "@/components/ui/Skeleton";
+import { PenLine, FileText } from "lucide-react";
 
 export const MainContent = () => {
   const { posts, fetchPosts, likePost } = usePosts();
   const { filters, setFilters } = usePostFilters();
   const { fetchCurrentUser } = useUsers();
+  const { dispatchUI } = useApp();
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
@@ -44,6 +47,14 @@ export const MainContent = () => {
   const handleCloseSearch = () => {
     setIsSearchExpanded(false);
     setFilters({ search: undefined });
+  };
+
+  const handleCreatePost = () => {
+    dispatchUI({ type: "TOGGLE_COMPOSE", payload: true });
+  };
+
+  const handleCreateBlog = () => {
+    dispatchUI({ type: "TOGGLE_BLOG_COMPOSE", payload: true });
   };
 
   return (
@@ -85,8 +96,31 @@ export const MainContent = () => {
           </button>
         </div>
 
-        {/* Expandable Search */}
+        {/* Create Buttons & Search */}
         <div className="flex items-center gap-2">
+          {/* Create Post Button */}
+          <button
+            onClick={handleCreatePost}
+            className="flex items-center gap-1.5 px-3 py-2 text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface)] rounded-xl transition-all text-sm"
+            title="Create Post"
+          >
+            <PenLine size={16} />
+            <span className="hidden sm:inline">Post</span>
+          </button>
+          
+          {/* Create Blog Button */}
+          <button
+            onClick={handleCreateBlog}
+            className="flex items-center gap-1.5 px-3 py-2 text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface)] rounded-xl transition-all text-sm"
+            title="Create Blog"
+          >
+            <FileText size={16} />
+            <span className="hidden sm:inline">Blog</span>
+          </button>
+
+          <div className="w-px h-5 bg-[var(--border)] mx-1" />
+
+          {/* Expandable Search */}
           {!isSearchExpanded ? (
             <button
               onClick={() => setIsSearchExpanded(true)}

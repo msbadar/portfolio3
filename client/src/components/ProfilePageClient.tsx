@@ -10,6 +10,7 @@ import { ProfileHeader } from "@/components/ProfileHeader";
 import { Post } from "@/components/Post";
 import { BlogCard } from "@/components/BlogCard";
 import { ComposeModal } from "@/components/ComposeModal";
+import { BlogComposeModal } from "@/components/BlogComposeModal";
 import { PostSkeleton, BlogSkeleton } from "@/components/ui/Skeleton";
 import { ToastContainer } from "@/components/ui/Toast";
 
@@ -107,6 +108,7 @@ const ProfileContent = () => {
         )}
       </main>
       <ComposeModal />
+      <BlogComposeModal />
     </>
   );
 };
