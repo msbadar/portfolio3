@@ -19,9 +19,9 @@ import { HashtagNode } from '@lexical/hashtag';
 import { OverflowNode } from '@lexical/overflow';
 import { EditorState, SerializedEditorState, $getRoot } from 'lexical';
 import { $convertToMarkdownString } from '@lexical/markdown';
-import { SlidersHorizontal } from 'lucide-react';
+import { ArrowLeft, Settings } from 'lucide-react';
 
-import { defaultTheme, editorStyles } from '../themes';
+import { defaultTheme } from '../themes';
 import { ImageNode } from '../plugins/ImageNode';
 import { HorizontalRuleNode as CustomHRNode } from '../plugins/HorizontalRuleNode';
 import { ImagePlugin } from '../plugins/ImagePlugin';
@@ -61,6 +61,7 @@ export function BlogEditor({
   onChange,
   onMetadataChange,
   onSave,
+  onBack,
   onImageUpload,
   onFileUpload: _onFileUpload,
   fullPage = false,
@@ -185,23 +186,69 @@ export function BlogEditor({
   }, [content, metadata, editorState, autoSaveInterval, onSave]);
 
   return (
-    <>
-      {/* Inject styles */}
-      <style>{editorStyles}</style>
+    <div
+      className={`blog-editor-container ${fullPage ? 'full-page' : ''} ${className}`}
+    >
+      {/* Status bar */}
+      <div className="blog-editor-status-bar">
+        <div className="blog-editor-status-bar-left">
+          {onBack && (
+              <button
+                type="button"
+                className="blog-editor-status-bar-button"
+                onClick={onBack}
+                title="Go back"
+                aria-label="Go back"
+              >
+                <ArrowLeft size={18} />
+              </button>
+            )}
+            <button
+              type="button"
+              className="blog-editor-status-bar-button"
+              onClick={() => setShowMetadata(true)}
+              title="Blog settings"
+              aria-label="Open blog settings"
+            >
+              <Settings size={18} />
+            </button>
+        </div>
+        {(showWordCount || showCharCount || showReadingTime) && (
+          <div className="blog-editor-status-bar-stats">
+            {showWordCount && <span>{wordCount} words</span>}
+              {showCharCount && (
+                <span>
+                  {charCount}
+                  {maxLength ? `/${maxLength}` : ''} characters
+                </span>
+              )}
+            {showReadingTime && <span>{readingTime} min read</span>}
+          </div>
+        )}
+        {onSave && (
+          <button
+            type="button"
+            className="blog-editor-save-button"
+            onClick={() => {
+              if (editorState) {
+                onSave(
+                  content,
+                  metadata,
+                  editorState.toJSON() as SerializedEditorState
+                );
+              }
+            }}
+          >
+            Save
+          </button>
+        )}
+        </div>
 
-      <div
-        className={`blog-editor-container ${fullPage ? 'full-page' : ''} ${className}`}
-      >
         <LexicalComposer initialConfig={initialConfig}>
-          <div style={{ position: 'relative', paddingLeft: '40px' }}>
+          <div className="blog-editor-content-wrapper">
             <RichTextPlugin
               contentEditable={
-                <ContentEditable
-                  className="blog-editor-root"
-                  style={{
-                    borderRadius: '0.5rem',
-                  }}
-                />
+                <ContentEditable className="blog-editor-root" />
               }
               placeholder={<Placeholder text={placeholder} />}
               ErrorBoundary={LexicalErrorBoundary}
@@ -226,68 +273,14 @@ export function BlogEditor({
           <OnChangePlugin onChange={handleChange} />
         </LexicalComposer>
 
-        {/* Status bar */}
-        {(showWordCount || showCharCount || showReadingTime) && (
-          <div className="blog-editor-status-bar">
-            <div style={{ display: 'flex', gap: '1rem' }}>
-              {showWordCount && <span>{wordCount} words</span>}
-              {showCharCount && (
-                <span>
-                  {charCount}
-                  {maxLength ? `/${maxLength}` : ''} characters
-                </span>
-              )}
-              {showReadingTime && <span>{readingTime} min read</span>}
-            </div>
-            {onSave && (
-              <button
-                type="button"
-                onClick={() => {
-                  if (editorState) {
-                    onSave(
-                      content,
-                      metadata,
-                      editorState.toJSON() as SerializedEditorState
-                    );
-                  }
-                }}
-                style={{
-                  background: 'var(--accent, #4a4a4a)',
-                  color: 'var(--background, #ffffff)',
-                  border: 'none',
-                  padding: '0.375rem 0.75rem',
-                  borderRadius: '0.375rem',
-                  cursor: 'pointer',
-                  fontSize: '0.75rem',
-                  fontWeight: 500,
-                }}
-              >
-                Save
-              </button>
-            )}
-          </div>
-        )}
-
-        {/* Metadata button - top right */}
-        <button
-          type="button"
-          className="blog-editor-metadata-button"
-          onClick={() => setShowMetadata(true)}
-          title="Blog settings"
-          aria-label="Open blog settings"
-        >
-          <SlidersHorizontal size={20} />
-        </button>
-
-        {/* Metadata popup */}
-        <MetadataPopup
-          isOpen={showMetadata}
-          onClose={() => setShowMetadata(false)}
-          metadata={metadata}
-          onMetadataChange={handleMetadataChange}
-          onImageUpload={onImageUpload}
-        />
-      </div>
-    </>
+      {/* Metadata popup */}
+      <MetadataPopup
+        isOpen={showMetadata}
+        onClose={() => setShowMetadata(false)}
+        metadata={metadata}
+        onMetadataChange={handleMetadataChange}
+        onImageUpload={onImageUpload}
+      />
+    </div>
   );
 }

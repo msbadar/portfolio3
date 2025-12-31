@@ -35,6 +35,8 @@ import {
   UNDO_COMMAND,
   $isNodeSelection,
   $insertNodes,
+  LexicalNode,
+  RangeSelection,
 } from 'lexical';
 import { $setBlocksType } from '@lexical/selection';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
@@ -100,10 +102,10 @@ export function ToolbarPlugin({
   const [editor] = useLexicalComposerContext();
   const [activeEditor, setActiveEditor] = useState(editor);
   const [blockType, setBlockType] = useState<BlockFormatType>('paragraph');
-  const [_selectedElementKey, setSelectedElementKey] = useState<string | null>(null);
-  const [_fontSize, setFontSize] = useState<string>('16px');
-  const [_fontColor, setFontColor] = useState<string>('#000000');
-  const [_bgColor, setBgColor] = useState<string>('#ffffff');
+  const [, setSelectedElementKey] = useState<string | null>(null);
+  const [, setFontSize] = useState<string>('16px');
+  const [, setFontColor] = useState<string>('#000000');
+  const [, setBgColor] = useState<string>('#ffffff');
   const [isBold, setIsBold] = useState(false);
   const [isItalic, setIsItalic] = useState(false);
   const [isUnderline, setIsUnderline] = useState(false);
@@ -115,8 +117,8 @@ export function ToolbarPlugin({
   const [isHighlight, setIsHighlight] = useState(false);
   const [canUndo, setCanUndo] = useState(false);
   const [canRedo, setCanRedo] = useState(false);
-  const [_isRTL, setIsRTL] = useState(false);
-  const [_codeLanguage, setCodeLanguage] = useState<string>('');
+  const [, setIsRTL] = useState(false);
+  const [, setCodeLanguage] = useState<string>('');
   const [elementFormat, setElementFormat] = useState<ElementFormatType>('left');
   const [showLinkInput, setShowLinkInput] = useState(false);
   const [linkUrl, setLinkUrl] = useState('');
@@ -689,17 +691,7 @@ function Divider(): React.JSX.Element {
   return <div className="blog-editor-toolbar-divider" />;
 }
 
-interface SelectionPoint {
-  getNode: () => any;
-  offset: number;
-}
-
-interface SelectionType {
-  anchor: SelectionPoint;
-  focus: SelectionPoint;
-}
-
-function getSelectedNode(selection: SelectionType): any {
+function getSelectedNode(selection: RangeSelection): LexicalNode {
   const anchorNode = selection.anchor.getNode();
   const focusNode = selection.focus.getNode();
   if (anchorNode === focusNode) {

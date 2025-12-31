@@ -84,6 +84,8 @@ export interface BlogEditorProps {
   onMetadataChange?: (metadata: BlogMetadata) => void;
   /** Called when save is triggered */
   onSave?: (content: string, metadata: BlogMetadata, editorState: SerializedEditorState) => void;
+  /** Called when back button is clicked */
+  onBack?: () => void;
   /** Image upload handler */
   onImageUpload?: (file: File) => Promise<ImageUploadResult>;
   /** File upload handler */

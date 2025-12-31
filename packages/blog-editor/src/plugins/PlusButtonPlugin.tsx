@@ -300,10 +300,32 @@ function PlusButton({
     const buttonRect = button.getBoundingClientRect();
     const anchorRect = anchorElem.getBoundingClientRect();
 
-    setMenuPosition({
-      top: buttonRect.bottom - anchorRect.top + 4,
-      left: buttonRect.left - anchorRect.left,
-    });
+    // Menu dimensions (from CSS)
+    const menuHeight = 400; // max-height
+    const menuWidth = 280;
+    const gap = 4;
+
+    // Calculate initial position (below the button)
+    let top = buttonRect.bottom - anchorRect.top + gap;
+    let left = buttonRect.left - anchorRect.left;
+
+    // Check if menu would go off the bottom of the viewport
+    const spaceBelow = window.innerHeight - buttonRect.bottom;
+    const spaceAbove = buttonRect.top;
+
+    if (spaceBelow < menuHeight && spaceAbove > spaceBelow) {
+      // Not enough space below, but more space above - position above the button
+      top = buttonRect.top - anchorRect.top - menuHeight - gap;
+    }
+
+    // Check if menu would go off the right edge of the viewport
+    const spaceRight = window.innerWidth - buttonRect.left;
+    if (spaceRight < menuWidth) {
+      // Adjust left position to keep menu in viewport
+      left = buttonRect.right - anchorRect.left - menuWidth;
+    }
+
+    setMenuPosition({ top, left });
     setIsMenuOpen(true);
     setSelectedIndex(0);
     setFilterText('');
@@ -404,7 +426,7 @@ function PlusButton({
         ref={imageInputRef}
         type="file"
         accept="image/*"
-        style={{ display: 'none' }}
+        className="blog-editor-hidden-input"
         onChange={handleImageUpload}
       />
     </>,

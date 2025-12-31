@@ -33,7 +33,20 @@ export type {
 } from './plugins';
 
 // Theme exports
-export { defaultTheme, editorStyles } from './themes';
+export { defaultTheme } from './themes';
+
+/**
+ * CSS Styles - IMPORTANT: You must import the styles in your app:
+ *
+ * ```typescript
+ * import '@portfolio/blog-editor/styles.css';
+ * ```
+ *
+ * Or if using Next.js app directory, import in your layout or page:
+ * ```typescript
+ * import '@portfolio/blog-editor/styles.css';
+ * ```
+ */
 
 // Type exports
 export type {

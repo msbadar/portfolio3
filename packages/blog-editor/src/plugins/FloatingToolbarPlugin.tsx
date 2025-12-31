@@ -16,6 +16,8 @@ import {
   COMMAND_PRIORITY_LOW,
   FORMAT_TEXT_COMMAND,
   SELECTION_CHANGE_COMMAND,
+  LexicalNode,
+  RangeSelection,
 } from 'lexical';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -415,7 +417,7 @@ function getDOMRangeRect(
   return rect;
 }
 
-function getSelectedNode(selection: { anchor: { getNode: () => any }; focus: { getNode: () => any } }): any {
+function getSelectedNode(selection: RangeSelection): LexicalNode {
   const anchorNode = selection.anchor.getNode();
   const focusNode = selection.focus.getNode();
   if (anchorNode === focusNode) {

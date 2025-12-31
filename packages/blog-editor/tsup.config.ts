@@ -1,7 +1,7 @@
 import { defineConfig } from 'tsup';
 
 export default defineConfig({
-  entry: ['src/index.ts'],
+  entry: ['src/index.ts', 'src/styles/editor.css'],
   format: ['cjs', 'esm'],
   dts: true,
   splitting: false,
@@ -9,6 +9,9 @@ export default defineConfig({
   clean: true,
   external: ['react', 'react-dom'],
   injectStyle: false,
+  loader: {
+    '.css': 'copy',
+  },
   esbuildOptions(options) {
     options.banner = {
       js: '"use client";',
