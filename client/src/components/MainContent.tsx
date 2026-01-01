@@ -47,11 +47,11 @@ export const MainContent = () => {
   };
 
   return (
-    <main className="flex-1 min-w-0 bg-[var(--background)] overflow-y-auto">
+    <main className="flex-1 min-w-0 bg-[var(--background)] h-full overflow-y-auto">
       <ProfileHeader />
 
-      {/* Filter Tabs */}
-      <div className="flex items-center justify-between px-8 py-4 border-b border-[var(--border)]">
+      {/* Filter Tabs - Sticky */}
+      <div className="sticky top-0 z-10 flex items-center justify-between px-8 py-4 border-b border-[var(--border)] bg-[var(--background)] shadow-sm">
         <div className="flex gap-4">
           <button
             onClick={() => setFilters({ type: undefined })}
