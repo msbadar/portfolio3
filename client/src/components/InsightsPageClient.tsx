@@ -3,9 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { Icons } from "@/components/ui/Icons";
-import { AppProvider, useApp } from "@/context/AppContext";
 import { AvatarMenu } from "@/components/AvatarMenu";
-import { ToastContainer } from "@/components/ui/Toast";
 
 interface StatCardProps {
   title: string;
@@ -154,7 +152,7 @@ const InsightsContent = () => {
           {/* Header */}
           <div className="flex items-center gap-4 mb-8">
             <Link
-              href="/settings"
+              href="/dashboard/settings"
               className="p-2 rounded-xl text-[var(--muted)] hover:bg-[var(--surface)] hover:text-[var(--foreground)] transition-all"
             >
               {Icons.back()}
@@ -280,23 +278,6 @@ const InsightsContent = () => {
   );
 };
 
-const ToastContainerWithContext = () => {
-  const { ui, dispatchUI } = useApp();
-  return (
-    <ToastContainer
-      toasts={ui.toasts}
-      onRemove={(id) => dispatchUI({ type: "REMOVE_TOAST", payload: id })}
-    />
-  );
-};
-
 export const InsightsPageClient = () => {
-  return (
-    <AppProvider>
-      <div className="flex min-h-screen bg-[var(--background)] font-sans text-[var(--foreground)]">
-        <InsightsContent />
-        <ToastContainerWithContext />
-      </div>
-    </AppProvider>
-  );
+  return <InsightsContent />;
 };

@@ -43,12 +43,6 @@ export const AvatarMenu = () => {
 
   const navLinks = [
     { id: "home", href: "/", icon: Icons.home, label: "Home" },
-    {
-      id: "search",
-      href: "/search",
-      icon: () => Icons.search(),
-      label: "Search",
-    },
     { id: "blogs", href: "/blogs", icon: Icons.activity, label: "Blogs" },
     { id: "chat", href: "/chat", icon: Icons.chat, label: "Chat" },
   ];
@@ -62,11 +56,11 @@ export const AvatarMenu = () => {
     },
     {
       id: "settings",
-      href: "/settings",
+      href: "/dashboard/settings",
       icon: () => Icons.menu(),
       label: "Settings",
     },
-    { id: "login", href: "/login", icon: () => Icons.close(), label: "Logout" },
+    { id: "login", href: "/auth/login", icon: () => Icons.close(), label: "Logout" },
   ];
 
   const footerLinks = [
@@ -164,7 +158,7 @@ export const AvatarMenu = () => {
                   Sign in to connect with others and share your thoughts
                 </p>
                 <Link
-                  href="/login"
+                  href="/auth/login"
                   onClick={() => setIsOpen(false)}
                   className="block w-full px-6 py-3 bg-[var(--accent)] text-[var(--background)] font-semibold rounded-xl hover:shadow-lg hover:shadow-[var(--accent)]/30 transition-all"
                 >
@@ -236,9 +230,6 @@ export const AvatarMenu = () => {
                 }
                 className="w-full px-4 py-3 pl-10 bg-[var(--background)] border border-[var(--border)] rounded-xl text-sm text-[var(--foreground)] placeholder-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/30 focus:border-[var(--accent)]/50 transition-all"
               />
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--muted)]">
-                {Icons.search()}
-              </span>
             </div>
           </div>
 

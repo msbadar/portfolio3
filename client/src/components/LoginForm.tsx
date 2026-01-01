@@ -134,7 +134,7 @@ export const LoginForm = () => {
           {!isRegister && (
             <div className="mt-2 text-right">
               <a
-                href="/forgot-password"
+                href="/auth/forgot-password"
                 className="text-[var(--accent)] hover:underline text-sm"
               >
                 Forgot password?

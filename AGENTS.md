@@ -8,6 +8,7 @@
 
 - Check the name field inside each package's package.json to confirm the right name—skip the top-level one.
 - should be using pnpm instead of npm
+- always import types using `import type `
 
 ## Testing instructions
 

@@ -3,9 +3,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { Icons } from "@/components/ui/Icons";
-import { AppProvider, useApp } from "@/context/AppContext";
+import { useApp } from "@/context/AppContext";
 import { AvatarMenu } from "@/components/AvatarMenu";
-import { ToastContainer } from "@/components/ui/Toast";
 import { useBlogs } from "@/hooks/useBlogs";
 import { useUsers } from "@/hooks/useUsers";
 import api from "@/services/api";
@@ -286,7 +285,7 @@ const DashboardContent = () => {
           {/* Header */}
           <div className="flex items-center gap-4">
             <Link
-              href="/settings"
+              href="/dashboard/settings"
               className="p-2 rounded-xl text-[var(--muted)] hover:bg-[var(--surface)] hover:text-[var(--foreground)] transition-all"
             >
               {Icons.back()}
@@ -363,23 +362,6 @@ const DashboardContent = () => {
   );
 };
 
-const ToastContainerWithContext = () => {
-  const { ui, dispatchUI } = useApp();
-  return (
-    <ToastContainer
-      toasts={ui.toasts}
-      onRemove={(id) => dispatchUI({ type: "REMOVE_TOAST", payload: id })}
-    />
-  );
-};
-
 export const DashboardPageClient = () => {
-  return (
-    <AppProvider>
-      <div className="flex min-h-screen bg-[var(--background)] font-sans text-[var(--foreground)]">
-        <DashboardContent />
-        <ToastContainerWithContext />
-      </div>
-    </AppProvider>
-  );
+  return <DashboardContent />;
 };

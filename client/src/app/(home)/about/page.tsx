@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { AppProvider } from "@/context/AppContext";
+import { AppContent } from "@/components/AppContent";
 import { AboutPageClient } from "@/components/AboutPageClient";
 
 export const metadata: Metadata = {
@@ -12,5 +14,11 @@ export const metadata: Metadata = {
 };
 
 export default function AboutPage() {
-  return <AboutPageClient />;
+  return (
+    <AppProvider>
+      <AppContent>
+        <AboutPageClient />
+      </AppContent>
+    </AppProvider>
+  );
 }

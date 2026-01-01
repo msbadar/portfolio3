@@ -13,10 +13,8 @@ function ResetPasswordContent() {
 
 export default function ResetPasswordPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[var(--background)]">
-      <Suspense fallback={<div className="text-[var(--muted)]">Loading...</div>}>
-        <ResetPasswordContent />
-      </Suspense>
-    </div>
+    <Suspense fallback={<div className="text-[var(--muted)]">Loading...</div>}>
+      <ResetPasswordContent />
+    </Suspense>
   );
 }

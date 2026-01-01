@@ -1,5 +1,6 @@
 import { AppProvider } from "@/context/AppContext";
 import { AppContent } from "@/components/AppContent";
+import { MainContent } from "@/components/MainContent";
 import { serverApi } from "@/lib/server-api";
 
 interface HomeProps {
@@ -23,7 +24,9 @@ export default async function App({ searchParams }: HomeProps) {
 
   return (
     <AppProvider initialPosts={initialPosts}>
-      <AppContent />
+      <AppContent>
+        <MainContent />
+      </AppContent>
     </AppProvider>
   );
 }

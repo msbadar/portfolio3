@@ -3,15 +3,12 @@
 import React, { useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { AppProvider, useApp } from "@/context/AppContext";
 import { useUsers } from "@/hooks/useUsers";
-import { AvatarMenu } from "@/components/AvatarMenu";
 import { Icons } from "@/components/ui/Icons";
 import { Markdown } from "@/components/ui/Markdown";
 import { Skeleton } from "@/components/ui/Skeleton";
-import { ToastContainer } from "@/components/ui/Toast";
 
-const AboutContent = () => {
+export const AboutPageClient = () => {
   const { fetchCurrentUser, users } = useUsers();
   const user = users.currentUser;
 
@@ -44,9 +41,7 @@ const AboutContent = () => {
   }
 
   return (
-    <>
-      <AvatarMenu />
-      <main className="flex-1 min-w-0 bg-[var(--background)] overflow-y-auto">
+    <main className="flex-1 min-w-0 bg-[var(--background)] overflow-y-auto">
         <div className="max-w-4xl mx-auto p-8">
           {/* Back Button */}
           <div className="mb-6">
@@ -127,27 +122,5 @@ const AboutContent = () => {
           </div>
         </div>
       </main>
-    </>
-  );
-};
-
-const ToastContainerWithContext = () => {
-  const { ui, dispatchUI } = useApp();
-  return (
-    <ToastContainer
-      toasts={ui.toasts}
-      onRemove={(id) => dispatchUI({ type: "REMOVE_TOAST", payload: id })}
-    />
-  );
-};
-
-export const AboutPageClient = () => {
-  return (
-    <AppProvider>
-      <div className="flex min-h-screen bg-[var(--background)] font-sans text-[var(--foreground)]">
-        <AboutContent />
-        <ToastContainerWithContext />
-      </div>
-    </AppProvider>
   );
 };

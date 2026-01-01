@@ -83,7 +83,7 @@ export const MobileMenu = () => {
           </div>
 
           <Link
-            href="/login"
+            href="/dashboard/settings"
             onClick={() => setIsOpen(false)}
             className="flex items-center gap-4 px-4 py-3 rounded-xl text-[var(--muted)] hover:text-[var(--accent)] hover:bg-[var(--surface-hover)] transition-all"
           >

@@ -51,7 +51,7 @@ export const ResetPasswordForm = () => {
       if (response.success) {
         setSuccess(true);
         setTimeout(() => {
-          router.push("/login");
+          router.push("/auth/login");
         }, 3000);
       } else {
         setError(response.error || "An error occurred");
@@ -78,7 +78,7 @@ export const ResetPasswordForm = () => {
 
         <div className="text-center">
           <Link
-            href="/login"
+            href="/auth/login"
             className="text-[var(--accent)] hover:underline text-sm"
           >
             Go to Sign In
@@ -152,7 +152,7 @@ export const ResetPasswordForm = () => {
 
       <div className="mt-6 text-center">
         <Link
-          href="/login"
+          href="/auth/login"
           className="text-[var(--accent)] hover:underline text-sm"
         >
           Back to Sign In

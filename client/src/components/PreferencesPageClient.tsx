@@ -3,9 +3,8 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { Icons } from "@/components/ui/Icons";
-import { AppProvider, useApp } from "@/context/AppContext";
+import { useApp } from "@/context/AppContext";
 import { AvatarMenu } from "@/components/AvatarMenu";
-import { ToastContainer } from "@/components/ui/Toast";
 
 interface PreferenceSectionProps {
   title: string;
@@ -116,7 +115,7 @@ const PreferencesContent = () => {
           {/* Header */}
           <div className="flex items-center gap-4 mb-8">
             <Link
-              href="/settings"
+              href="/dashboard/settings"
               className="p-2 rounded-xl text-[var(--muted)] hover:bg-[var(--surface)] hover:text-[var(--foreground)] transition-all"
             >
               {Icons.back()}
@@ -354,23 +353,6 @@ const PreferencesContent = () => {
   );
 };
 
-const ToastContainerWithContext = () => {
-  const { ui, dispatchUI } = useApp();
-  return (
-    <ToastContainer
-      toasts={ui.toasts}
-      onRemove={(id) => dispatchUI({ type: "REMOVE_TOAST", payload: id })}
-    />
-  );
-};
-
 export const PreferencesPageClient = () => {
-  return (
-    <AppProvider>
-      <div className="flex min-h-screen bg-[var(--background)] font-sans text-[var(--foreground)]">
-        <PreferencesContent />
-        <ToastContainerWithContext />
-      </div>
-    </AppProvider>
-  );
+  return <PreferencesContent />;
 };

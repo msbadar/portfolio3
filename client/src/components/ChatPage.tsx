@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { Icons } from "./ui/Icons";
 
 interface Message {
   id: string;
@@ -63,14 +62,7 @@ export const ChatPage = () => {
   };
 
   return (
-    <main className="flex-1 min-w-0 bg-[var(--background)] h-full overflow-y-auto">
-      {/* Header */}
-      <div className="sticky top-0 z-10 px-8 py-4 border-b border-[var(--border)] bg-[var(--background)] shadow-sm">
-        <h1 className="text-xl font-bold text-[var(--foreground)]">
-          Chat
-        </h1>
-      </div>
-
+    <main className="flex-1 min-w-0 flex flex-col bg-[var(--background)]">
       {/* Messages */}
       <div className="flex-1 overflow-y-auto px-8 py-6">
         <div className="max-w-4xl mx-auto space-y-4">

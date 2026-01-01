@@ -27,20 +27,14 @@ import {
 
 export const Icons = {
   home: (active: boolean) => (
-    <Home
-      size={24}
-      fill={active ? "currentColor" : "none"}
-      strokeWidth={2}
-    />
+    <Home size={24} fill={active ? "currentColor" : "none"} strokeWidth={2} />
   ),
-  search: () => <Search size={24} strokeWidth={2} />,
+  search: (active: boolean) => (
+    <Search size={24} fill={active ? "currentColor" : "none"} strokeWidth={2} />
+  ),
   create: () => <SquarePlus size={24} strokeWidth={2} />,
   activity: (active: boolean) => (
-    <Heart
-      size={24}
-      fill={active ? "currentColor" : "none"}
-      strokeWidth={2}
-    />
+    <Heart size={24} fill={active ? "currentColor" : "none"} strokeWidth={2} />
   ),
   profile: () => <User size={24} strokeWidth={2} />,
   heart: (filled: boolean) => (

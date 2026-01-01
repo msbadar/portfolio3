@@ -123,4 +123,64 @@ export const serverApi = {
       }
     },
   },
+
+  metadata: {
+    async get(): Promise<{
+      title: string;
+      titleTemplate: string;
+      description: string;
+      keywords: string[];
+      authors: Array<{ name: string }>;
+      creator: string;
+      openGraph: {
+        type: string;
+        locale: string;
+        url: string;
+        siteName: string;
+        title: string;
+        description: string;
+      };
+      twitter: {
+        card: string;
+        title: string;
+        description: string;
+      };
+      robots: {
+        index: boolean;
+        follow: boolean;
+      };
+    } | null> {
+      try {
+        const data = await serverFetch<{
+          title: string;
+          titleTemplate: string;
+          description: string;
+          keywords: string[];
+          authors: Array<{ name: string }>;
+          creator: string;
+          openGraph: {
+            type: string;
+            locale: string;
+            url: string;
+            siteName: string;
+            title: string;
+            description: string;
+          };
+          twitter: {
+            card: string;
+            title: string;
+            description: string;
+          };
+          robots: {
+            index: boolean;
+            follow: boolean;
+          };
+        }>("/metadata");
+        return data;
+      } catch (error) {
+        console.error("Failed to fetch metadata on server:", error);
+        return null;
+      }
+    },
+  },
 };

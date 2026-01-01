@@ -8,6 +8,7 @@ import { PostsModule } from './posts/posts.module';
 import { BlogsModule } from './blogs/blogs.module';
 import { UsersModule } from './users/users.module';
 import { ActivityPubModule } from './activitypub/activitypub.module';
+import { MetadataModule } from './metadata/metadata.module';
 import { SiteMiddleware } from './common/middleware/site.middleware';
 
 @Module({
@@ -21,6 +22,7 @@ import { SiteMiddleware } from './common/middleware/site.middleware';
     BlogsModule,
     UsersModule,
     ActivityPubModule,
+    MetadataModule,
   ],
   controllers: [AppController],
   providers: [AppService],

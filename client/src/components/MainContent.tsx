@@ -49,7 +49,7 @@ export const MainContent = () => {
   };
 
   return (
-    <main className="flex-1 min-w-0 bg-[var(--background)] h-full overflow-y-auto">
+    <main className="flex-1 min-w-0 bg-[var(--background)]">
       <ProfileHeader />
 
       {/* Filter Tabs - Sticky */}

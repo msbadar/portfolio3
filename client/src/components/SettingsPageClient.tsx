@@ -3,9 +3,8 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { Icons } from "@/components/ui/Icons";
-import { AppProvider, useApp } from "@/context/AppContext";
+import { useApp } from "@/context/AppContext";
 import { AvatarMenu } from "@/components/AvatarMenu";
-import { ToastContainer } from "@/components/ui/Toast";
 
 interface SettingsSectionProps {
   title: string;
@@ -250,23 +249,6 @@ const SettingsContent = () => {
   );
 };
 
-const ToastContainerWithContext = () => {
-  const { ui, dispatchUI } = useApp();
-  return (
-    <ToastContainer
-      toasts={ui.toasts}
-      onRemove={(id) => dispatchUI({ type: "REMOVE_TOAST", payload: id })}
-    />
-  );
-};
-
 export const SettingsPageClient = () => {
-  return (
-    <AppProvider>
-      <div className="flex min-h-screen bg-[var(--background)] font-sans text-[var(--foreground)]">
-        <SettingsContent />
-        <ToastContainerWithContext />
-      </div>
-    </AppProvider>
-  );
+  return <SettingsContent />;
 };

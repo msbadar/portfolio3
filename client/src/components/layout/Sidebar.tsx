@@ -48,7 +48,6 @@ export const Sidebar = () => {
 
   const navLinks = [
     { id: "home", href: "/", icon: Icons.home },
-    { id: "search", href: "/search", icon: Icons.search },
     { id: "blogs", href: "/blogs", icon: Icons.activity },
     { id: "chat", href: "/chat", icon: Icons.chat },
     { id: "profile", href: "/profile", icon: Icons.profile },
@@ -88,17 +87,17 @@ export const Sidebar = () => {
       </div>
       <div className="flex flex-col gap-3">
         <Link
-          href="/settings"
+          href="/dashboard"
           className={`w-12 h-12 flex items-center justify-center rounded-2xl transition-all ${
-            getIsActive("/settings")
+            getIsActive("/dashboard")
               ? "bg-[var(--accent)] text-[var(--background)] shadow-lg shadow-[var(--accent)]/30"
               : "text-[var(--muted)] hover:text-[var(--accent)] hover:bg-[var(--surface-hover)]"
           }`}
         >
-          {Icons.settings(getIsActive("/settings"))}
+          {Icons.settings(getIsActive("/dashboard"))}
         </Link>
         <Link
-          href="/login"
+          href="/auth/login"
           className="w-12 h-12 flex items-center justify-center rounded-2xl text-[var(--muted)] hover:text-[var(--accent)] hover:bg-[var(--surface-hover)] transition-all"
         >
           {Icons.menu()}

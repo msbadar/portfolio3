@@ -20,7 +20,9 @@ export const ComposeModal = () => {
   const handleSubmit = async () => {
     if (!content.trim() || isSubmitting) return;
     setIsSubmitting(true);
-    const fullContent = title.trim() ? `# ${title.trim()}\n\n${content}` : content;
+    const fullContent = title.trim()
+      ? `# ${title.trim()}\n\n${content}`
+      : content;
     const success = await createPost(fullContent);
     if (success) {
       setTitle("");
@@ -51,7 +53,9 @@ export const ComposeModal = () => {
           >
             Cancel
           </button>
-          <span className="font-bold text-lg text-[var(--foreground)]">New Thread</span>
+          <span className="font-bold text-lg text-[var(--foreground)]">
+            New Thread
+          </span>
           <button
             onClick={() => setShowPreview(!showPreview)}
             className={`text-sm font-medium transition-colors ${

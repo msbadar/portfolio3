@@ -47,7 +47,7 @@ export const ForgotPasswordForm = () => {
 
         <div className="text-center">
           <Link
-            href="/login"
+            href="/auth/login"
             className="text-[var(--accent)] hover:underline text-sm"
           >
             Back to Sign In
@@ -103,7 +103,7 @@ export const ForgotPasswordForm = () => {
 
       <div className="mt-6 text-center">
         <Link
-          href="/login"
+          href="/auth/login"
           className="text-[var(--accent)] hover:underline text-sm"
         >
           Back to Sign In
