@@ -20,9 +20,9 @@ const ToastContainerWithContext = () => {
 // Main App Content
 export const AppContent = () => {
   return (
-    <div className="flex min-h-screen bg-[var(--background)] font-sans text-[var(--foreground)]">
+    <div className="flex h-screen bg-[var(--background)] font-sans text-[var(--foreground)]">
       <AvatarMenu />
-      <div className="flex-1 max-w-5xl mx-auto w-full">
+      <div className="flex-1 max-w-5xl mx-auto w-full h-full">
         <MainContent />
       </div>
       <ComposeModal />

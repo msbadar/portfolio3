@@ -15,6 +15,7 @@ export const MobileMenu = () => {
     { id: "home", href: "/", icon: Icons.home, label: "Home" },
     { id: "search", href: "/search", icon: Icons.search, label: "Search" },
     { id: "blogs", href: "/blogs", icon: Icons.activity, label: "Blogs" },
+    { id: "chat", href: "/chat", icon: Icons.chat, label: "Chat" },
     { id: "profile", href: "/profile", icon: Icons.profile, label: "Profile" },
   ];
 

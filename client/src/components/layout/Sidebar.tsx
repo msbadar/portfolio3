@@ -50,6 +50,7 @@ export const Sidebar = () => {
     { id: "home", href: "/", icon: Icons.home },
     { id: "search", href: "/search", icon: Icons.search },
     { id: "blogs", href: "/blogs", icon: Icons.activity },
+    { id: "chat", href: "/chat", icon: Icons.chat },
     { id: "profile", href: "/profile", icon: Icons.profile },
   ];
 
