@@ -50,6 +50,7 @@ export const AvatarMenu = () => {
       label: "Search",
     },
     { id: "blogs", href: "/blogs", icon: Icons.activity, label: "Blogs" },
+    { id: "chat", href: "/chat", icon: Icons.chat, label: "Chat" },
   ];
 
   const profileLinks = [
@@ -120,7 +121,7 @@ export const AvatarMenu = () => {
             <div className="p-6 border-b border-[var(--border)]">
               <div className="flex items-center gap-4 mb-4">
                 <Image
-                  src={authUser.avatar || '/default-avatar.png'}
+                  src={authUser.avatar || "/default-avatar.png"}
                   alt={authUser.name}
                   width={56}
                   height={56}

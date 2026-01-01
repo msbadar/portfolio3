@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { usePosts } from "@/hooks/usePosts";
 import { usePostFilters } from "@/hooks/usePostFilters";
 import { useUsers } from "@/hooks/useUsers";
@@ -9,6 +10,7 @@ import { Post } from "@/components/Post";
 import { PostSkeleton } from "@/components/ui/Skeleton";
 
 export const MainContent = () => {
+  const router = useRouter();
   const { posts, fetchPosts, likePost } = usePosts();
   const { filters, setFilters } = usePostFilters();
   const { fetchCurrentUser } = useUsers();
@@ -31,14 +33,14 @@ export const MainContent = () => {
   // Handle ESC key to close search
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isSearchExpanded) {
+      if (e.key === "Escape" && isSearchExpanded) {
         setIsSearchExpanded(false);
         setFilters({ search: undefined });
       }
     };
 
-    document.addEventListener('keydown', handleEscape);
-    return () => document.removeEventListener('keydown', handleEscape);
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
   }, [isSearchExpanded, setFilters]);
 
   const handleCloseSearch = () => {
@@ -82,6 +84,12 @@ export const MainContent = () => {
             }`}
           >
             Blogs
+          </button>
+          <button
+            onClick={() => router.push("/chat")}
+            className="px-4 py-2 rounded-xl font-medium text-sm transition-all text-[var(--muted)] hover:bg-[var(--surface)] hover:text-[var(--foreground)]"
+          >
+            Chats
           </button>
         </div>
 

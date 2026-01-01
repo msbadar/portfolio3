@@ -52,6 +52,13 @@ export const Icons = {
     />
   ),
   comment: () => <MessageCircle size={20} strokeWidth={2} />,
+  chat: (active: boolean) => (
+    <MessageCircle
+      size={24}
+      fill={active ? "currentColor" : "none"}
+      strokeWidth={2}
+    />
+  ),
   repost: () => <Repeat2 size={20} strokeWidth={2} />,
   share: () => <Share size={20} strokeWidth={2} />,
   verified: () => (
